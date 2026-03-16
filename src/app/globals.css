@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: #060b18;
+  --color-foreground: #e4e8f0;
+  --color-surface: rgba(255, 255, 255, 0.04);
+  --color-surface-elevated: rgba(255, 255, 255, 0.07);
+  --color-primary: #00d4ff;
+  --color-primary-hover: #33ddff;
+  --color-accent: #f0b429;
+  --color-muted: #6b7a99;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-navy-deep: #040810;
+  --color-navy-mid: #0a1628;
+  --color-navy-light: #112040;
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: linear-gradient(180deg, #060b18 0%, #0a1628 50%, #060b18 100%);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+}
+
+/* Glassmorphism card */
+.glass {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+}
+
+.glass-elevated {
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+}
+
+/* Glow effects */
+.glow-cyan {
+  box-shadow: 0 0 40px rgba(0, 212, 255, 0.08), 0 0 80px rgba(0, 212, 255, 0.04);
+}
+
+.glow-amber {
+  box-shadow: 0 0 40px rgba(240, 180, 41, 0.08), 0 0 80px rgba(240, 180, 41, 0.04);
+}
+
+/* Noise texture overlay */
+.noise::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 0;
+}
+
+/* Gradient mesh background */
+.mesh-gradient {
+  position: relative;
+}
+
+.mesh-gradient::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 600px 400px at 20% 30%, rgba(0, 212, 255, 0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 500px 300px at 80% 20%, rgba(99, 102, 241, 0.05) 0%, transparent 70%),
+    radial-gradient(ellipse 400px 400px at 60% 80%, rgba(240, 180, 41, 0.04) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Scroll-driven fade-in */
+.fade-in-view {
+  opacity: 0;
+  transform: translateY(24px);
+  animation: scroll-reveal linear both;
+  animation-timeline: view();
+  animation-range: entry 0% entry 40%;
+}
+
+@keyframes scroll-reveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .fade-in-view {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Focus visible ring — compensates for outline-none on inputs/buttons */
+:focus-visible {
+  outline: 2px solid #00d4ff;
+  outline-offset: 2px;
+}
+
+/* Selection highlight */
+::selection {
+  background: rgba(0, 212, 255, 0.3);
+  color: #ffffff;
+}

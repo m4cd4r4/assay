@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assay — System Architecture</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#060b18;--surface:rgba(255,255,255,0.04);--surface-elevated:rgba(255,255,255,0.07);
+  --border:rgba(255,255,255,0.08);--border-accent:rgba(0,212,255,0.2);
+  --text:#e0e4ef;--text-dim:#6b7194;--text-bright:#f0f4ff;
+  --cyan:#00d4ff;--cyan-dim:rgba(0,212,255,0.12);
+  --amber:#f0b429;--amber-dim:rgba(240,180,41,0.12);
+  --green:#34d399;--green-dim:rgba(52,211,153,0.12);
+  --red:#ef4444;--red-dim:rgba(239,68,68,0.12);
+  --purple:#a78bfa;--purple-dim:rgba(167,139,250,0.12);
+  --mono:'JetBrains Mono','Fira Code','SF Mono',monospace;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif;
+  --sidebar-w:280px;
+}
+html{font-size:18px;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.7;display:flex;min-height:100vh}
+
+/* ---- Sidebar ---- */
+.sidebar{
+  width:var(--sidebar-w);min-width:var(--sidebar-w);height:100vh;position:sticky;top:0;
+  background:#070d1c;border-right:1px solid var(--border);
+  display:flex;flex-direction:column;overflow-y:auto;z-index:100;
+  scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.1) transparent;
+}
+.sidebar-logo{
+  display:flex;align-items:center;gap:10px;padding:24px 20px 16px;
+  text-decoration:none;border-bottom:1px solid var(--border);
+}
+.sidebar-logo img{width:36px;height:36px;border-radius:6px}
+.sidebar-logo span{font-size:17px;font-weight:600;color:var(--text-bright);letter-spacing:-0.3px}
+.sidebar-back{
+  display:flex;align-items:center;gap:6px;padding:10px 20px;
+  font-size:13px;color:var(--text-dim);text-decoration:none;border-bottom:1px solid var(--border);
+}
+.sidebar-back:hover{color:var(--cyan)}
+.sidebar-back svg{width:14px;height:14px}
+.sidebar-title{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--text-dim);padding:20px 20px 8px}
+.sidebar-nav{list-style:none;padding:0 0 24px}
+.sidebar-nav li{}
+.sidebar-nav a{
+  display:flex;align-items:center;gap:10px;padding:8px 20px;
+  font-size:14px;color:var(--text-dim);text-decoration:none;
+  border-left:3px solid transparent;transition:all 0.15s;
+}
+.sidebar-nav a:hover{color:var(--text);background:rgba(255,255,255,0.02)}
+.sidebar-nav a.active{color:var(--cyan);border-left-color:var(--cyan);background:var(--cyan-dim)}
+.sidebar-nav .nav-num{font-family:var(--mono);font-size:11px;color:var(--cyan);min-width:22px}
+
+/* Mobile hamburger */
+.hamburger{
+  display:none;position:fixed;top:16px;left:16px;z-index:200;
+  width:44px;height:44px;border-radius:10px;border:1px solid var(--border);
+  background:rgba(6,11,24,0.95);backdrop-filter:blur(8px);
+  cursor:pointer;align-items:center;justify-content:center;
+}
+.hamburger svg{width:20px;height:20px;color:var(--text)}
+.sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:90}
+
+/* ---- Main Content ---- */
+.main{flex:1;min-width:0;overflow-x:hidden}
+.container{max-width:1200px;margin:0 auto;padding:48px 56px 80px}
+
+/* Header */
+.header{text-align:center;padding:40px 0 48px;border-bottom:1px solid var(--border)}
+.header-mono{font-family:var(--mono);font-size:14px;letter-spacing:3px;text-transform:uppercase;color:var(--cyan);margin-bottom:14px}
+.header h1{font-size:42px;font-weight:700;letter-spacing:-0.5px;color:var(--text-bright);margin-bottom:10px}
+.header p{color:var(--text-dim);font-size:16px;max-width:700px;margin:0 auto;line-height:1.6}
+.header-meta{display:flex;gap:28px;justify-content:center;margin-top:20px;font-size:13px;color:var(--text-dim)}
+.header-meta span{display:flex;align-items:center;gap:6px}
+.dot{width:7px;height:7px;border-radius:50%;display:inline-block}
+.dot-green{background:var(--green)}
+.dot-cyan{background:var(--cyan)}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:40px 0}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center}
+.stat-card .value{font-size:32px;font-weight:700;font-family:var(--mono);color:var(--cyan)}
+.stat-card .label{font-size:12px;text-transform:uppercase;letter-spacing:1.2px;color:var(--text-dim);margin-top:6px}
+
+/* Sections */
+section{margin-top:64px;scroll-margin-top:32px}
+section h2{font-size:28px;font-weight:600;color:var(--text-bright);margin-bottom:8px;padding-bottom:12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
+section h2 .num{font-family:var(--mono);font-size:13px;color:var(--cyan);background:var(--cyan-dim);padding:3px 12px;border-radius:20px}
+section h3{font-size:20px;font-weight:600;color:var(--text-bright);margin:32px 0 12px}
+section p{margin:10px 0;color:var(--text);font-size:18px;line-height:1.7}
+
+/* Mermaid diagrams */
+.diagram-wrap{
+  background:var(--surface);border:1px solid var(--border-accent);border-radius:14px;
+  padding:32px;margin:24px 0;overflow-x:auto;position:relative;
+}
+.diagram-wrap .caption{font-family:var(--mono);font-size:13px;color:var(--cyan);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:20px}
+.mermaid{display:flex;justify-content:center}
+.mermaid svg{max-width:100%}
+.expand-btn{
+  position:absolute;top:12px;right:12px;width:36px;height:36px;
+  border-radius:8px;border:1px solid var(--border);background:var(--surface-elevated);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  color:var(--text-dim);transition:all 0.15s;z-index:5;
+}
+.expand-btn:hover{color:var(--cyan);border-color:var(--cyan);background:var(--cyan-dim)}
+.expand-btn svg{width:18px;height:18px}
+
+/* Diagram overlay */
+.diagram-overlay{
+  position:fixed;inset:0;z-index:1000;background:rgba(6,11,24,0.95);
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  padding:32px;overflow:auto;
+}
+.diagram-overlay.open{display:flex}
+.diagram-overlay .close-btn{
+  position:fixed;top:20px;right:20px;width:44px;height:44px;
+  border-radius:10px;border:1px solid var(--border);background:var(--surface-elevated);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  color:var(--text-dim);font-size:20px;z-index:1001;
+}
+.diagram-overlay .close-btn:hover{color:var(--cyan);border-color:var(--cyan)}
+.diagram-overlay .overlay-content{
+  max-width:95vw;max-height:90vh;overflow:auto;
+  background:var(--surface);border:1px solid var(--border-accent);border-radius:16px;padding:48px;
+}
+.diagram-overlay .overlay-content svg{max-width:none !important;transform-origin:top left}
+
+/* Tables */
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:15px}
+th{background:var(--surface-elevated);color:var(--text-bright);font-weight:600;text-align:left;padding:12px 16px;border-bottom:1px solid var(--border)}
+td{padding:12px 16px;border-bottom:1px solid var(--border);color:var(--text)}
+tr:hover td{background:var(--surface)}
+code{font-family:var(--mono);font-size:14px;background:var(--surface-elevated);padding:2px 8px;border-radius:4px;color:var(--cyan)}
+
+/* Tag pills */
+.tag{display:inline-flex;align-items:center;gap:4px;padding:3px 12px;border-radius:20px;font-size:13px;font-weight:500}
+.tag-cyan{background:var(--cyan-dim);color:var(--cyan)}
+.tag-green{background:var(--green-dim);color:var(--green)}
+.tag-amber{background:var(--amber-dim);color:var(--amber)}
+.tag-red{background:var(--red-dim);color:var(--red)}
+.tag-purple{background:var(--purple-dim);color:var(--purple)}
+
+/* Pipeline */
+.pipeline{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0;align-items:center}
+.pipeline-step{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 20px;display:flex;flex-direction:column;gap:3px;min-width:140px}
+.pipeline-step .step-num{font-family:var(--mono);font-size:12px;color:var(--cyan);letter-spacing:1px}
+.pipeline-step .step-name{font-weight:600;color:var(--text-bright);font-size:16px}
+.pipeline-arrow{color:var(--text-dim);font-size:22px;display:flex;align-items:center}
+
+/* Code blocks */
+.code-block{background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:10px;padding:20px;font-family:var(--mono);font-size:14px;line-height:1.7;overflow-x:auto;margin:16px 0;color:var(--text)}
+
+/* Footer */
+.footer{text-align:center;padding:40px 0;margin-top:64px;border-top:1px solid var(--border);font-size:14px;color:var(--text-dim)}
+.footer a{color:var(--cyan);text-decoration:none}
+
+/* ---- Responsive ---- */
+@media(max-width:1024px){
+  .sidebar{
+    position:fixed;left:0;top:0;transform:translateX(-100%);
+    transition:transform 0.25s ease;z-index:110;
+  }
+  .sidebar.open{transform:translateX(0)}
+  .sidebar-backdrop.open{display:block}
+  .hamburger{display:flex}
+  .container{padding:32px 24px 64px}
+  .header h1{font-size:32px}
+  section h2{font-size:24px}
+  section p{font-size:16px}
+  .stats{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:640px){
+  .container{padding:24px 16px 48px}
+  .header h1{font-size:26px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .pipeline{flex-direction:column;align-items:stretch}
+  .pipeline-arrow{transform:rotate(90deg);justify-content:center}
+  table{font-size:14px}
+  th,td{padding:10px 12px}
+  .diagram-wrap{padding:20px 16px}
+}
+</style>
+</head>
+<body>
+
+<!-- Hamburger (mobile) -->
+<button class="hamburger" onclick="toggleSidebar()" aria-label="Toggle navigation">
+  <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+</button>
+<div class="sidebar-backdrop" onclick="toggleSidebar()"></div>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <a href="https://assay.software" class="sidebar-logo">
+    <img src="https://assay.software/logo.png" alt="Assay">
+    <span>Assay</span>
+  </a>
+  <a href="https://assay.software" class="sidebar-back">
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+    Back to site
+  </a>
+  <div class="sidebar-title">Architecture</div>
+  <ol class="sidebar-nav" id="sidebar-nav">
+    <li><a href="#overview"><span class="nav-num">01</span> System Overview</a></li>
+    <li><a href="#stack"><span class="nav-num">02</span> Tech Stack</a></li>
+    <li><a href="#architecture"><span class="nav-num">03</span> Architecture</a></li>
+    <li><a href="#pipeline"><span class="nav-num">04</span> AI Pipeline</a></li>
+    <li><a href="#data-flow"><span class="nav-num">05</span> Data Flow</a></li>
+    <li><a href="#api"><span class="nav-num">06</span> API Routes</a></li>
+    <li><a href="#auth"><span class="nav-num">07</span> Middleware</a></li>
+    <li><a href="#parser"><span class="nav-num">08</span> COBOL Parser</a></li>
+    <li><a href="#types"><span class="nav-num">09</span> Type System</a></li>
+    <li><a href="#demo"><span class="nav-num">10</span> Demo</a></li>
+    <li><a href="#security"><span class="nav-num">11</span> Security</a></li>
+    <li><a href="#tests"><span class="nav-num">12</span> Test Coverage</a></li>
+    <li><a href="#booking"><span class="nav-num">13</span> Booking</a></li>
+  </ol>
+</aside>
+
+<!-- Main Content -->
+<div class="main">
+<div class="container">
+
+  <div class="header">
+    <div class="header-mono">System Architecture</div>
+    <h1>Assay</h1>
+    <p>COBOL documentation generator. 5-pass analysis pipeline using Claude Opus 4.6 with 1M token context window.</p>
+    <div class="header-meta">
+      <span><span class="dot dot-green"></span> Portfolio Demo</span>
+      <span><span class="dot dot-cyan"></span> Full Playwright E2E Suite</span>
+      <span>Solaisoft Pty Ltd</span>
+      <span>March 2026</span>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat-card"><div class="value">16</div><div class="label">Source Files</div></div>
+    <div class="stat-card"><div class="value">6</div><div class="label">API Routes</div></div>
+    <div class="stat-card"><div class="value">5</div><div class="label">AI Passes</div></div>
+    <div class="stat-card"><div class="value">52</div><div class="label">Playwright E2E</div></div>
+    <div class="stat-card"><div class="value">1M</div><div class="label">Token Context</div></div>
+    <div class="stat-card"><div class="value">9</div><div class="label">Diagrams</div></div>
+  </div>
+
+  <!-- 1. System Overview -->
+  <section id="overview">
+    <h2><span class="num">01</span> System Overview</h2>
+    <p>Assay accepts legacy COBOL source code and produces comprehensive plain-English documentation through a multi-pass AI analysis pipeline. Each source program is processed through 5 specialized passes, generating structured markdown covering business rules, dependency maps, dead code detection, and data flow analysis.</p>
+    <p>The system is designed for enterprises with large COBOL codebases - banks, insurance companies, government agencies, and logistics firms - where understanding 40-year-old business logic is critical but COBOL expertise is rapidly retiring.</p>
+  </section>
+
+  <!-- 2. Technology Stack -->
+  <section id="stack">
+    <h2><span class="num">02</span> Technology Stack</h2>
+    <table>
+      <thead><tr><th>Layer</th><th>Technology</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td>Framework</td><td><code>Next.js 16</code> (App Router)</td><td>Server-side rendering, API routes, edge middleware</td></tr>
+        <tr><td>Runtime</td><td><code>React 19</code></td><td>UI components, client interactivity</td></tr>
+        <tr><td>Language</td><td><code>TypeScript 5</code> (strict)</td><td>Type safety across all modules</td></tr>
+        <tr><td>Styling</td><td><code>Tailwind CSS v4</code></td><td>Utility-first with glassmorphism design tokens</td></tr>
+        <tr><td>AI Engine</td><td><code>Claude Opus 4.6</code> (Anthropic SDK)</td><td>1M token context, 5-pass analysis</td></tr>
+        <tr><td>Email</td><td><code>Resend</code></td><td>Transactional email for PoC requests</td></tr>
+        <tr><td>State</td><td><code>Zustand 5</code></td><td>Client-side state management</td></tr>
+        <tr><td>Testing</td><td><code>Playwright 1.58</code></td><td>Cross-browser E2E testing</td></tr>
+        <tr><td>Hosting</td><td><code>Vercel</code></td><td>Edge deployment, serverless functions</td></tr>
+        <tr><td>Analytics</td><td><code>Vercel Analytics</code></td><td>Traffic and performance monitoring</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 3. High-Level Architecture -->
+  <section id="architecture">
+    <h2><span class="num">03</span> High-Level Architecture</h2>
+
+    <div class="diagram-wrap">
+      <div class="caption">System Component Diagram</div>
+      <pre class="mermaid">
+graph TB
+    subgraph Client["Browser Client"]
+        LP["Landing Page"]
+        DP["Demo Page"]
+        BK["Booking Widget<br/>donnacha.app"]
+        PP["Privacy / Terms"]
+    end
+
+    subgraph Edge["Next.js Edge Middleware"]
+        RL["Rate Limiter<br/>IP-based sliding window"]
+        HEADERS["Security Headers<br/>HSTS, X-Frame, CSP"]
+    end
+
+    subgraph API["API Routes (Serverless)"]
+        A_UP["/api/upload<br/>POST"]
+        A_PROC["/api/process<br/>POST"]
+        A_STAT["/api/status/:id<br/>GET"]
+        A_DL["/api/download/:id<br/>GET"]
+        A_CONT["/api/contact<br/>POST"]
+    end
+
+    subgraph Core["Core Processing"]
+        PARSER["COBOL Parser<br/>Regex-based structural analysis"]
+        GROUPER["Program Grouper<br/>Resolve COPY/CALL references"]
+        CHAIN["Call Chain Analyzer<br/>Dependency graph builder"]
+        PIPELINE["5-Pass AI Pipeline<br/>Claude Opus 4.6"]
+        MARKDOWN["Markdown Assembler<br/>Knowledge base builder"]
+        MERMAID_GEN["Mermaid Generator<br/>Fallback diagram builder"]
+    end
+
+    subgraph Storage["In-Memory Store"]
+        JOBS[("Job Map<br/>Map&lt;id, StoredJob&gt;")]
+    end
+
+    subgraph External["External Services"]
+        ANTHROPIC["Anthropic API<br/>Claude Opus 4.6"]
+        DONNACHA["Donnacha VPS<br/>Booking API"]
+        RESEND["Resend API<br/>Email delivery"]
+    end
+
+    Client --> Edge --> API
+
+    A_UP --> PARSER --> GROUPER --> CHAIN
+    A_UP --> JOBS
+    A_PROC --> PIPELINE
+    PIPELINE --> ANTHROPIC
+    PIPELINE --> MARKDOWN
+    MARKDOWN --> MERMAID_GEN
+    PIPELINE --> JOBS
+    A_STAT --> JOBS
+    A_DL --> JOBS
+    A_CONT --> RESEND
+
+    BK -.->|"iframe / API"| DONNACHA
+    DP -.->|"Static JSON<br/>Zero API cost"| DP
+
+    style Client fill:#0d1530,stroke:#1e3a5f,color:#e0e4ef
+    style Edge fill:#0d1530,stroke:#1e3a5f,color:#e0e4ef
+    style API fill:#0d1530,stroke:#1e3a5f,color:#e0e4ef
+    style Core fill:#0d1530,stroke:#1e3a5f,color:#e0e4ef
+    style Storage fill:#0d1530,stroke:#1e3a5f,color:#e0e4ef
+    style External fill:#0d1530,stroke:#1e3a5f,color:#e0e4ef
+      </pre>
+    </div>
+  </section>
+
+  <!-- 4. 5-Pass AI Pipeline -->
+  <section id="pipeline">
+    <h2><span class="num">04</span> 5-Pass AI Pipeline</h2>
+    <p>Each COBOL program group is processed through 4 AI passes (the dependency map is generated programmatically). All passes share a system prompt: a senior COBOL systems analyst with 30 years of mainframe experience.</p>
+
+    <div class="pipeline">
+      <div class="pipeline-step"><span class="step-num">PASS 01</span><span class="step-name">Program Overview</span></div>
+      <div class="pipeline-arrow">&rarr;</div>
+      <div class="pipeline-step"><span class="step-num">PASS 02</span><span class="step-name">Business Rules</span></div>
+      <div class="pipeline-arrow">&rarr;</div>
+      <div class="pipeline-step"><span class="step-num">PASS 03</span><span class="step-name">Dependency Map</span></div>
+      <div class="pipeline-arrow">&rarr;</div>
+      <div class="pipeline-step"><span class="step-num">PASS 04</span><span class="step-name">Dead Code</span></div>
+      <div class="pipeline-arrow">&rarr;</div>
+      <div class="pipeline-step"><span class="step-num">PASS 05</span><span class="step-name">Data Flow</span></div>
+    </div>
+
+    <div class="diagram-wrap">
+      <div class="caption">AI Pipeline Sequence</div>
+      <pre class="mermaid">
+sequenceDiagram
+    participant C as Client
+    participant P as /api/process
+    participant S as Job Store
+    participant AI as Claude Opus 4.6
+    participant M as Markdown Assembler
+
+    C->>P: POST {jobId}
+    P->>S: getJob(jobId)
+    P-->>C: {status: processing}
+
+    loop For each program group
+        P->>AI: Pass 1 - Overview Prompt<br/>(full source + copybooks + calls)
+        AI-->>P: 9-section markdown
+
+        P->>AI: Pass 2 - Business Rules<br/>(source + copybooks)
+        AI-->>P: Rules table (ID, condition, action, severity)
+
+        P->>P: Pass 3 - Dependency Map<br/>(programmatic from DependencyGraph)
+
+        P->>AI: Pass 4 - Dead Code<br/>(source + parsed structure metadata)
+        AI-->>P: Dead code table (type, confidence, recommendation)
+
+        P->>AI: Pass 5 - Data Flow<br/>(source + FDs + linkage items)
+        AI-->>P: Mermaid sequence diagram + narrative
+
+        P->>M: Assemble program document
+        M->>S: Store markdown output
+        P->>S: Update progress
+    end
+
+    P->>M: Generate project overview + index
+    M->>S: Store final bundle
+    P->>S: Status = complete
+      </pre>
+    </div>
+
+    <h3>Pass Details</h3>
+    <table>
+      <thead><tr><th>Pass</th><th>Input</th><th>Output</th><th>Key Feature</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="tag tag-cyan">01 Overview</span></td>
+          <td>Full source + resolved copybooks + called programs</td>
+          <td>9-section structured markdown</td>
+          <td>Business purpose, processing logic with line refs, modernization notes</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-green">02 Business Rules</span></td>
+          <td>Program source + copybooks</td>
+          <td>Markdown table with severity ratings</td>
+          <td>Every conditional extracted with business meaning. Severity: CRITICAL / IMPORTANT / INFORMATIONAL</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-amber">03 Dependencies</span></td>
+          <td>Pre-built DependencyGraph (nodes + edges)</td>
+          <td>Mermaid graph TD diagram</td>
+          <td>AI-enhanced labels, subgraphs for >15 nodes, CALL vs COPY distinction</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-red">04 Dead Code</span></td>
+          <td>Source + structure metadata (paragraphs, data items)</td>
+          <td>Markdown table with confidence levels</td>
+          <td>Considers PERFORM THRU, REDEFINES, dynamic CALLs. Confidence: HIGH / MEDIUM / LOW</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-purple">05 Data Flow</span></td>
+          <td>Source + FD names + linkage items</td>
+          <td>Mermaid sequence diagram + narrative</td>
+          <td>Traces data from input files through transformations to outputs</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 5. Data Flow -->
+  <section id="data-flow">
+    <h2><span class="num">05</span> Data Flow</h2>
+
+    <div class="diagram-wrap">
+      <div class="caption">End-to-End Processing Flow</div>
+      <pre class="mermaid">
+flowchart LR
+    subgraph Upload["1. Upload"]
+        FILES["COBOL Files<br/>.cbl .cob .cpy"]
+    end
+
+    subgraph Parse["2. Parse"]
+        CLASSIFY["Classify<br/>program / copybook / JCL"]
+        STRIP["Strip Sequence Numbers<br/>Columns 1-6"]
+        EXTRACT["Extract Structure<br/>Divisions, Sections, Paragraphs<br/>Data Items, FDs, COPY/CALL"]
+    end
+
+    subgraph Group["3. Group"]
+        RESOLVE["Resolve References<br/>Match COPY to copybooks<br/>Match CALL to programs"]
+        TOKEN["Estimate Tokens<br/>18 tokens/line x 1.1"]
+        SPLIT["Split if > 800K tokens"]
+    end
+
+    subgraph Estimate["4. Estimate"]
+        COST["Calculate Cost<br/>Tokens x 5 passes x pricing"]
+        TIER["Assign Tier<br/>S / M / L / XL"]
+    end
+
+    subgraph Process["5. AI Pipeline"]
+        P1["Pass 1: Overview"]
+        P2["Pass 2: Rules"]
+        P3["Pass 3: Deps"]
+        P4["Pass 4: Dead Code"]
+        P5["Pass 5: Data Flow"]
+    end
+
+    subgraph Output["6. Output"]
+        ASSEMBLE["Assemble Markdown"]
+        BUNDLE["JSON Knowledge Base<br/>Content-Disposition: attachment"]
+    end
+
+    FILES --> CLASSIFY --> STRIP --> EXTRACT
+    EXTRACT --> RESOLVE --> TOKEN --> SPLIT
+    SPLIT --> COST --> TIER
+    TIER --> P1 --> P2 --> P3 --> P4 --> P5
+    P5 --> ASSEMBLE --> BUNDLE
+
+    style Upload fill:#0a1628,stroke:#1e3a5f,color:#e0e4ef
+    style Parse fill:#0a1628,stroke:#1e3a5f,color:#e0e4ef
+    style Group fill:#0a1628,stroke:#1e3a5f,color:#e0e4ef
+    style Estimate fill:#0a1628,stroke:#1e3a5f,color:#e0e4ef
+    style Process fill:#0a1628,stroke:#1e3a5f,color:#e0e4ef
+    style Output fill:#0a1628,stroke:#1e3a5f,color:#e0e4ef
+      </pre>
+    </div>
+  </section>
+
+  <!-- 6. API Routes -->
+  <section id="api">
+    <h2><span class="num">06</span> API Routes</h2>
+
+    <div class="diagram-wrap">
+      <div class="caption">API Route Map</div>
+      <pre class="mermaid">
+flowchart TB
+    subgraph Routes["API Routes (All Public)"]
+        POST_CONTACT["POST /api/contact<br/>PoC request form<br/>Sends via Resend"]
+        POST_UPLOAD["POST /api/upload<br/>Multipart COBOL files<br/>Parse + estimate cost"]
+        POST_PROCESS["POST /api/process<br/>Start AI pipeline<br/>Async, returns immediately"]
+        GET_STATUS["GET /api/status/:id<br/>Poll job progress<br/>0-100% + currentStep"]
+        GET_DOWNLOAD["GET /api/download/:id<br/>Download knowledge base<br/>JSON attachment"]
+    end
+
+    subgraph RateLimits["Rate Limits (In-Memory)"]
+        RL2["Contact: 5 / 1 hr / IP"]
+        RL3["Process: 3 / 6 hr / IP"]
+    end
+
+    subgraph Booking["Booking (External)"]
+        BW["donnacha.app/booking-widget.js<br/>Multi-tenant calendar"]
+        BA["donnacha.app/api/booking<br/>Availability + scheduling"]
+    end
+
+    POST_CONTACT --- RL2
+    POST_PROCESS --- RL3
+    BW --> BA
+
+    style Routes fill:#0a1628,stroke:#34d399,color:#e0e4ef
+    style RateLimits fill:#0a1628,stroke:#ef4444,color:#e0e4ef
+    style Booking fill:#0a1628,stroke:#00d4ff,color:#e0e4ef
+      </pre>
+    </div>
+
+    <table>
+      <thead><tr><th>Route</th><th>Method</th><th>Rate Limit</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>/api/contact</code></td><td>POST</td><td>5 / 1 hr</td><td>PoC request form. Validates fields, sends via Resend</td></tr>
+        <tr><td><code>/api/upload</code></td><td>POST</td><td>-</td><td>Accepts multipart files (max 100MB). Returns jobId + cost estimate</td></tr>
+        <tr><td><code>/api/process</code></td><td>POST</td><td>3 / 6 hr</td><td>Triggers async 5-pass pipeline. Returns immediately</td></tr>
+        <tr><td><code>/api/status/:id</code></td><td>GET</td><td>-</td><td>Returns progress (0-100), currentStep, status. No source code exposed</td></tr>
+        <tr><td><code>/api/download/:id</code></td><td>GET</td><td>-</td><td>Downloads completed knowledge base as JSON bundle</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 7. Middleware & Security Headers -->
+  <section id="auth">
+    <h2><span class="num">07</span> Middleware & Security Headers</h2>
+    <p>The site is fully public (no authentication gate). Edge middleware applies security headers and passes all requests through. The auth gate was removed to serve as a portfolio demo site.</p>
+
+    <div class="diagram-wrap">
+      <div class="caption">Request Flow Through Middleware</div>
+      <pre class="mermaid">
+flowchart TD
+    REQ["Incoming Request"] --> STATIC{"Static Asset?<br/>/_next, /favicon, .ico"}
+    STATIC -->|Yes| PASS["Pass Through"]
+    STATIC -->|No| HEADERS["Apply Security Headers<br/>HSTS, X-Frame-Options,<br/>Content-Type-Options"]
+    HEADERS --> PASS
+
+    style REQ fill:#0a1628,stroke:#00d4ff,color:#e0e4ef
+    style PASS fill:#0a2618,stroke:#34d399,color:#e0e4ef
+    style HEADERS fill:#0a1628,stroke:#f0b429,color:#e0e4ef
+      </pre>
+    </div>
+
+    <h3>Security Headers (next.config.ts)</h3>
+    <table>
+      <thead><tr><th>Header</th><th>Value</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>X-Frame-Options</code></td><td>DENY</td><td>Clickjacking prevention</td></tr>
+        <tr><td><code>X-Content-Type-Options</code></td><td>nosniff</td><td>MIME-sniffing prevention</td></tr>
+        <tr><td><code>Referrer-Policy</code></td><td>strict-origin-when-cross-origin</td><td>Referrer data control</td></tr>
+        <tr><td><code>Strict-Transport-Security</code></td><td>max-age=63072000; includeSubDomains; preload</td><td>Force HTTPS (2-year HSTS)</td></tr>
+        <tr><td><code>Permissions-Policy</code></td><td>camera=(), microphone=(), geolocation=()</td><td>Disable unnecessary browser APIs</td></tr>
+        <tr><td><code>X-Powered-By</code></td><td><em>removed</em></td><td>Framework fingerprint suppression</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 8. COBOL Parser -->
+  <section id="parser">
+    <h2><span class="num">08</span> COBOL Parser</h2>
+    <p>Regex-based structural parser for fixed-format COBOL (columns 7-72). Handles sequence number stripping, division/section/paragraph extraction, data item parsing, and reference resolution.</p>
+
+    <div class="diagram-wrap">
+      <div class="caption">Parser Pipeline</div>
+      <pre class="mermaid">
+flowchart LR
+    RAW["Raw Source"] --> SEQ["Strip Sequence<br/>Numbers (cols 1-6)"]
+    SEQ --> DIV["Extract Divisions<br/>IDENTIFICATION<br/>ENVIRONMENT<br/>DATA<br/>PROCEDURE"]
+    DIV --> SEC["Extract Sections<br/>WORKING-STORAGE<br/>FILE<br/>LINKAGE<br/>INPUT-OUTPUT"]
+    SEC --> PARA["Extract Paragraphs<br/>Named code blocks"]
+    PARA --> DATA["Extract Data Items<br/>Level numbers, PIC,<br/>USAGE, OCCURS,<br/>REDEFINES"]
+    DATA --> FD["Extract FD/SD<br/>File descriptors"]
+    FD --> REFS["Extract References<br/>COPY statements<br/>CALL statements"]
+    REFS --> METRICS["Compute Metrics<br/>Lines, code, comments,<br/>max nesting depth"]
+    METRICS --> STRUCT["CobolStructure"]
+
+    style RAW fill:#0a1628,stroke:#1e3a5f,color:#e0e4ef
+    style STRUCT fill:#0a1628,stroke:#00d4ff,color:#00d4ff
+      </pre>
+    </div>
+
+    <h3>Key Parsing Rules</h3>
+    <table>
+      <thead><tr><th>Feature</th><th>Detection Pattern</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>File classification</td><td>.cbl/.cob = program, .cpy/.copy = copybook, .jcl/.proc = JCL</td><td>Falls back to content-based detection</td></tr>
+        <tr><td>Sequence numbers</td><td>6-digit prefix in columns 1-6</td><td>Stripped during parse, not stored</td></tr>
+        <tr><td>CALL detection</td><td><code>CALL ['"](\w+)['"]</code> vs <code>CALL (\w+)</code></td><td>Literal = static, identifier = dynamic</td></tr>
+        <tr><td>COPY detection</td><td><code>COPY (\S+)</code> + optional REPLACING</td><td>Handles member-of-library syntax</td></tr>
+        <tr><td>Token estimation</td><td>18 tokens/line * 1.1 overhead</td><td>Conservative estimate for cost calculation</td></tr>
+        <tr><td>Group size limit</td><td>800,000 tokens max per group</td><td>Programs exceeding this are split</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 9. Type System -->
+  <section id="types">
+    <h2><span class="num">09</span> Type System</h2>
+
+    <div class="diagram-wrap">
+      <div class="caption">Core Type Relationships</div>
+      <pre class="mermaid">
+classDiagram
+    class CobolProject {
+        +string name
+        +CobolFile[] allFiles
+        +CobolFile[] programs
+        +CobolFile[] copybooks
+        +ProcessingGroup[] groups
+        +number totalLines
+        +number totalPrograms
+    }
+
+    class CobolFile {
+        +string path
+        +string name
+        +string content
+        +CobolFileType type
+        +CobolStructure structure
+    }
+
+    class CobolStructure {
+        +string programId
+        +CobolDivision[] divisions
+        +CobolSection[] sections
+        +CobolParagraph[] paragraphs
+        +CobolDataItem[] dataItems
+        +CobolFileDescriptor[] fileDescriptors
+        +CobolCopyStatement[] copyStatements
+        +CobolCallStatement[] callStatements
+        +CobolMetrics metrics
+    }
+
+    class ProcessingGroup {
+        +CobolFile primaryProgram
+        +CobolFile[] copybooks
+        +CobolFile[] calledPrograms
+        +number estimatedTokens
+    }
+
+    class ProcessingJob {
+        +string id
+        +JobStatus status
+        +number progress
+        +string currentStep
+        +CostEstimate costEstimate
+    }
+
+    class KnowledgeBase {
+        +ProgramDocumentation[] programs
+        +string systemDependencyMap
+        +GlossaryEntry[] glossary
+        +ProjectStatistics statistics
+    }
+
+    class ProgramDocumentation {
+        +ProgramOverview overview
+        +BusinessRule[] businessRules
+        +string dependencyMap
+        +DeadCodeItem[] deadCode
+        +string dataFlow
+    }
+
+    CobolProject "1" --> "*" CobolFile
+    CobolProject "1" --> "*" ProcessingGroup
+    CobolFile "1" --> "1" CobolStructure
+    ProcessingGroup "1" --> "1" CobolFile : primaryProgram
+    ProcessingGroup "1" --> "*" CobolFile : copybooks
+    ProcessingJob "1" --> "1" CobolProject
+    KnowledgeBase "1" --> "*" ProgramDocumentation
+      </pre>
+    </div>
+
+    <h3>Type Modules</h3>
+    <table>
+      <thead><tr><th>Module</th><th>Types</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>cobol.ts</code></td><td>CobolFile, CobolStructure, CobolDivision, CobolSection, CobolParagraph, CobolDataItem, CobolFileDescriptor, CobolCopyStatement, CobolCallStatement, CobolMetrics, ProcessingGroup, CobolProject</td><td>COBOL source model</td></tr>
+        <tr><td><code>job.ts</code></td><td>ProcessingJob, JobStatus, UploadedFile, CostEstimate</td><td>Processing lifecycle</td></tr>
+        <tr><td><code>documentation.ts</code></td><td>KnowledgeBase, ProgramDocumentation, ProgramOverview, BusinessRule, DeadCodeItem, GlossaryEntry, ProjectStatistics, IndexEntry</td><td>Output documents</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 10. Pre-Computed Demo -->
+  <section id="demo">
+    <h2><span class="num">10</span> Pre-Computed Demo</h2>
+    <div style="background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.2);border-radius:8px;padding:16px 20px;margin-bottom:20px;">
+      <strong style="color:#00d4ff;">This is a sample of what you get.</strong> The demo page at <a href="https://assay.software/demo" style="color:#00d4ff;">/demo</a> shows real output from our 5-pass AI pipeline run against a sample COBOL payroll program. Every customer engagement produces the same structured deliverable - business rules, dependency maps, dead code detection, and data flow analysis - tailored to your codebase.
+    </div>
+    <p>The demo replays pre-generated Claude Opus 4.6 output with zero API cost. The analysis was captured once and stored as static JSON.</p>
+
+    <div class="diagram-wrap">
+      <div class="caption">Demo Architecture</div>
+      <pre class="mermaid">
+flowchart TB
+    subgraph OneTime["One-Time Generation (Offline)"]
+        SAMPLE["Sample COBOL<br/>PAYROLL-CALC.cbl<br/>301 lines, 2 copybooks"]
+        RUN["Run 5-Pass Pipeline<br/>Claude Opus 4.6"]
+        JSON["payroll-calc.json<br/>4 pass outputs, stats,<br/>business rules, diagrams"]
+    end
+
+    subgraph Runtime["Runtime (Zero API Cost)"]
+        FETCH["fetch('/demo/output/<br/>payroll-calc.json')"]
+        PARSE_JSON["Parse JSON<br/>4 passes + metadata"]
+        TYPE["Typewriter Animation<br/>8ms/char, 40ms newline pause"]
+        TABS["Tab Navigation<br/>Overview | Rules |<br/>Dead Code | Data Flow"]
+        DL["Download Bundle<br/>Client-side assembly"]
+    end
+
+    SAMPLE --> RUN --> JSON
+    JSON -.->|"Static file<br/>from /public"| FETCH
+    FETCH --> PARSE_JSON --> TYPE
+    PARSE_JSON --> TABS
+    TABS --> DL
+
+    style OneTime fill:#1a1628,stroke:#a78bfa,color:#e0e4ef
+    style Runtime fill:#0a1628,stroke:#34d399,color:#e0e4ef
+      </pre>
+    </div>
+
+    <h3>Demo Sample Program</h3>
+    <table>
+      <thead><tr><th>Metric</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>Program ID</td><td>PAYROLL-CALC</td></tr>
+        <tr><td>Total lines</td><td>301 (224 code, 42 comments)</td></tr>
+        <tr><td>Copybooks</td><td>PAYROLL-CONSTANTS.cpy, TAX-TABLES.cpy</td></tr>
+        <tr><td>Paragraphs</td><td>12</td></tr>
+        <tr><td>CALL statements</td><td>2</td></tr>
+        <tr><td>Business rules found</td><td>13</td></tr>
+        <tr><td>Dead code items</td><td>8</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 11. Security -->
+  <section id="security">
+    <h2><span class="num">11</span> Security Hardening</h2>
+
+    <div class="diagram-wrap">
+      <div class="caption">Security Layers</div>
+      <pre class="mermaid">
+flowchart TB
+    subgraph Layer1["Layer 1: Edge"]
+        HSTS["HSTS Preload<br/>2-year max-age"]
+        FRAME["X-Frame-Options<br/>DENY"]
+        MIME["Content-Type<br/>nosniff"]
+        PERM["Permissions Policy<br/>No camera/mic/geo"]
+    end
+
+    subgraph Layer2["Layer 2: Public Access"]
+        MW["Edge Middleware<br/>Pass-through, no auth gate"]
+        NOTE["Portfolio demo mode<br/>All routes publicly accessible"]
+    end
+
+    subgraph Layer3["Layer 3: Rate Limiting"]
+        RL_A["Auth: 10/15min"]
+        RL_C["Contact: 5/hr"]
+        RL_P["Process: 3/6hr<br/>(API cost protection)"]
+    end
+
+    subgraph Layer4["Layer 4: Input Validation"]
+        JOB_ID["Job ID regex<br/>cb-[a-z0-9]+-[a-z0-9]+"]
+        FILE_EXT["File extension allowlist<br/>.cbl .cob .cpy .jcl"]
+        MAX_SIZE["Upload size limit<br/>100MB max"]
+        FIELDS["Contact form validation<br/>Max lengths, email regex"]
+    end
+
+    subgraph Layer5["Layer 5: Data Protection"]
+        NO_SRC["No source in status API<br/>getPublicJob() strips code"]
+        VOLATILE["Volatile job store<br/>Auto-clears on restart"]
+        NO_LOG["No source code logging"]
+    end
+
+    Layer1 --> Layer2 --> Layer3 --> Layer4 --> Layer5
+
+    style Layer1 fill:#0a1628,stroke:#00d4ff,color:#e0e4ef
+    style Layer2 fill:#0a1628,stroke:#f0b429,color:#e0e4ef
+    style Layer3 fill:#0a1628,stroke:#ef4444,color:#e0e4ef
+    style Layer4 fill:#0a1628,stroke:#a78bfa,color:#e0e4ef
+    style Layer5 fill:#0a1628,stroke:#34d399,color:#e0e4ef
+      </pre>
+    </div>
+  </section>
+
+  <!-- 12. Test Coverage -->
+  <section id="tests">
+    <h2><span class="num">12</span> Test Coverage</h2>
+
+    <div class="diagram-wrap">
+      <div class="caption">E2E Test Structure</div>
+      <pre class="mermaid">
+flowchart TB
+    subgraph Setup["Setup Phase"]
+        AUTH_SETUP["auth.setup.ts<br/>Authenticate once<br/>Save cookie to .auth/state.json"]
+    end
+
+    subgraph Tests["Test Suites (52 tests)"]
+        AUTH_SPEC["auth.spec.ts<br/>5 tests<br/>(runs WITHOUT auth)"]
+        LANDING["landing-page.spec.ts<br/>13 tests"]
+        LEGAL["legal-pages.spec.ts<br/>14 tests"]
+        CONTACT["contact-form.spec.ts<br/>8 tests"]
+        API_TEST["api-routes.spec.ts<br/>8 tests"]
+    end
+
+    AUTH_SETUP -->|"storageState"| LANDING
+    AUTH_SETUP -->|"storageState"| LEGAL
+    AUTH_SETUP -->|"storageState"| CONTACT
+    AUTH_SETUP -->|"storageState"| API_TEST
+    AUTH_SPEC -.->|"No storageState<br/>Tests login gate"| AUTH_SPEC
+
+    style Setup fill:#0a1628,stroke:#f0b429,color:#e0e4ef
+    style Tests fill:#0a1628,stroke:#34d399,color:#e0e4ef
+      </pre>
+    </div>
+
+    <table>
+      <thead><tr><th>Suite</th><th>Tests</th><th>Focus</th><th>Auth</th></tr></thead>
+      <tbody>
+        <tr><td><code>auth.spec.ts</code></td><td>5</td><td>Login gate, redirect, wrong password, correct password, API 401</td><td><span class="tag tag-red">None</span></td></tr>
+        <tr><td><code>landing-page.spec.ts</code></td><td>13</td><td>Hero, stats, CTAs, 5 passes, code preview, pricing, trust, footer, nav</td><td><span class="tag tag-green">Authenticated</span></td></tr>
+        <tr><td><code>legal-pages.spec.ts</code></td><td>14</td><td>Privacy (7 sections, Anthropic mention, 30-day deletion), Terms (6 sections, WA jurisdiction), cross-page nav</td><td><span class="tag tag-green">Authenticated</span></td></tr>
+        <tr><td><code>contact-form.spec.ts</code></td><td>8</td><td>Form fields, submission, validation, loading state, API validation (400s)</td><td><span class="tag tag-green">Authenticated</span></td></tr>
+        <tr><td><code>api-routes.spec.ts</code></td><td>8</td><td>Upload success/rejection, status 404, download 404, process 400/404</td><td><span class="tag tag-green">Authenticated</span></td></tr>
+      </tbody>
+    </table>
+
+    <h3>Test Configuration</h3>
+    <table>
+      <thead><tr><th>Setting</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>Browser</td><td>Chromium only</td></tr>
+        <tr><td>Base URL</td><td>http://localhost:3099 (avoids port conflicts)</td></tr>
+        <tr><td>CI mode</td><td>Single worker, 2 retries</td></tr>
+        <tr><td>Dev mode</td><td>Parallel workers, reuse dev server</td></tr>
+        <tr><td>Artifacts</td><td>Screenshots on failure, traces on first retry</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 13. Booking System -->
+  <section id="booking">
+    <h2><span class="num">13</span> Booking System</h2>
+    <p>Discovery calls are scheduled through a multi-tenant booking widget. The widget loads from the VPS and communicates with the booking API.</p>
+
+    <div class="diagram-wrap">
+      <div class="caption">Booking Integration Flow</div>
+      <pre class="mermaid">
+sequenceDiagram
+    participant U as User
+    participant W as Booking Widget<br/>(donnacha.app)
+    participant API as Booking API<br/>(VPS)
+    participant E as Email<br/>(Notification)
+
+    U->>W: Click "Book a Call"
+    W->>API: GET /api/booking/assay/availability
+    API-->>W: Available slots<br/>(Mon-Thu 10am-4pm AWST)
+    W->>U: Display calendar
+    U->>W: Select time slot
+    W->>API: POST /api/booking/assay/book
+    API->>E: Send confirmation<br/>(project: assay tagged)
+    API-->>W: Booking confirmed
+    W->>U: Show confirmation
+      </pre>
+    </div>
+
+    <h3>Configuration</h3>
+    <table>
+      <thead><tr><th>Setting</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>Project ID</td><td><code>assay</code></td></tr>
+        <tr><td>Display Name</td><td>Assay - COBOL Documentation</td></tr>
+        <tr><td>Service Type</td><td>15-min discovery call</td></tr>
+        <tr><td>Available Days</td><td>Monday - Thursday</td></tr>
+        <tr><td>Available Hours</td><td>10:00 AM - 4:00 PM (AWST)</td></tr>
+        <tr><td>Minimum Notice</td><td>48 hours</td></tr>
+        <tr><td>Widget Source</td><td><code>donnacha.app/booking-widget.js</code></td></tr>
+        <tr><td>Button Text</td><td>Hidden (custom CTA used)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="footer">
+    <a href="https://github.com/m4cd4r4/assay">GitHub Repository</a> &middot;
+    <a href="https://assay.software">assay.software</a> &middot;
+    Solaisoft Pty Ltd &middot; March 2026
+  </div>
+
+</div>
+</div>
+
+<!-- Diagram overlay -->
+<div class="diagram-overlay" id="diagram-overlay">
+  <button class="close-btn" onclick="closeOverlay()">&times;</button>
+  <div class="overlay-content" id="overlay-content"></div>
+</div>
+
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'dark',
+  themeVariables: {
+    darkMode: true,
+    background: '#060b18',
+    primaryColor: '#0d1f3a',
+    primaryTextColor: '#e0e4ef',
+    primaryBorderColor: '#1e3a5f',
+    lineColor: '#3a5a8f',
+    secondaryColor: '#0a1628',
+    tertiaryColor: '#1a1628',
+    fontFamily: '-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif',
+    fontSize: '16px',
+    noteBkgColor: '#0a1628',
+    noteTextColor: '#e0e4ef',
+    noteBorderColor: '#1e3a5f',
+    actorBorder: '#00d4ff',
+    actorBkg: '#0d1f3a',
+    actorTextColor: '#e0e4ef',
+    actorLineColor: '#3a5a8f',
+    signalColor: '#e0e4ef',
+    signalTextColor: '#e0e4ef',
+    labelBoxBkgColor: '#0d1f3a',
+    labelBoxBorderColor: '#1e3a5f',
+    labelTextColor: '#e0e4ef',
+    loopTextColor: '#00d4ff',
+    activationBorderColor: '#00d4ff',
+    activationBkgColor: '#0d1f3a',
+    sequenceNumberColor: '#00d4ff',
+    edgeLabelBackground: '#0a1628',
+    clusterBkg: '#0a1628',
+    clusterBorder: '#1e3a5f',
+    titleColor: '#e0e4ef',
+    classText: '#e0e4ef',
+  },
+  flowchart: { curve: 'basis', padding: 20 },
+  sequence: { mirrorActors: false, bottomMarginAdj: 10 },
+});
+
+// Add expand buttons to diagrams after Mermaid renders
+window.addEventListener('load', function() {
+  document.querySelectorAll('.diagram-wrap').forEach(function(wrap) {
+    var btn = document.createElement('button');
+    btn.className = 'expand-btn';
+    btn.title = 'Expand diagram';
+    btn.innerHTML = '<svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5"/></svg>';
+    btn.onclick = function() { expandDiagram(wrap); };
+    wrap.appendChild(btn);
+  });
+});
+
+// Expand diagram overlay
+function expandDiagram(wrap) {
+  var svg = wrap.querySelector('svg');
+  if (!svg) return;
+  var overlay = document.getElementById('diagram-overlay');
+  var content = document.getElementById('overlay-content');
+  content.innerHTML = '';
+  var clone = svg.cloneNode(true);
+  clone.style.maxWidth = 'none';
+  clone.style.width = 'auto';
+  clone.style.height = 'auto';
+  content.appendChild(clone);
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeOverlay() {
+  document.getElementById('diagram-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeOverlay();
+});
+
+document.getElementById('diagram-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeOverlay();
+});
+
+// Sidebar active section tracking
+var navLinks = document.querySelectorAll('#sidebar-nav a');
+var sections = document.querySelectorAll('section[id]');
+
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      navLinks.forEach(function(link) { link.classList.remove('active'); });
+      var active = document.querySelector('#sidebar-nav a[href="#' + entry.target.id + '"]');
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-10% 0px -80% 0px', threshold: 0 });
+
+sections.forEach(function(section) { observer.observe(section); });
+
+// Mobile sidebar toggle
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.sidebar-backdrop').classList.toggle('open');
+}
+
+// Close sidebar on nav click (mobile)
+navLinks.forEach(function(link) {
+  link.addEventListener('click', function() {
+    if (window.innerWidth < 1024) {
+      document.getElementById('sidebar').classList.remove('open');
+      document.querySelector('.sidebar-backdrop').classList.remove('open');
+    }
+  });
+});
+</script>
+</body>
+</html>

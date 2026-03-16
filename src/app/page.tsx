@@ -1,0 +1,621 @@
+import ContactSection from './contact-section';
+
+const FEATURES = [
+  {
+    icon: "01",
+    title: "Program Overview",
+    description:
+      "Plain-English summary of every program — business purpose, inputs, outputs, processing logic, and modernization notes.",
+  },
+  {
+    icon: "02",
+    title: "Business Rule Extraction",
+    description:
+      "Every IF, EVALUATE, and conditional catalogued with severity levels. Critical rules flagged for compliance review.",
+  },
+  {
+    icon: "03",
+    title: "Dependency Mapping",
+    description:
+      "Interactive Mermaid diagrams of CALL/COPY relationships. See how programs connect across your entire codebase.",
+  },
+  {
+    icon: "04",
+    title: "Dead Code Detection",
+    description:
+      "Unreferenced paragraphs, sections, and data items identified with confidence levels. Reduce maintenance surface area.",
+  },
+  {
+    icon: "05",
+    title: "Data Flow Analysis",
+    description:
+      "Sequence diagrams showing how data moves between files, working storage, and called programs. Trace any field.",
+  },
+] as const;
+
+const STEPS = [
+  {
+    step: "1",
+    title: "Upload Your Source",
+    description:
+      "Provide a ZIP of your .cbl and .cpy files via encrypted transfer. We never touch production systems.",
+  },
+  {
+    step: "2",
+    title: "AI Analysis",
+    description:
+      "Claude Opus 4.6 processes your codebase with 1M token context — entire program groups analysed in a single pass.",
+  },
+  {
+    step: "3",
+    title: "Download Knowledge Base",
+    description:
+      "Receive a comprehensive markdown knowledge base with searchable documentation, diagrams, and executive summary.",
+  },
+] as const;
+
+const TIERS = [
+  {
+    name: "Starter",
+    size: "S",
+    lines: "Up to 25K",
+    price: "$1,250",
+    popular: false,
+    features: [
+      "5-pass documentation",
+      "Dependency diagrams",
+      "Dead code report",
+      "Executive summary",
+    ],
+  },
+  {
+    name: "Standard",
+    size: "M",
+    lines: "25K — 100K",
+    price: "$2,500",
+    popular: true,
+    features: [
+      "Everything in Starter",
+      "Cross-program data flow",
+      "Business rule catalogue",
+      "Modernisation roadmap",
+    ],
+  },
+  {
+    name: "Professional",
+    size: "L",
+    lines: "100K — 500K",
+    price: "$6,000",
+    popular: false,
+    features: [
+      "Everything in Standard",
+      "Full system architecture map",
+      "Compliance risk assessment",
+      "Dedicated delivery manager",
+    ],
+  },
+  {
+    name: "Enterprise",
+    size: "XL",
+    lines: "500K+",
+    price: "Custom",
+    popular: false,
+    features: [
+      "Everything in Professional",
+      "Phased delivery schedule",
+      "On-site presentation",
+      "Ongoing support retainer",
+    ],
+  },
+] as const;
+
+const TRUST_ITEMS = [
+  {
+    title: "Read-Only",
+    description: "We never modify your source code. Zero production access.",
+  },
+  {
+    title: "NDA Protected",
+    description:
+      "Mutual NDA with 3-year confidentiality. Source deleted within 30 days.",
+  },
+  {
+    title: "API-Only Processing",
+    description:
+      "TLS 1.3 encrypted. Anthropic commercial terms — inputs not used for training.",
+  },
+  {
+    title: "Australian Owned",
+    description:
+      "Solaisoft Pty Ltd. Australian Privacy Act compliant. Professionally insured.",
+  },
+] as const;
+
+export default function Home() {
+  return (
+    <div className="relative min-h-screen overflow-x-hidden">
+      {/* Background mesh gradient */}
+      <div className="mesh-gradient fixed inset-0 -z-10" aria-hidden="true" />
+
+      {/* Navigation */}
+      <nav className="fixed top-0 z-50 w-full">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+          <div className="flex items-center gap-2">
+            <img src="/logo.png" alt="Assay" className="h-8 w-8 rounded-md" />
+            <span className="text-lg font-semibold tracking-tight text-white">
+              Assay
+            </span>
+          </div>
+          <div className="hidden items-center gap-8 md:flex">
+            <a
+              href="#features"
+              className="text-sm text-[#6b7a99] transition-colors hover:text-white"
+            >
+              Features
+            </a>
+            <a
+              href="#how-it-works"
+              className="text-sm text-[#6b7a99] transition-colors hover:text-white"
+            >
+              How It Works
+            </a>
+            <a
+              href="#pricing"
+              className="text-sm text-[#6b7a99] transition-colors hover:text-white"
+            >
+              Pricing
+            </a>
+            <a
+              href="#trust"
+              className="text-sm text-[#6b7a99] transition-colors hover:text-white"
+            >
+              Trust
+            </a>
+            <a
+              href="/demo"
+              className="text-sm font-medium text-[#00d4ff] transition-colors hover:text-[#33ddff]"
+            >
+              Live Demo
+            </a>
+            <a
+              href="/docs"
+              className="text-sm text-[#6b7a99] transition-colors hover:text-white"
+            >
+              Docs
+            </a>
+          </div>
+          <a
+            href="#contact"
+            className="rounded-lg bg-[#00d4ff]/10 px-4 py-2 text-sm font-medium text-[#00d4ff] transition-all hover:bg-[#00d4ff]/20"
+          >
+            Request Demo
+          </a>
+        </div>
+      </nav>
+
+      <main>
+      {/* Hero Section */}
+      <section className="relative flex min-h-screen flex-col items-center justify-center px-6 pt-20 text-center">
+        {/* Decorative grid lines */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
+            backgroundSize: "64px 64px",
+          }}
+          aria-hidden="true"
+        />
+
+        <div className="relative z-10 mx-auto max-w-4xl">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-amber-400/20 bg-amber-400/5 px-4 py-1.5">
+            <span className="font-mono text-xs tracking-wider text-amber-400">
+              PORTFOLIO PROJECT — TECHNOLOGY DEMONSTRATION
+            </span>
+          </div>
+
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#00d4ff]/20 bg-[#00d4ff]/5 px-4 py-1.5">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#00d4ff]" />
+            <span className="font-mono text-xs tracking-wider text-[#00d4ff]">
+              POWERED BY CLAUDE OPUS 4.6
+            </span>
+          </div>
+
+          <h1
+            className="mb-6 text-5xl font-bold leading-[1.08] tracking-tight text-white md:text-7xl"
+            style={{ textWrap: "balance" }}
+          >
+            Your COBOL codebase,
+            <br />
+            <span className="bg-gradient-to-r from-[#00d4ff] to-[#6366f1] bg-clip-text text-transparent">
+              finally understood.
+            </span>
+          </h1>
+
+          <p className="mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-[#8899bb] md:text-xl">
+            A full-stack demonstration of automated COBOL documentation.
+            Business rules, dependency maps, dead code analysis - built with
+            Next.js 16, Claude Opus 4.6, and TypeScript. This is a portfolio
+            project by{" "}
+            <a
+              href="https://solaisoft.com"
+              className="text-[#00d4ff] hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Solaisoft
+            </a>
+            {" "}demonstrating enterprise-grade AI application architecture.
+          </p>
+
+          <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+            <a
+              href="#contact"
+              className="group relative inline-flex items-center gap-2 rounded-xl bg-[#00d4ff] px-8 py-3.5 font-semibold text-[#060b18] transition-all hover:bg-[#33ddff] hover:shadow-[0_0_32px_rgba(0,212,255,0.3)]"
+            >
+              Request Free PoC
+              <svg
+                className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13 7l5 5m0 0l-5 5m5-5H6"
+                />
+              </svg>
+            </a>
+            <a
+              href="/demo"
+              className="inline-flex items-center gap-2 rounded-xl border border-[#00d4ff]/20 px-8 py-3.5 font-medium text-[#00d4ff] transition-all hover:border-[#00d4ff]/40 hover:bg-[#00d4ff]/5"
+            >
+              Try Live Demo
+            </a>
+          </div>
+
+          {/* Stats bar */}
+          <div className="glass mx-auto mt-16 grid max-w-3xl grid-cols-2 gap-px overflow-hidden rounded-2xl md:grid-cols-4">
+            {[
+              { value: "1M", label: "Token Context" },
+              { value: "5", label: "Analysis Passes" },
+              { value: "14-Day", label: "Turnaround" },
+              { value: "$0", label: "Production Risk" },
+            ].map((stat) => (
+              <div key={stat.label} className="px-6 py-5 text-center">
+                <div className="font-mono text-2xl font-bold text-white">
+                  {stat.value}
+                </div>
+                <div className="mt-1 text-xs tracking-wider text-[#6b7a99]">
+                  {stat.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section id="features" className="relative px-6 py-32">
+        <div className="mx-auto max-w-6xl">
+          <div className="fade-in-view mb-16 text-center">
+            <h2 className="mb-4 text-3xl font-bold tracking-tight text-white md:text-4xl">
+              Five-Pass Deep Analysis
+            </h2>
+            <p className="mx-auto max-w-xl text-[#8899bb]">
+              Every program group is analysed five times, each pass extracting a
+              different dimension of understanding.
+            </p>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {FEATURES.map((feature) => (
+              <div
+                key={feature.icon}
+                className="fade-in-view glass group relative overflow-hidden p-6 transition-all hover:border-[#00d4ff]/20 hover:shadow-[0_0_32px_rgba(0,212,255,0.06)]"
+              >
+                <div className="noise" />
+                <div className="relative z-10">
+                  <span className="mb-4 inline-block font-mono text-xs font-bold tracking-widest text-[#00d4ff]">
+                    PASS {feature.icon}
+                  </span>
+                  <h3 className="mb-2 text-lg font-semibold text-white">
+                    {feature.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-[#8899bb]">
+                    {feature.description}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* COBOL Code Preview */}
+      <section className="relative px-6 py-16">
+        <div className="fade-in-view glass-elevated glow-cyan mx-auto max-w-3xl overflow-hidden">
+          <div className="flex items-center gap-2 border-b border-white/5 px-5 py-3">
+            <div className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+            <div className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+            <div className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
+            <span className="ml-3 font-mono text-xs text-[#6b7a99]">
+              PAYROLL-CALC.cbl
+            </span>
+          </div>
+          <pre className="overflow-x-auto p-5 font-mono text-xs leading-relaxed md:text-sm">
+            <code>
+              <span className="text-[#6b7a99]">{"       "}</span>
+              <span className="text-[#ff6b6b]">IDENTIFICATION DIVISION.</span>
+              {"\n"}
+              <span className="text-[#6b7a99]">{"       "}</span>
+              <span className="text-[#f0b429]">PROGRAM-ID.</span>
+              <span className="text-white"> PAYROLL-CALC.</span>
+              {"\n"}
+              <span className="text-[#6b7a99]">{"      *"}</span>
+              {"\n"}
+              <span className="text-[#6b7a99]">
+                {"      * "}PAYROLL CALCULATION PROGRAM
+              </span>
+              {"\n"}
+              <span className="text-[#6b7a99]">
+                {"      * "}Calculates gross pay, tax, and net pay
+              </span>
+              {"\n"}
+              <span className="text-[#6b7a99]">{"       "}</span>
+              <span className="text-[#ff6b6b]">PROCEDURE DIVISION.</span>
+              {"\n"}
+              <span className="text-[#6b7a99]">{"       "}</span>
+              <span className="text-[#00d4ff]">0000-MAIN-CONTROL.</span>
+              {"\n"}
+              <span className="text-[#6b7a99]">{"           "}</span>
+              <span className="text-[#c084fc]">PERFORM</span>
+              <span className="text-white"> 1000-INITIALIZE</span>
+              {"\n"}
+              <span className="text-[#6b7a99]">{"           "}</span>
+              <span className="text-[#c084fc]">PERFORM</span>
+              <span className="text-white"> 2000-PROCESS-PAYROLL</span>
+              {"\n"}
+              <span className="text-[#6b7a99]">{"               "}</span>
+              <span className="text-[#c084fc]">UNTIL</span>
+              <span className="text-white"> END-OF-TIME</span>
+              {"\n"}
+              <span className="text-[#6b7a99]">{"           "}</span>
+              <span className="text-[#c084fc]">STOP RUN</span>
+              <span className="text-white">.</span>
+            </code>
+          </pre>
+        </div>
+      </section>
+
+      {/* How It Works */}
+      <section id="how-it-works" className="relative px-6 py-32">
+        <div className="mx-auto max-w-5xl">
+          <div className="fade-in-view mb-16 text-center">
+            <h2 className="mb-4 text-3xl font-bold tracking-tight text-white md:text-4xl">
+              Three Steps to Clarity
+            </h2>
+            <p className="mx-auto max-w-xl text-[#8899bb]">
+              No production access. No code changes. Just comprehensive
+              documentation delivered securely.
+            </p>
+          </div>
+
+          <div className="grid gap-8 md:grid-cols-3">
+            {STEPS.map((item) => (
+              <div key={item.step} className="fade-in-view text-center">
+                <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl border border-[#00d4ff]/20 bg-[#00d4ff]/5">
+                  <span className="font-mono text-2xl font-bold text-[#00d4ff]">
+                    {item.step}
+                  </span>
+                </div>
+                <h3 className="mb-3 text-lg font-semibold text-white">
+                  {item.title}
+                </h3>
+                <p className="text-sm leading-relaxed text-[#8899bb]">
+                  {item.description}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Connecting line */}
+          <div
+            className="mx-auto mt-[-180px] mb-[-60px] hidden h-px max-w-lg md:block"
+            style={{
+              background:
+                "linear-gradient(90deg, transparent, rgba(0,212,255,0.2), transparent)",
+            }}
+            aria-hidden="true"
+          />
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section id="pricing" className="relative px-6 py-32">
+        <div className="mx-auto max-w-6xl">
+          <div className="fade-in-view mb-16 text-center">
+            <h2 className="mb-4 text-3xl font-bold tracking-tight text-white md:text-4xl">
+              Project-Based Pricing
+            </h2>
+            <p className="mx-auto max-w-xl text-[#8899bb]">
+              Fixed-price engagements sized to your codebase. No subscriptions.
+              No per-seat licensing. Free 5-program PoC to start.
+            </p>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {TIERS.map((tier) => (
+              <div
+                key={tier.size}
+                className={`fade-in-view relative flex flex-col overflow-hidden rounded-2xl border p-6 transition-all ${
+                  tier.popular
+                    ? "border-[#00d4ff]/30 bg-[#00d4ff]/[0.04] shadow-[0_0_48px_rgba(0,212,255,0.08)]"
+                    : "border-white/8 bg-white/[0.02]"
+                }`}
+              >
+                {tier.popular && (
+                  <div className="absolute right-4 top-4 rounded-full bg-[#00d4ff]/10 px-3 py-0.5 font-mono text-[10px] font-bold tracking-widest text-[#00d4ff]">
+                    POPULAR
+                  </div>
+                )}
+                <div className="mb-4">
+                  <span className="font-mono text-xs tracking-widest text-[#6b7a99]">
+                    {tier.size}
+                  </span>
+                  <h3 className="mt-1 text-xl font-bold text-white">
+                    {tier.name}
+                  </h3>
+                  <p className="mt-1 text-xs text-[#6b7a99]">
+                    {tier.lines} lines
+                  </p>
+                </div>
+                <div className="mb-6">
+                  <span className="text-3xl font-bold text-white">
+                    {tier.price}
+                  </span>
+                  {tier.price !== "Custom" && (
+                    <span className="ml-1 text-sm text-[#6b7a99]">AUD</span>
+                  )}
+                </div>
+                <ul className="mb-6 flex-1 space-y-2.5">
+                  {tier.features.map((f) => (
+                    <li
+                      key={f}
+                      className="flex items-start gap-2 text-sm text-[#8899bb]"
+                    >
+                      <svg
+                        className="mt-0.5 h-4 w-4 shrink-0 text-[#00d4ff]/60"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <a
+                  href="#contact"
+                  className={`block rounded-lg py-2.5 text-center text-sm font-medium transition-all ${
+                    tier.popular
+                      ? "bg-[#00d4ff] text-[#060b18] hover:bg-[#33ddff]"
+                      : "bg-white/5 text-white hover:bg-white/10"
+                  }`}
+                >
+                  {tier.price === "Custom" ? "Contact Us" : "Get Started"}
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Trust & Compliance */}
+      <section id="trust" className="relative px-6 py-32">
+        <div className="mx-auto max-w-5xl">
+          <div className="fade-in-view mb-16 text-center">
+            <h2 className="mb-4 text-3xl font-bold tracking-tight text-white md:text-4xl">
+              Enterprise-Grade Security
+            </h2>
+            <p className="mx-auto max-w-xl text-[#8899bb]">
+              Your source code is your most sensitive asset. Our architecture
+              ensures it stays protected at every step.
+            </p>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            {TRUST_ITEMS.map((item) => (
+              <div
+                key={item.title}
+                className="fade-in-view glass flex items-start gap-4 p-6"
+              >
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#00d4ff]/8">
+                  <svg
+                    className="h-5 w-5 text-[#00d4ff]"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={1.5}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="mb-1 font-semibold text-white">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-[#8899bb]">
+                    {item.description}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section id="contact" className="relative px-6 py-32">
+        <div className="fade-in-view glass-elevated glow-cyan mx-auto max-w-3xl overflow-hidden p-12 text-center md:p-16">
+          <div className="noise" />
+          <div className="relative z-10">
+            <h2 className="mb-4 text-3xl font-bold tracking-tight text-white md:text-4xl">
+              Ready to understand your COBOL?
+            </h2>
+            <p className="mx-auto mb-8 max-w-lg text-[#8899bb]">
+              Start with a free Proof of Concept — we&apos;ll document 5 of
+              your programs at no cost. See exactly what you&apos;ll get before
+              committing.
+            </p>
+            <ContactSection />
+          </div>
+        </div>
+      </section>
+
+      </main>
+
+      {/* Footer */}
+      <footer className="border-t border-white/5 px-6 py-12">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 md:flex-row">
+          <div className="flex items-center gap-2">
+            <img src="/logo.png" alt="Assay" className="h-6 w-6 rounded" />
+            <span className="text-sm font-medium text-white/60">
+              Assay
+            </span>
+          </div>
+          <p className="text-xs text-[#6b7a99]">
+            &copy; {new Date().getFullYear()} Solaisoft Pty Ltd. All rights
+            reserved.
+          </p>
+          <div className="flex gap-6">
+            <a
+              href="/privacy"
+              className="text-xs text-[#6b7a99] transition-colors hover:text-white"
+            >
+              Privacy
+            </a>
+            <a
+              href="/terms"
+              className="text-xs text-[#6b7a99] transition-colors hover:text-white"
+            >
+              Terms
+            </a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}

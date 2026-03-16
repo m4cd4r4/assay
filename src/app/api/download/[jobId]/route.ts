@@ -1,0 +1,61 @@
+/**
+ * GET /api/download/[jobId]
+ *
+ * Downloads the generated knowledge base as a JSON bundle.
+ * (ZIP packaging deferred to V2 — requires a zip library.)
+ *
+ * Returns a JSON object with all markdown files keyed by path.
+ */
+
+import { NextRequest, NextResponse } from 'next/server';
+import { getJob } from '@/lib/jobs/store';
+
+const JOB_ID_REGEX = /^cb-[a-z0-9]+-[a-z0-9]+$/;
+
+export async function GET(
+  _request: NextRequest,
+  { params }: { params: Promise<{ jobId: string }> },
+) {
+  const { jobId } = await params;
+
+  if (!jobId || !JOB_ID_REGEX.test(jobId)) {
+    return NextResponse.json({ error: 'Invalid job ID.' }, { status: 400 });
+  }
+
+  const job = getJob(jobId);
+  if (!job) {
+    return NextResponse.json(
+      { error: 'Job not found.' },
+      { status: 404 },
+    );
+  }
+
+  if (job.status !== 'complete') {
+    return NextResponse.json(
+      { error: `Job is not complete. Current status: ${job.status}` },
+      { status: 400 },
+    );
+  }
+
+  // Convert Map to plain object for JSON serialization
+  const files: Record<string, string> = {};
+  for (const [path, content] of job.outputMarkdown) {
+    files[path] = content;
+  }
+
+  const bundle = {
+    projectName: job.projectName,
+    generatedAt: job.completedAt,
+    jobId: job.id,
+    fileCount: Object.keys(files).length,
+    files,
+  };
+
+  return new NextResponse(JSON.stringify(bundle, null, 2), {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json',
+      'Content-Disposition': `attachment; filename="${job.projectName.replace(/[^a-zA-Z0-9-_]/g, '_')}-knowledge-base.json"`,
+    },
+  });
+}
