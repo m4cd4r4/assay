@@ -487,7 +487,7 @@ export default function Home() {
             <div className="grid grid-cols-2 gap-px md:grid-cols-4 lg:grid-cols-6">
               {[
                 { score: "100", label: "Accessibility", sub: "Lighthouse", href: "https://pagespeed.web.dev/analysis/https-assay-software/lgjpfz4a8o?form_factor=mobile&hl=en&category=accessibility" },
-                { score: "98+", label: "Performance", sub: "Lighthouse", href: "https://pagespeed.web.dev/analysis/https-assay-software/lgjpfz4a8o?form_factor=mobile&hl=en&category=performance" },
+                { score: "100", label: "Performance", sub: "Lighthouse", href: "https://pagespeed.web.dev/analysis/https-assay-software/lgjpfz4a8o?form_factor=mobile&hl=en&category=performance" },
                 { score: "100", label: "SEO", sub: "Lighthouse", href: "https://pagespeed.web.dev/analysis/https-assay-software/lgjpfz4a8o?form_factor=mobile&hl=en&category=seo" },
                 { score: "A", label: "SSL/TLS", sub: "Qualys SSL Labs", href: "https://www.ssllabs.com/ssltest/analyze.html?d=assay.software" },
                 { score: "A+", label: "Security", sub: "Mozilla Observatory", href: "https://developer.mozilla.org/en-US/observatory/analyze?host=assay.software" },
