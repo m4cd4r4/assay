@@ -82,10 +82,10 @@ export default function Home() {
       </a>
 
       {/* Navigation */}
-      <nav className="border-b border-border" aria-label="Main navigation">
+      <nav className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-sm" aria-label="Main navigation">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <div className="flex items-center gap-3">
-            <Image src="/logo.png" alt="" width={28} height={28} className="rounded" />
+            <Image src="/logo.svg" alt="" width={40} height={40} className="rounded" />
             <span className="font-serif text-xl font-semibold tracking-tight">
               Assay
             </span>
@@ -477,7 +477,7 @@ export default function Home() {
       <footer className="border-t border-border px-6 py-10">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 md:flex-row">
           <div className="flex items-center gap-2">
-            <Image src="/logo.png" alt="" width={20} height={20} className="rounded" />
+            <Image src="/logo.svg" alt="" width={28} height={28} className="rounded" />
             <span className="text-sm font-medium text-muted">Assay</span>
           </div>
           <p className="text-xs text-muted">
