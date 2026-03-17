@@ -487,7 +487,7 @@ export default function Home() {
             <div className="grid grid-cols-2 gap-px md:grid-cols-4 lg:grid-cols-6">
               {[
                 { score: "100", label: "Accessibility", sub: "Lighthouse" },
-                { score: "98", label: "Performance", sub: "Lighthouse" },
+                { score: "98+", label: "Performance", sub: "Lighthouse" },
                 { score: "100", label: "SEO", sub: "Lighthouse" },
                 { score: "A", label: "SSL/TLS", sub: "Qualys" },
                 { score: "A", label: "Security", sub: "Observatory" },
