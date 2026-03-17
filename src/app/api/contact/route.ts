@@ -1,32 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { createRateLimiter, isRateLimited, getClientIp } from '@/lib/rate-limit';
 
-// Rate limit: 5 submissions per hour per IP
-const contactAttempts = new Map<string, number[]>();
-
-function isContactRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const windowMs = 60 * 60 * 1000; // 1 hour
-  const limit = 5;
-
-  const attempts = (contactAttempts.get(ip) ?? []).filter((t) => now - t < windowMs);
-  if (attempts.length >= limit) {
-    contactAttempts.set(ip, attempts);
-    return true;
-  }
-  attempts.push(now);
-  contactAttempts.set(ip, attempts);
-  return false;
-}
+const contactLimiter = createRateLimiter(5, 60 * 60 * 1000); // 5 per hour per IP
 
 const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
   : null;
 
-export async function POST(request: NextRequest) {
-  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown';
+// Strict email regex - rejects control characters
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
-  if (isContactRateLimited(ip)) {
+const VALID_CODEBASE_SIZES = new Set([
+  '',
+  'Under 25K lines',
+  '25K \u2014 100K lines',
+  '100K \u2014 500K lines',
+  '500K+ lines',
+  'Not sure',
+]);
+
+export async function POST(request: NextRequest) {
+  const ip = getClientIp(request);
+
+  if (isRateLimited(contactLimiter, ip)) {
     return NextResponse.json(
       { error: 'Too many submissions. Please try again later.' },
       { status: 429 }
@@ -60,25 +57,35 @@ export async function POST(request: NextRequest) {
     String(name).length > 200 ||
     String(email).length > 254 ||
     String(company).length > 200 ||
+    String(codebaseSize ?? '').length > 200 ||
     String(message ?? '').length > 2000
   ) {
     return NextResponse.json({ error: 'Input too long' }, { status: 400 });
   }
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(String(email))) {
+  if (!EMAIL_REGEX.test(String(email))) {
     return NextResponse.json(
       { error: 'Invalid email address' },
       { status: 400 }
     );
   }
 
+  // Validate codebaseSize against frontend allowlist
+  if (codebaseSize && !VALID_CODEBASE_SIZES.has(String(codebaseSize))) {
+    return NextResponse.json({ error: 'Invalid codebase size' }, { status: 400 });
+  }
+
+  // Strip control characters from all fields used in email headers/subjects
+  const sanitizedEmail = String(email).replace(/[\r\n\t]/g, '');
+  const sanitizedName = String(name).replace(/[\r\n\t]/g, '');
+  const sanitizedCompany = String(company).replace(/[\r\n\t]/g, '');
+
   const notificationHtml = `
-    <h2>New PoC Request — Assay</h2>
+    <h2>New PoC Request - Assay</h2>
     <table style="border-collapse:collapse;width:100%;max-width:500px;">
-      <tr><td style="padding:8px;font-weight:bold;color:#333;">Name</td><td style="padding:8px;">${escapeHtml(String(name))}</td></tr>
-      <tr><td style="padding:8px;font-weight:bold;color:#333;">Email</td><td style="padding:8px;"><a href="mailto:${escapeHtml(String(email))}">${escapeHtml(String(email))}</a></td></tr>
-      <tr><td style="padding:8px;font-weight:bold;color:#333;">Company</td><td style="padding:8px;">${escapeHtml(String(company))}</td></tr>
+      <tr><td style="padding:8px;font-weight:bold;color:#333;">Name</td><td style="padding:8px;">${escapeHtml(sanitizedName)}</td></tr>
+      <tr><td style="padding:8px;font-weight:bold;color:#333;">Email</td><td style="padding:8px;"><a href="mailto:${escapeHtml(sanitizedEmail)}">${escapeHtml(sanitizedEmail)}</a></td></tr>
+      <tr><td style="padding:8px;font-weight:bold;color:#333;">Company</td><td style="padding:8px;">${escapeHtml(sanitizedCompany)}</td></tr>
       <tr><td style="padding:8px;font-weight:bold;color:#333;">Codebase Size</td><td style="padding:8px;">${escapeHtml(String(codebaseSize || 'Not specified'))}</td></tr>
       <tr><td style="padding:8px;font-weight:bold;color:#333;">Message</td><td style="padding:8px;">${escapeHtml(String(message || 'None'))}</td></tr>
     </table>
@@ -86,17 +93,17 @@ export async function POST(request: NextRequest) {
 
   const confirmationHtml = `
     <div style="font-family:system-ui,sans-serif;max-width:500px;margin:0 auto;">
-      <h2 style="color:#060b18;">Thanks for your interest, ${escapeHtml(String(name))}!</h2>
+      <h2 style="color:#060b18;">Thanks for your interest, ${escapeHtml(sanitizedName)}!</h2>
       <p style="color:#333;line-height:1.6;">
         We've received your request for a free Proof of Concept. We'll review your details
         and get back to you within 1-2 business days to discuss next steps.
       </p>
       <p style="color:#333;line-height:1.6;">
-        As a reminder, the free PoC includes documentation of up to 5 of your COBOL programs —
+        As a reminder, the free PoC includes documentation of up to 5 of your COBOL programs -
         giving you a clear picture of what the full engagement delivers.
       </p>
       <p style="color:#666;font-size:14px;margin-top:24px;">
-        — The Assay Team<br/>
+        - The Assay Team<br/>
         <span style="color:#999;">Solaisoft Pty Ltd</span>
       </p>
     </div>
@@ -104,11 +111,8 @@ export async function POST(request: NextRequest) {
 
   if (!resend) {
     console.log('DEV: PoC request received (no RESEND_API_KEY)', {
-      name,
-      email,
-      company,
-      codebaseSize,
-      message,
+      company: sanitizedCompany,
+      hasEmail: Boolean(email),
     });
     return NextResponse.json({ success: true });
   }
@@ -118,13 +122,13 @@ export async function POST(request: NextRequest) {
       resend.emails.send({
         from: 'Assay <noreply@assay.software>',
         to: 'hello@assay.software',
-        replyTo: String(email),
-        subject: `PoC Request: ${String(company)}`,
+        replyTo: sanitizedEmail,
+        subject: `PoC Request: ${sanitizedCompany}`,
         html: notificationHtml,
       }),
       resend.emails.send({
         from: 'Assay <noreply@assay.software>',
-        to: String(email),
+        to: sanitizedEmail,
         subject: 'Your Assay PoC Request',
         html: confirmationHtml,
       }),
@@ -145,5 +149,6 @@ function escapeHtml(str: string): string {
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }

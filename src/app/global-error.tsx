@@ -1,7 +1,6 @@
 'use client';
 
 export default function GlobalError({
-  error,
   reset,
 }: {
   error: Error & { digest?: string };
@@ -34,7 +33,7 @@ export default function GlobalError({
               textTransform: 'uppercase',
             }}
           >
-            {error.digest ? `Error ${error.digest}` : 'Critical Error'}
+            Critical Error
           </p>
           <h2 style={{ fontSize: '22px', fontWeight: 700, marginBottom: '12px' }}>
             Assay is temporarily unavailable

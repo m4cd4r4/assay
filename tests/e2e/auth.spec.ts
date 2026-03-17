@@ -1,38 +1,29 @@
 import { test, expect } from '@playwright/test';
 
-// These tests run WITHOUT auth (no storageState) to test the login gate itself
-test.use({ storageState: { cookies: [], origins: [] } });
+// Session tokens are created via the upload flow (assay_session cookie).
+// There is no login page or /api/auth endpoint.
 
-test.describe('Auth Gate', () => {
-  test('unauthenticated users are redirected to login', async ({ page }) => {
-    await page.goto('/');
-    await expect(page).toHaveURL('/login');
-    await expect(page.getByText('Admin access required')).toBeVisible();
-  });
-
-  test('login page shows Assay branding', async ({ page }) => {
-    await page.goto('/login');
-    await expect(page.getByRole('heading', { name: 'Assay' })).toBeVisible();
-    await expect(page.locator('input[type="password"]')).toBeVisible();
-  });
-
-  test('wrong password shows error', async ({ page }) => {
-    await page.goto('/login');
-    await page.locator('input[type="password"]').fill('wrong');
-    await page.getByRole('button', { name: 'Sign In' }).click();
-    await expect(page.getByText('Invalid password')).toBeVisible();
-  });
-
-  test('correct password redirects to landing page', async ({ page }) => {
-    await page.goto('/login');
-    await page.locator('input[type="password"]').fill('01assay!');
-    await page.getByRole('button', { name: 'Sign In' }).click();
-    await expect(page).toHaveURL('/', { timeout: 5000 });
-    await expect(page.locator('nav')).toContainText('Assay');
-  });
-
-  test('API routes return 401 without auth', async ({ request }) => {
-    const response = await request.get('/api/status/test');
+test.describe('Session Security', () => {
+  test('API routes reject requests without a valid session', async ({ request }) => {
+    const response = await request.get('/api/status/cb-00000000000000000000000000000000');
     expect(response.status()).toBe(401);
+  });
+
+  test('upload creates a session cookie', async ({ request }) => {
+    const response = await request.post('/api/upload', {
+      multipart: {
+        projectName: 'Session Test',
+        files: {
+          name: 'test.cbl',
+          mimeType: 'text/plain',
+          buffer: Buffer.from(
+            '       IDENTIFICATION DIVISION.\n       PROGRAM-ID. TEST.\n       PROCEDURE DIVISION.\n           STOP RUN.\n'
+          ),
+        },
+      },
+    });
+    expect(response.status()).toBe(200);
+    const setCookie = response.headers()['set-cookie'] ?? '';
+    expect(setCookie).toContain('assay_session');
   });
 });

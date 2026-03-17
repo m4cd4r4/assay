@@ -59,12 +59,13 @@ export default function RootLayout({
       >
         {children}
         <Analytics />
-        <script src="https://donnacha.app/booking-widget.js" defer />
         <script
-          dangerouslySetInnerHTML={{
-            __html: `window.addEventListener('load',function(){if(window.BookingWidget)BookingWidget.init({project:'assay',host:'https://donnacha.app',buttonText:false})})`,
-          }}
+          src="https://donnacha.app/booking-widget.js"
+          defer
+          crossOrigin="anonymous"
+          integrity="sha384-smH9/ePGp/NUu8u4+TrFVK1ry1oc8OU+WRYW+lHgmZaQXBSiwdArdLXi02KpeimG"
         />
+        <script src="/booking-init.js" defer />
       </body>
     </html>
   );

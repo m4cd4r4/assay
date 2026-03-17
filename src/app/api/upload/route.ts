@@ -9,20 +9,35 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createCobolFile, parseCobolStructure, classifyFileType } from '@/lib/cobol/parser';
+import { cookies } from 'next/headers';
+import { createCobolFile, parseCobolStructure } from '@/lib/cobol/parser';
 import { groupPrograms } from '@/lib/cobol/grouper';
 import { estimateProjectCost } from '@/lib/ai/token-counter';
 import { createJob, setJobProject } from '@/lib/jobs/store';
+import { generateSessionToken, getSessionCookieName, sessionCookieOptions } from '@/lib/auth/session';
+import { createRateLimiter, isRateLimited, getClientIp } from '@/lib/rate-limit';
 import type { CobolFile, CobolStructure, CobolProject } from '@/types/cobol';
 import type { UploadedFile } from '@/types/job';
 
-const MAX_UPLOAD_SIZE = 100 * 1024 * 1024; // 100MB
+const MAX_UPLOAD_SIZE = 10 * 1024 * 1024; // 10MB (reduced from 100MB)
+const MAX_FILE_COUNT = 50;
 const ALLOWED_EXTENSIONS = new Set([
   '.cbl', '.cob', '.cobol', '.cpy', '.copy', '.jcl', '.proc',
   '.CBL', '.COB', '.COBOL', '.CPY', '.COPY', '.JCL', '.PROC',
 ]);
 
+const uploadLimiter = createRateLimiter(5, 60 * 60 * 1000); // 5 per hour per IP
+
 export async function POST(request: NextRequest) {
+  const ip = getClientIp(request);
+
+  if (isRateLimited(uploadLimiter, ip)) {
+    return NextResponse.json(
+      { error: 'Upload limit reached. Please try again later.' },
+      { status: 429 },
+    );
+  }
+
   try {
     const formData = await request.formData();
     const files = formData.getAll('files') as File[];
@@ -30,6 +45,13 @@ export async function POST(request: NextRequest) {
     if (files.length === 0) {
       return NextResponse.json(
         { error: 'No files provided. Upload .cbl and .cpy files.' },
+        { status: 400 },
+      );
+    }
+
+    if (files.length > MAX_FILE_COUNT) {
+      return NextResponse.json(
+        { error: `Too many files. Maximum ${MAX_FILE_COUNT} files per upload.` },
         { status: 400 },
       );
     }
@@ -50,12 +72,22 @@ export async function POST(request: NextRequest) {
       totalSize += file.size;
       if (totalSize > MAX_UPLOAD_SIZE) {
         return NextResponse.json(
-          { error: 'Total upload size exceeds 100MB limit.' },
+          { error: 'Total upload size exceeds 10MB limit.' },
           { status: 400 },
         );
       }
 
       validFiles.push({ file, ext });
+    }
+
+    // Get or create session
+    const cookieStore = await cookies();
+    let sessionToken = cookieStore.get(getSessionCookieName())?.value;
+    let isNewSession = false;
+
+    if (!sessionToken) {
+      sessionToken = generateSessionToken();
+      isNewSession = true;
     }
 
     // Parse all files
@@ -95,7 +127,7 @@ export async function POST(request: NextRequest) {
     const groups = groupPrograms(programs, copybooks);
 
     // Build project
-    const projectName = formData.get('projectName') as string || 'Untitled Project';
+    const projectName = String(formData.get('projectName') || 'Untitled Project').slice(0, 100);
     const project: CobolProject = {
       name: projectName,
       files: cobolFiles,
@@ -111,11 +143,11 @@ export async function POST(request: NextRequest) {
     // Estimate cost
     const costEstimate = estimateProjectCost(project);
 
-    // Create job
-    const job = createJob(projectName, costEstimate);
-    setJobProject(job.id, project);
+    // Create job bound to session
+    const job = createJob(projectName, costEstimate, sessionToken);
+    setJobProject(job.id, sessionToken, project);
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       jobId: job.id,
       costEstimate,
       files: uploadedFiles,
@@ -127,6 +159,13 @@ export async function POST(request: NextRequest) {
         totalGroups: groups.length,
       },
     });
+
+    // Set session cookie if new
+    if (isNewSession) {
+      response.cookies.set(getSessionCookieName(), sessionToken, sessionCookieOptions());
+    }
+
+    return response;
   } catch (error) {
     console.error('Upload error:', error);
     return NextResponse.json(

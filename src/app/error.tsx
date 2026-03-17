@@ -10,7 +10,9 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    console.error('Page error:', error);
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Page error:', error);
+    }
   }, [error]);
 
   return (
@@ -19,9 +21,7 @@ export default function Error({
         <p className="mb-2 font-mono text-xs tracking-widest text-[#00d4ff]">ERROR</p>
         <h2 className="mb-4 text-2xl font-bold text-white">Something went wrong</h2>
         <p className="mb-8 text-sm text-[#8899bb]">
-          {error.digest
-            ? `Reference: ${error.digest}`
-            : 'An unexpected error occurred. Please try again.'}
+          An unexpected error occurred. Please try again.
         </p>
         <button
           onClick={reset}
