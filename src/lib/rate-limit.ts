@@ -56,8 +56,10 @@ export function isRateLimited(store: RateLimitStore, key: string): boolean {
 
 export function getClientIp(request: Request): string {
   const headers = request.headers;
+  // Prefer Vercel's non-spoofable header, fall back to x-forwarded-for
+  // (which Vercel also sets from the real client IP on their edge)
   return (
-    headers.get('x-real-ip') ??
+    headers.get('x-vercel-forwarded-for')?.split(',')[0]?.trim() ??
     headers.get('x-forwarded-for')?.split(',')[0]?.trim() ??
     'unknown'
   );

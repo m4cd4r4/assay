@@ -110,10 +110,12 @@ export async function POST(request: NextRequest) {
   `;
 
   if (!resend) {
-    console.log('DEV: PoC request received (no RESEND_API_KEY)', {
-      company: sanitizedCompany,
-      hasEmail: Boolean(email),
-    });
+    if (process.env.NODE_ENV === 'development') {
+      console.log('DEV: PoC request received (no RESEND_API_KEY)', {
+        company: sanitizedCompany,
+        hasEmail: Boolean(email),
+      });
+    }
     return NextResponse.json({ success: true });
   }
 
