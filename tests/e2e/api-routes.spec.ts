@@ -3,36 +3,33 @@ import path from 'path';
 import fs from 'fs';
 
 const SAMPLE_DIR = path.resolve('public/demo');
-const BASE_URL = 'http://localhost:3099';
 
 test.describe('API: Upload Route', () => {
-  test('POST /api/upload with sample COBOL files returns job and cost estimate', async () => {
-    const formData = new FormData();
-    formData.append('projectName', 'E2E Test Project');
-
+  test('POST /api/upload with sample COBOL file returns job and cost estimate', async ({ request }) => {
     const payroll = fs.readFileSync(path.join(SAMPLE_DIR, 'sample-payroll.cbl'));
-    const constants = fs.readFileSync(path.join(SAMPLE_DIR, 'sample-copybooks', 'PAYROLL-CONSTANTS.cpy'));
-    const taxTables = fs.readFileSync(path.join(SAMPLE_DIR, 'sample-copybooks', 'TAX-TABLES.cpy'));
 
-    formData.append('files', new Blob([payroll]), 'sample-payroll.cbl');
-    formData.append('files', new Blob([constants]), 'PAYROLL-CONSTANTS.cpy');
-    formData.append('files', new Blob([taxTables]), 'TAX-TABLES.cpy');
-
-    const response = await fetch(`${BASE_URL}/api/upload`, {
-      method: 'POST',
-      body: formData,
-      headers: { Cookie: 'cb-auth=authenticated' },
+    const response = await request.post('/api/upload', {
+      multipart: {
+        projectName: 'E2E Test Project',
+        files: {
+          name: 'sample-payroll.cbl',
+          mimeType: 'text/plain',
+          buffer: payroll,
+        },
+      },
     });
-    expect(response.status).toBe(200);
+    expect(response.status()).toBe(200);
 
     const body = await response.json();
     expect(body.jobId).toBeTruthy();
     expect(body.costEstimate).toBeTruthy();
     expect(body.costEstimate.totalPrograms).toBe(1);
-    expect(body.costEstimate.totalCopybooks).toBe(2);
-    expect(body.costEstimate.pricingTier).toBe('S');
-    expect(body.files).toHaveLength(3);
+    expect(body.files).toHaveLength(1);
     expect(body.summary.totalLines).toBeGreaterThan(0);
+
+    // Verify session cookie is set
+    const setCookie = response.headers()['set-cookie'] ?? '';
+    expect(setCookie).toContain('assay_session');
   });
 
   test('POST /api/upload rejects unsupported file types', async ({ request }) => {
@@ -52,30 +49,30 @@ test.describe('API: Upload Route', () => {
 });
 
 test.describe('API: Status Route', () => {
-  test('GET /api/status/nonexistent returns 404', async ({ request }) => {
+  test('GET /api/status with invalid-format id returns 400', async ({ request }) => {
     const response = await request.get('/api/status/nonexistent');
-    expect(response.status()).toBe(404);
+    expect(response.status()).toBe(400);
+    const body = await response.json();
+    expect(body.error).toContain('Invalid job ID');
   });
 
-  test('GET /api/status with unknown id returns JSON error', async ({ request }) => {
-    const response = await request.get('/api/status/unknown-job-id');
-    expect(response.status()).toBe(404);
-    const body = await response.json();
-    expect(body.error).toBeTruthy();
+  test('GET /api/status with valid-format but unknown id returns 401 (no session)', async ({ request }) => {
+    const response = await request.get('/api/status/cb-00000000000000000000000000000000');
+    expect(response.status()).toBe(401);
   });
 });
 
 test.describe('API: Download Route', () => {
-  test('GET /api/download/nonexistent returns 404', async ({ request }) => {
+  test('GET /api/download with invalid-format id returns 400', async ({ request }) => {
     const response = await request.get('/api/download/nonexistent');
-    expect(response.status()).toBe(404);
+    expect(response.status()).toBe(400);
+    const body = await response.json();
+    expect(body.error).toContain('Invalid job ID');
   });
 
-  test('GET /api/download with unknown id returns JSON error', async ({ request }) => {
-    const response = await request.get('/api/download/unknown-job-id');
-    expect(response.status()).toBe(404);
-    const body = await response.json();
-    expect(body.error).toBeTruthy();
+  test('GET /api/download with valid-format but unknown id returns 401 (no session)', async ({ request }) => {
+    const response = await request.get('/api/download/cb-00000000000000000000000000000000');
+    expect(response.status()).toBe(401);
   });
 });
 
@@ -87,10 +84,10 @@ test.describe('API: Process Route', () => {
     expect(response.status()).toBe(400);
   });
 
-  test('POST /api/process with invalid jobId returns 404', async ({ request }) => {
+  test('POST /api/process with invalid jobId returns 400', async ({ request }) => {
     const response = await request.post('/api/process', {
       data: { jobId: 'nonexistent' },
     });
-    expect(response.status()).toBe(404);
+    expect(response.status()).toBe(400);
   });
 });

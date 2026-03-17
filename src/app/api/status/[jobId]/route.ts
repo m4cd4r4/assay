@@ -2,13 +2,14 @@
  * GET /api/status/[jobId]
  *
  * Returns the current status of a processing job.
- * Poll this endpoint to track progress.
+ * Requires the session that created the job.
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getPublicJob } from '@/lib/jobs/store';
+import { getSessionToken } from '@/lib/auth/session';
 
-const JOB_ID_REGEX = /^cb-[a-z0-9]+-[a-z0-9]+$/;
+const JOB_ID_REGEX = /^cb-[a-f0-9]{32}$/;
 
 export async function GET(
   _request: NextRequest,
@@ -20,7 +21,12 @@ export async function GET(
     return NextResponse.json({ error: 'Invalid job ID.' }, { status: 400 });
   }
 
-  const job = getPublicJob(jobId);
+  const sessionToken = await getSessionToken();
+  if (!sessionToken) {
+    return NextResponse.json({ error: 'No session.' }, { status: 401 });
+  }
+
+  const job = getPublicJob(jobId, sessionToken);
   if (!job) {
     return NextResponse.json(
       { error: 'Job not found.' },
