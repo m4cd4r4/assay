@@ -98,8 +98,6 @@ export default async function RootLayout({
           src="https://donnacha.app/booking-widget.js"
           strategy="lazyOnload"
           nonce={nonce}
-          crossOrigin="anonymous"
-          integrity="sha384-smH9/ePGp/NUu8u4+TrFVK1ry1oc8OU+WRYW+lHgmZaQXBSiwdArdLXi02KpeimG"
         />
         <Script src="/booking-init.js" strategy="lazyOnload" nonce={nonce} />
       </body>
