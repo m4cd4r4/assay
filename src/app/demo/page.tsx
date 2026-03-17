@@ -11,25 +11,23 @@ export const metadata: Metadata = {
 
 export default function DemoPage() {
   return (
-    <div className="relative min-h-screen">
-      <div className="mesh-gradient fixed inset-0 -z-10" aria-hidden="true" />
-
+    <div className="min-h-screen">
       {/* Header */}
-      <header className="border-b border-white/10">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-2">
-            <Image src="/logo.svg" alt="" width={32} height={32} className="rounded-md" />
-            <span className="text-lg font-semibold tracking-tight text-white">
+      <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-sm">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+          <Link href="/" className="flex items-center gap-3">
+            <Image src="/logo.svg" alt="" width={36} height={36} className="rounded" />
+            <span className="font-serif text-lg font-semibold tracking-tight">
               Assay
             </span>
           </Link>
           <div className="flex items-center gap-4">
-            <span className="rounded-full border border-[#00d4ff]/20 bg-[#00d4ff]/5 px-3 py-1 text-xs font-medium text-[#00d4ff]">
+            <span className="rounded border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-medium text-primary">
               Live Demo
             </span>
             <Link
               href="/#contact"
-              className="rounded-lg bg-[#00d4ff] px-4 py-2 text-sm font-semibold text-[#060b18] transition-colors hover:bg-[#33ddff]"
+              className="rounded bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-hover"
             >
               Get Started
             </Link>
@@ -37,7 +35,7 @@ export default function DemoPage() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-6 py-8">
+      <main className="mx-auto max-w-6xl px-6 py-8">
         <h1 className="sr-only">Assay Live Demo</h1>
         <DemoClient />
       </main>

@@ -64,8 +64,8 @@ function DemoEmailCapture() {
 
   if (submitted) {
     return (
-      <div className="rounded-lg border border-green-500/20 bg-green-500/5 px-6 py-4">
-        <p className="text-sm text-green-400">
+      <div className="rounded border border-primary/20 bg-primary/5 px-6 py-4">
+        <p className="text-sm text-primary">
           Got it. We will be in touch within 1-2 business days with your free PoC details.
         </p>
       </div>
@@ -80,11 +80,11 @@ function DemoEmailCapture() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Work email"
-        className="flex-1 rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-muted transition-colors focus:border-[#00d4ff]/40 focus:bg-white/[0.07]"
+        className="flex-1 rounded border border-border bg-white px-4 py-3 text-sm text-foreground placeholder-muted/60 transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
       />
       <button
         type="submit"
-        className="shrink-0 rounded-lg bg-[#00d4ff] px-5 py-3 text-sm font-semibold text-[#060b18] transition-colors hover:bg-[#33ddff]"
+        className="shrink-0 rounded bg-primary px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-primary-hover"
       >
         Get Free PoC
       </button>
@@ -153,11 +153,13 @@ export default function DemoClient() {
   }, [demoData, animateText]);
 
   const switchPass = useCallback((index: number) => {
-    if (!demoData || isAnimating) return;
+    if (!demoData) return;
+    // Stop any running animation before switching
     if (animationRef.current) {
       clearTimeout(animationRef.current);
       animationRef.current = null;
     }
+    setIsAnimating(false);
     setActivePass(index);
     const passKey = PASS_LABELS[index].key;
     if (completedPasses.has(index)) {
@@ -165,7 +167,7 @@ export default function DemoClient() {
     } else {
       animateText(demoData.passes[passKey], index);
     }
-  }, [demoData, isAnimating, completedPasses, animateText]);
+  }, [demoData, completedPasses, animateText]);
 
   const skipAnimation = useCallback(() => {
     if (!demoData || !isAnimating) return;
@@ -216,19 +218,19 @@ export default function DemoClient() {
 
   if (!demoData) {
     return (
-      <div className="mx-auto max-w-2xl px-6 py-32">
+      <div className="mx-auto max-w-2xl py-32">
         <div className="animate-pulse space-y-6 text-center">
-          <div className="mx-auto h-8 w-48 rounded-lg bg-white/5" />
-          <div className="mx-auto h-4 w-64 rounded bg-white/5" />
+          <div className="mx-auto h-8 w-48 rounded bg-surface" />
+          <div className="mx-auto h-4 w-64 rounded bg-surface" />
           <div className="mx-auto flex max-w-md justify-center gap-6">
             {[1, 2, 3, 4].map((i) => (
               <div key={i} className="space-y-2">
-                <div className="h-8 w-12 rounded bg-white/5" />
-                <div className="h-3 w-16 rounded bg-white/5" />
+                <div className="h-8 w-12 rounded bg-surface" />
+                <div className="h-3 w-16 rounded bg-surface" />
               </div>
             ))}
           </div>
-          <div className="mx-auto h-12 w-36 rounded-lg bg-white/5" />
+          <div className="mx-auto h-12 w-36 rounded bg-surface" />
         </div>
         <p className="mt-8 text-center text-sm text-muted">Loading demo data...</p>
       </div>
@@ -240,10 +242,10 @@ export default function DemoClient() {
       {/* Intro */}
       {!hasStarted && (
         <div className="mx-auto max-w-2xl py-16 text-center">
-          <h2 className="mb-4 text-3xl font-bold text-white">
+          <h2 className="mb-4 font-serif text-3xl font-semibold tracking-tight">
             See Assay in Action
           </h2>
-          <p className="mb-2 text-[#8a9cc0]">
+          <p className="mb-2 text-muted">
             Watch how Claude Opus 4.6 analyses a 301-line Australian payroll
             program with 2 copybooks and produces comprehensive documentation
             in 4 passes.
@@ -254,35 +256,30 @@ export default function DemoClient() {
           </p>
 
           {/* Stats bar */}
-          <div className="mx-auto mb-8 flex max-w-md justify-center gap-6 text-center">
-            <div>
-              <div className="text-2xl font-bold text-white">{demoData.stats.totalLines}</div>
-              <div className="text-xs text-muted">Lines of COBOL</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-white">{demoData.stats.paragraphs}</div>
-              <div className="text-xs text-muted">Paragraphs</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-white">4</div>
-              <div className="text-xs text-muted">AI Passes</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-white">13</div>
-              <div className="text-xs text-muted">Rules Found</div>
-            </div>
+          <div className="mx-auto mb-8 grid max-w-md grid-cols-4 gap-0 border-t border-border">
+            {[
+              { value: demoData.stats.totalLines, label: 'Lines of COBOL' },
+              { value: demoData.stats.paragraphs, label: 'Paragraphs' },
+              { value: 4, label: 'AI Passes' },
+              { value: 13, label: 'Rules Found' },
+            ].map((stat) => (
+              <div key={stat.label} className="border-r border-border py-4 pr-4 last:border-r-0">
+                <div className="font-serif text-2xl font-semibold">{stat.value}</div>
+                <div className="text-xs text-muted">{stat.label}</div>
+              </div>
+            ))}
           </div>
 
           <div className="flex justify-center gap-4">
             <button
               onClick={startDemo}
-              className="rounded-lg bg-[#00d4ff] px-6 py-3 text-sm font-semibold text-[#060b18] transition-colors hover:bg-[#33ddff]"
+              className="rounded bg-primary px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-primary-hover"
             >
               Run Analysis
             </button>
             <button
               onClick={() => setShowSource(!showSource)}
-              className="rounded-lg border border-white/10 px-6 py-3 text-sm font-medium text-[#8a9cc0] transition-colors hover:border-white/20 hover:text-white"
+              className="rounded border border-border px-6 py-3 text-sm font-medium text-muted transition-colors hover:bg-surface hover:text-foreground"
             >
               {showSource ? 'Hide Source' : 'View Source Code'}
             </button>
@@ -292,14 +289,10 @@ export default function DemoClient() {
           {showSource && sourceCode && (
             <div className="mt-8 text-left">
               <div className="mb-2 flex items-center justify-between">
-                <span className="font-mono text-sm text-muted">
-                  sample-payroll.cbl
-                </span>
-                <span className="text-xs text-muted">
-                  {demoData.stats.totalLines} lines
-                </span>
+                <span className="font-mono text-sm text-muted">sample-payroll.cbl</span>
+                <span className="text-xs text-muted">{demoData.stats.totalLines} lines</span>
               </div>
-              <pre className="max-h-96 overflow-auto rounded-lg border border-white/10 bg-[#0a0e1a] p-4 font-mono text-xs leading-relaxed text-[#8a9cc0]">
+              <pre className="max-h-96 overflow-auto rounded border border-border bg-code-bg p-4 font-mono text-xs leading-relaxed text-code-fg">
                 {sourceCode}
               </pre>
             </div>
@@ -309,31 +302,30 @@ export default function DemoClient() {
 
       {/* Analysis view */}
       {hasStarted && (
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[280px_1fr]">
-          {/* Sidebar - pass selector */}
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[260px_1fr]">
+          {/* Sidebar */}
           <aside className="space-y-2">
-            <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted">
+            <h2 className="mb-4 text-xs font-semibold uppercase tracking-widest text-muted">
               Analysis Passes
             </h2>
             {PASS_LABELS.map((pass, i) => (
               <button
                 key={pass.key}
                 onClick={() => switchPass(i)}
-                disabled={isAnimating && i !== activePass}
-                className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left text-sm transition-all ${
+                className={`flex w-full items-center gap-3 rounded px-4 py-3 text-left text-sm transition-all ${
                   i === activePass
-                    ? 'border border-[#00d4ff]/30 bg-[#00d4ff]/5 text-white'
+                    ? 'border border-primary/30 bg-primary/5 font-medium text-foreground'
                     : completedPasses.has(i)
-                      ? 'border border-white/10 bg-white/[0.02] text-[#8a9cc0] hover:bg-white/[0.04]'
-                      : 'border border-transparent text-muted hover:text-[#8a9cc0]'
-                } disabled:cursor-not-allowed disabled:opacity-40`}
+                      ? 'border border-border bg-surface text-muted hover:text-foreground'
+                      : 'border border-transparent text-muted hover:text-foreground'
+                }`}
               >
-                <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md font-mono text-xs font-bold ${
+                <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded font-mono text-xs font-bold ${
                   i === activePass
-                    ? 'bg-[#00d4ff]/10 text-[#00d4ff]'
+                    ? 'bg-primary/10 text-primary'
                     : completedPasses.has(i)
-                      ? 'bg-green-500/10 text-green-400'
-                      : 'bg-white/5 text-muted'
+                      ? 'bg-green-100 text-green-700'
+                      : 'bg-surface text-muted'
                 }`}>
                   {completedPasses.has(i) ? '\u2713' : pass.icon}
                 </span>
@@ -342,11 +334,11 @@ export default function DemoClient() {
             ))}
 
             {/* Actions */}
-            <div className="mt-6 space-y-2 border-t border-white/10 pt-6">
+            <div className="mt-6 space-y-2 border-t border-border pt-6">
               {isAnimating && (
                 <button
                   onClick={skipAnimation}
-                  className="w-full rounded-lg border border-white/10 px-4 py-2 text-sm text-[#8a9cc0] transition-colors hover:text-white"
+                  className="w-full rounded border border-border px-4 py-2 text-sm text-muted transition-colors hover:bg-surface hover:text-foreground"
                 >
                   Skip Animation
                 </button>
@@ -354,22 +346,22 @@ export default function DemoClient() {
               {completedPasses.size === 4 && (
                 <button
                   onClick={downloadBundle}
-                  className="w-full rounded-lg bg-[#00d4ff] px-4 py-2 text-sm font-semibold text-[#060b18] transition-colors hover:bg-[#33ddff]"
+                  className="w-full rounded bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-hover"
                 >
                   Download Knowledge Base
                 </button>
               )}
               <button
                 onClick={() => setShowSource(!showSource)}
-                className="w-full rounded-lg border border-white/10 px-4 py-2 text-sm text-muted transition-colors hover:text-[#8a9cc0]"
+                className="w-full rounded border border-border px-4 py-2 text-sm text-muted transition-colors hover:bg-surface hover:text-foreground"
               >
                 {showSource ? 'Hide Source' : 'View Source'}
               </button>
             </div>
 
             {/* Program stats */}
-            <div className="mt-4 rounded-lg border border-white/10 bg-white/[0.02] p-4">
-              <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted">
+            <div className="mt-4 rounded border border-border p-4">
+              <h3 className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted">
                 Program Stats
               </h3>
               <dl className="space-y-1 text-xs">
@@ -385,7 +377,7 @@ export default function DemoClient() {
                 ].map(([label, value]) => (
                   <div key={String(label)} className="flex justify-between">
                     <dt className="text-muted">{label}</dt>
-                    <dd className="font-mono text-[#8a9cc0]">{value}</dd>
+                    <dd className="font-mono text-foreground">{value}</dd>
                   </div>
                 ))}
               </dl>
@@ -394,23 +386,22 @@ export default function DemoClient() {
 
           {/* Main output area */}
           <div className="min-w-0">
-            {/* Pass header */}
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-white">
+              <h2 className="font-serif text-lg font-semibold">
                 {PASS_LABELS[activePass].label}
               </h2>
               {isAnimating && (
-                <span className="flex items-center gap-2 text-xs text-[#00d4ff]">
-                  <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-[#00d4ff]" aria-hidden="true" />
+                <span className="flex items-center gap-2 text-xs text-primary">
+                  <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-primary" aria-hidden="true" />
                   Analysing...
                 </span>
               )}
             </div>
 
-            {/* Source code panel (collapsible) */}
+            {/* Source code panel */}
             {showSource && sourceCode && (
               <div className="mb-4">
-                <pre className="max-h-64 overflow-auto rounded-lg border border-white/10 bg-[#0a0e1a] p-4 font-mono text-xs leading-relaxed text-muted">
+                <pre className="max-h-64 overflow-auto rounded border border-border bg-code-bg p-4 font-mono text-xs leading-relaxed text-code-fg">
                   {sourceCode}
                 </pre>
               </div>
@@ -419,12 +410,12 @@ export default function DemoClient() {
             {/* Output */}
             <div
               ref={outputRef}
-              className="prose-invert max-h-[calc(100vh-240px)] overflow-auto rounded-lg border border-white/10 bg-[#0a0e1a]/80 p-6"
+              className="max-h-[calc(100vh-240px)] overflow-auto rounded border border-border bg-code-bg p-6"
             >
-              <div className="whitespace-pre-wrap font-mono text-sm leading-relaxed text-[#c8d4e8]">
+              <div className="whitespace-pre-wrap font-mono text-sm leading-relaxed text-code-fg">
                 {displayedText}
                 {isAnimating && (
-                  <span className="inline-block h-4 w-1.5 animate-pulse bg-[#00d4ff]" aria-hidden="true" />
+                  <span className="inline-block h-4 w-1.5 animate-pulse bg-primary" aria-hidden="true" />
                 )}
               </div>
             </div>
@@ -432,11 +423,11 @@ export default function DemoClient() {
         </div>
       )}
 
-      {/* Bottom CTA - contextual based on demo completion */}
-      <div className="mx-auto mt-16 max-w-xl border-t border-white/10 pt-12 text-center">
+      {/* Bottom CTA */}
+      <div className="mx-auto mt-16 max-w-xl border-t border-border pt-12 text-center">
         {completedPasses.size === 4 ? (
           <>
-            <h2 className="mb-2 text-xl font-bold text-white">
+            <h2 className="mb-2 font-serif text-xl font-semibold">
               Imagine this for your entire codebase.
             </h2>
             <p className="mb-6 text-sm text-muted">
@@ -448,7 +439,7 @@ export default function DemoClient() {
           </>
         ) : (
           <>
-            <h2 className="mb-2 text-xl font-bold text-white">
+            <h2 className="mb-2 font-serif text-xl font-semibold">
               Ready for your codebase?
             </h2>
             <p className="mb-6 text-sm text-muted">
@@ -459,13 +450,13 @@ export default function DemoClient() {
             <div className="flex justify-center gap-4">
               <Link
                 href="/#contact"
-                className="rounded-lg bg-[#00d4ff] px-6 py-3 text-sm font-semibold text-[#060b18] transition-colors hover:bg-[#33ddff]"
+                className="rounded bg-primary px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-primary-hover"
               >
                 Request Free PoC
               </Link>
               <Link
                 href="/#pricing"
-                className="rounded-lg border border-white/10 px-6 py-3 text-sm text-[#8a9cc0] transition-colors hover:text-white"
+                className="rounded border border-border px-6 py-3 text-sm text-muted transition-colors hover:bg-surface hover:text-foreground"
               >
                 View Pricing
               </Link>
