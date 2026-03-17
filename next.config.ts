@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+// CSP is set dynamically in middleware.ts with per-request nonces.
+// Only non-CSP security headers go here (static, no nonce needed).
 const securityHeaders = [
   { key: "X-Frame-Options", value: "DENY" },
   { key: "X-Content-Type-Options", value: "nosniff" },
@@ -13,20 +15,6 @@ const securityHeaders = [
     value: "max-age=63072000; includeSubDomains; preload",
   },
   { key: "X-DNS-Prefetch-Control", value: "on" },
-  {
-    key: "Content-Security-Policy",
-    value: [
-      "default-src 'self'",
-      "script-src 'self' https://donnacha.app",
-      "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data:",
-      "font-src 'self'",
-      "connect-src 'self' https://donnacha.app https://va.vercel-scripts.com",
-      "frame-ancestors 'none'",
-      "base-uri 'self'",
-      "form-action 'self'",
-    ].join("; "),
-  },
 ];
 
 const nextConfig: NextConfig = {
