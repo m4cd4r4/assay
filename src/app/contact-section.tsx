@@ -18,7 +18,18 @@ export default function ContactSection() {
   function handleBook() {
     if (window.BookingWidget) {
       window.BookingWidget.open();
+      return;
     }
+    // Load widget on first click to avoid console errors at page load
+    const script = document.createElement('script');
+    script.src = 'https://donnacha.app/booking-widget.js';
+    script.onload = () => {
+      if (window.BookingWidget) {
+        window.BookingWidget.init({ project: 'assay', host: 'https://donnacha.app', buttonText: false });
+        window.BookingWidget.open();
+      }
+    };
+    document.head.appendChild(script);
   }
 
   return (

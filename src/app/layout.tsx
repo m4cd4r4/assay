@@ -94,11 +94,6 @@ export default async function RootLayout({
           nonce={nonce}
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <Script
-          src="https://donnacha.app/booking-widget.js"
-          strategy="lazyOnload"
-          nonce={nonce}
-        />
         <Script src="/booking-init.js" strategy="lazyOnload" nonce={nonce} />
       </body>
     </html>

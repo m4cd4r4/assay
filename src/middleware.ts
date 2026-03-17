@@ -32,6 +32,7 @@ export function middleware(request: NextRequest) {
   const csp = [
     "default-src 'self'",
     `script-src 'self' 'nonce-${nonce}' https://donnacha.app https://accounts.google.com`,
+    // accounts.google.com needed for booking widget OAuth flow (loaded on demand)
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data:",
     "font-src 'self'",
