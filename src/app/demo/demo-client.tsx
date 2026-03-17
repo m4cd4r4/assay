@@ -37,6 +37,61 @@ const PASS_LABELS = [
 const TYPING_SPEED = 8;
 const LINE_PAUSE = 40;
 
+function DemoEmailCapture() {
+  const [email, setEmail] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!email) return;
+    try {
+      await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: 'Demo visitor',
+          email,
+          company: '',
+          codebaseSize: '',
+          message: 'Completed full demo - requested free PoC via demo page.',
+        }),
+      });
+    } catch {
+      // Best-effort
+    }
+    setSubmitted(true);
+  }
+
+  if (submitted) {
+    return (
+      <div className="rounded-lg border border-green-500/20 bg-green-500/5 px-6 py-4">
+        <p className="text-sm text-green-400">
+          Got it. We will be in touch within 1-2 business days with your free PoC details.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="mx-auto flex max-w-sm gap-3">
+      <input
+        type="email"
+        required
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Work email"
+        className="flex-1 rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-muted transition-colors focus:border-[#00d4ff]/40 focus:bg-white/[0.07]"
+      />
+      <button
+        type="submit"
+        className="shrink-0 rounded-lg bg-[#00d4ff] px-5 py-3 text-sm font-semibold text-[#060b18] transition-colors hover:bg-[#33ddff]"
+      >
+        Get Free PoC
+      </button>
+    </form>
+  );
+}
+
 export default function DemoClient() {
   const [demoData, setDemoData] = useState<DemoOutput | null>(null);
   const [activePass, setActivePass] = useState(0);
@@ -377,30 +432,46 @@ export default function DemoClient() {
         </div>
       )}
 
-      {/* Bottom CTA */}
+      {/* Bottom CTA - contextual based on demo completion */}
       <div className="mx-auto mt-16 max-w-xl border-t border-white/10 pt-12 text-center">
-        <h2 className="mb-2 text-xl font-bold text-white">
-          Ready for your codebase?
-        </h2>
-        <p className="mb-6 text-sm text-muted">
-          This demo showed 1 program. A typical engagement covers 50-500+
-          programs with full cross-reference indexing, dependency maps, and
-          executive summary.
-        </p>
-        <div className="flex justify-center gap-4">
-          <Link
-            href="/#contact"
-            className="rounded-lg bg-[#00d4ff] px-6 py-3 text-sm font-semibold text-[#060b18] transition-colors hover:bg-[#33ddff]"
-          >
-            Request Free PoC
-          </Link>
-          <Link
-            href="/#pricing"
-            className="rounded-lg border border-white/10 px-6 py-3 text-sm text-[#8a9cc0] transition-colors hover:text-white"
-          >
-            View Pricing
-          </Link>
-        </div>
+        {completedPasses.size === 4 ? (
+          <>
+            <h2 className="mb-2 text-xl font-bold text-white">
+              Imagine this for your entire codebase.
+            </h2>
+            <p className="mb-6 text-sm text-muted">
+              You just saw 1 program documented in 4 passes. A typical engagement
+              covers 50-500+ programs with cross-reference indexing, dependency
+              maps, and an executive summary.
+            </p>
+            <DemoEmailCapture />
+          </>
+        ) : (
+          <>
+            <h2 className="mb-2 text-xl font-bold text-white">
+              Ready for your codebase?
+            </h2>
+            <p className="mb-6 text-sm text-muted">
+              This demo shows 1 program. A typical engagement covers 50-500+
+              programs with full cross-reference indexing, dependency maps, and
+              executive summary.
+            </p>
+            <div className="flex justify-center gap-4">
+              <Link
+                href="/#contact"
+                className="rounded-lg bg-[#00d4ff] px-6 py-3 text-sm font-semibold text-[#060b18] transition-colors hover:bg-[#33ddff]"
+              >
+                Request Free PoC
+              </Link>
+              <Link
+                href="/#pricing"
+                className="rounded-lg border border-white/10 px-6 py-3 text-sm text-[#8a9cc0] transition-colors hover:text-white"
+              >
+                View Pricing
+              </Link>
+            </div>
+          </>
+        )}
       </div>
     </>
   );

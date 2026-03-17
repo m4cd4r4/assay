@@ -12,7 +12,7 @@ export default function TermsPage() {
       <article className="mx-auto max-w-3xl">
         <a
           href="/"
-          className="mb-8 inline-flex items-center gap-2 text-sm text-[#6b7a99] transition-colors hover:text-white"
+          className="mb-8 inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-white"
         >
           <svg
             className="h-4 w-4"
@@ -30,18 +30,11 @@ export default function TermsPage() {
           Back to Assay
         </a>
 
-        <div className="mb-8 rounded-xl border border-[#f0b429]/20 bg-[#f0b429]/5 px-5 py-3">
-          <p className="text-sm text-[#f0b429]">
-            <strong>Draft</strong> — These terms are pending formal legal review.
-            Last updated: February 2026.
-          </p>
-        </div>
-
         <h1 className="mb-2 text-4xl font-bold tracking-tight text-white">
           Terms of Service
         </h1>
-        <p className="mb-12 text-[#6b7a99]">
-          Solaisoft Pty Ltd (ABN pending) trading as Assay
+        <p className="mb-12 text-muted">
+          Solaisoft Pty Ltd trading as Assay. Last updated: March 2026.
         </p>
 
         <div className="space-y-10 text-[#c0c8d8] [&_h2]:mb-3 [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-white [&_h3]:mb-2 [&_h3]:text-base [&_h3]:font-semibold [&_h3]:text-white [&_p]:mb-3 [&_p]:leading-relaxed [&_ul]:mb-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1">

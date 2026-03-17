@@ -73,7 +73,7 @@ const TIERS = [
   {
     name: "Standard",
     size: "M",
-    lines: "25K — 100K",
+    lines: "25K - 100K",
     price: "$2,500",
     popular: true,
     features: [
@@ -86,7 +86,7 @@ const TIERS = [
   {
     name: "Professional",
     size: "L",
-    lines: "100K — 500K",
+    lines: "100K - 500K",
     price: "$6,000",
     popular: false,
     features: [
@@ -624,6 +624,12 @@ export default function Home() {
             reserved.
           </p>
           <div className="flex gap-6">
+            <a
+              href="/blog"
+              className="text-xs text-muted transition-colors hover:text-white"
+            >
+              Blog
+            </a>
             <a
               href="/privacy"
               className="text-xs text-muted transition-colors hover:text-white"
