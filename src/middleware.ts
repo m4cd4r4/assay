@@ -35,10 +35,11 @@ export function middleware(request: NextRequest) {
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data:",
     "font-src 'self'",
-    "connect-src 'self' https://donnacha.app https://va.vercel-scripts.com",
+    "connect-src 'self' https://donnacha.app https://va.vercel-scripts.com https://accounts.google.com",
+    "frame-src 'self' https://accounts.google.com https://donnacha.app",
     "frame-ancestors 'none'",
     "base-uri 'self'",
-    "form-action 'self'",
+    "form-action 'self' https://accounts.google.com",
   ].join('; ');
 
   // Pass nonce to Next.js via request header so it can inject it into inline scripts
