@@ -1,21 +1,28 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono, Inter } from "next/font/google";
+import { JetBrains_Mono, DM_Sans, Source_Serif_4 } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { headers } from "next/headers";
 import Script from "next/script";
 import "./globals.css";
 
 const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-geist-mono",
+  variable: "--font-code",
   subsets: ["latin"],
   weight: ["400", "700"],
   display: "swap",
 });
 
-const inter = Inter({
-  variable: "--font-geist-sans",
+const dmSans = DM_Sans({
+  variable: "--font-body",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "700"],
+  display: "swap",
+});
+
+const sourceSerif = Source_Serif_4({
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
   display: "swap",
 });
 
@@ -79,13 +86,9 @@ export default async function RootLayout({
   };
 
   return (
-    <html lang="en" className="dark">
-      <head>
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-      </head>
+    <html lang="en">
       <body
-        className={`${inter.variable} ${jetbrainsMono.variable} antialiased`}
+        className={`${dmSans.variable} ${sourceSerif.variable} ${jetbrainsMono.variable} antialiased`}
       >
         {children}
         <Analytics />

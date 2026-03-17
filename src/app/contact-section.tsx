@@ -39,7 +39,7 @@ export default function ContactSection() {
           <div className="mx-auto grid max-w-md gap-4 sm:grid-cols-2">
             <button
               onClick={handleBook}
-              className="group inline-flex items-center justify-center gap-2 rounded-xl bg-[#00d4ff] px-8 py-3.5 font-semibold text-[#060b18] transition-all hover:bg-[#33ddff] hover:shadow-[0_0_32px_rgba(0,212,255,0.3)] sm:col-span-2"
+              className="group inline-flex items-center justify-center gap-2 rounded bg-primary px-8 py-3.5 font-medium text-white transition-colors hover:bg-primary-hover sm:col-span-2"
             >
               Book a Call
               <svg
@@ -57,15 +57,15 @@ export default function ContactSection() {
 
           <div className="flex items-center justify-center gap-6 text-xs text-muted">
             <span className="flex items-center gap-1.5">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-green-400" aria-hidden="true" />
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true" />
               15-min discovery call
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-green-400" aria-hidden="true" />
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true" />
               No obligations
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-green-400" aria-hidden="true" />
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true" />
               Perth timezone
             </span>
           </div>
