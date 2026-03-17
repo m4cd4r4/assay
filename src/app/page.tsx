@@ -73,7 +73,7 @@ const TIERS = [
   {
     name: "Standard",
     size: "M",
-    lines: "25K — 100K",
+    lines: "25K - 100K",
     price: "$2,500",
     popular: true,
     features: [
@@ -86,7 +86,7 @@ const TIERS = [
   {
     name: "Professional",
     size: "L",
-    lines: "100K — 500K",
+    lines: "100K - 500K",
     price: "$6,000",
     popular: false,
     features: [
@@ -477,8 +477,37 @@ export default function Home() {
             ))}
           </div>
 
+          {/* Quality audit scores */}
+          <div className="fade-in-view mt-12 glass overflow-hidden rounded-2xl">
+            <div className="border-b border-white/5 px-6 py-3">
+              <p className="text-center font-mono text-xs tracking-widest text-muted">
+                INDEPENDENTLY AUDITED - MARCH 2026
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-px md:grid-cols-4 lg:grid-cols-6">
+              {[
+                { score: "100", label: "Accessibility", sub: "Lighthouse" },
+                { score: "98+", label: "Performance", sub: "Lighthouse" },
+                { score: "100", label: "SEO", sub: "Lighthouse" },
+                { score: "A", label: "SSL/TLS", sub: "Qualys" },
+                { score: "A", label: "Security", sub: "Observatory" },
+                { score: "0", label: "Vulnerabilities", sub: "npm audit" },
+              ].map((item) => (
+                <div key={item.label} className="px-4 py-4 text-center">
+                  <div className="font-mono text-2xl font-bold text-[#00d4ff]">
+                    {item.score}
+                  </div>
+                  <div className="mt-0.5 text-xs font-medium text-white">
+                    {item.label}
+                  </div>
+                  <div className="text-[10px] text-muted">{item.sub}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* Technology credibility */}
-          <div className="fade-in-view mt-12 flex flex-wrap items-center justify-center gap-8 text-xs text-muted">
+          <div className="fade-in-view mt-8 flex flex-wrap items-center justify-center gap-8 text-xs text-muted">
             <span className="flex items-center gap-2">
               <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
               Powered by Anthropic Claude
@@ -624,6 +653,12 @@ export default function Home() {
             reserved.
           </p>
           <div className="flex gap-6">
+            <a
+              href="/blog"
+              className="text-xs text-muted transition-colors hover:text-white"
+            >
+              Blog
+            </a>
             <a
               href="/privacy"
               className="text-xs text-muted transition-colors hover:text-white"

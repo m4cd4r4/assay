@@ -25,7 +25,7 @@ const processLimiter = createRateLimiter(3, 6 * 60 * 60 * 1000);
 export async function POST(request: NextRequest) {
   const ip = getClientIp(request);
 
-  if (isRateLimited(processLimiter, ip)) {
+  if (await isRateLimited(processLimiter, ip)) {
     return NextResponse.json(
       { error: 'Processing limit reached. Please try again in 6 hours.' },
       { status: 429 },

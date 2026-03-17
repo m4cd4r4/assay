@@ -31,7 +31,7 @@ const uploadLimiter = createRateLimiter(5, 60 * 60 * 1000); // 5 per hour per IP
 export async function POST(request: NextRequest) {
   const ip = getClientIp(request);
 
-  if (isRateLimited(uploadLimiter, ip)) {
+  if (await isRateLimited(uploadLimiter, ip)) {
     return NextResponse.json(
       { error: 'Upload limit reached. Please try again later.' },
       { status: 429 },

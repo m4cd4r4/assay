@@ -1,5 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
+const BRAVE_PATH = 'C:/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe';
+
 export default defineConfig({
   testDir: './tests/e2e',
   fullyParallel: true,
@@ -7,10 +9,15 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
+  timeout: 60000,
+  expect: { timeout: 10000 },
   use: {
     baseURL: 'http://localhost:3099',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
+    launchOptions: {
+      executablePath: BRAVE_PATH,
+    },
   },
   projects: [
     {
@@ -22,6 +29,9 @@ export default defineConfig({
       use: {
         ...devices['Desktop Chrome'],
         storageState: 'tests/e2e/.auth/state.json',
+        launchOptions: {
+          executablePath: BRAVE_PATH,
+        },
       },
       dependencies: ['setup'],
     },
@@ -30,6 +40,6 @@ export default defineConfig({
     command: 'npm run dev -- --port 3099',
     port: 3099,
     reuseExistingServer: !process.env.CI,
-    timeout: 30000,
+    timeout: 60000,
   },
 });

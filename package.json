@@ -2,6 +2,12 @@
   "name": "assay",
   "version": "0.1.0",
   "private": true,
+  "browserslist": [
+    "last 2 Chrome versions",
+    "last 2 Firefox versions",
+    "last 2 Safari versions",
+    "last 2 Edge versions"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -11,6 +17,7 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",
     "@vercel/analytics": "^2.0.1",
+    "@vercel/kv": "^3.0.0",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",
@@ -26,6 +33,7 @@
     "eslint": "^9.22.0",
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4.1.0",
-    "typescript": "^5.8.0"
+    "typescript": "^5.8.0",
+    "vitest": "^4.1.0"
   }
 }
