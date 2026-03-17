@@ -23,7 +23,7 @@ const VALID_CODEBASE_SIZES = new Set([
 export async function POST(request: NextRequest) {
   const ip = getClientIp(request);
 
-  if (isRateLimited(contactLimiter, ip)) {
+  if (await isRateLimited(contactLimiter, ip)) {
     return NextResponse.json(
       { error: 'Too many submissions. Please try again later.' },
       { status: 429 }
