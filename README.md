@@ -6,7 +6,7 @@
 
 <p align="center">
   <strong>Your COBOL codebase, finally understood.</strong><br/>
-  COBOL documentation generator. 5-pass analysis pipeline using Claude Opus 4.6 with 1M token context.
+  COBOL documentation generator. 5-pass analysis pipeline.
 </p>
 
 <p align="center">
