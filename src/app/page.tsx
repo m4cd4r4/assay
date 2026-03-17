@@ -209,17 +209,6 @@ export default function Home() {
       <main id="main-content">
       {/* Hero Section */}
       <section className="relative flex min-h-screen flex-col items-center justify-center px-6 pt-20 text-center">
-        {/* Decorative grid lines */}
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
-            backgroundSize: "64px 64px",
-          }}
-          aria-hidden="true"
-        />
-
         <div className="relative z-10 mx-auto max-w-4xl">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#00d4ff]/20 bg-[#00d4ff]/5 px-4 py-1.5">
             <span className="h-1.5 w-1.5 rounded-full bg-[#00d4ff]" />
@@ -292,6 +281,17 @@ export default function Home() {
             ))}
           </div>
         </div>
+
+        {/* Decorative grid - rendered after hero content to not delay LCP */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
+            backgroundSize: "64px 64px",
+          }}
+          aria-hidden="true"
+        />
       </section>
 
       {/* Features Section */}
@@ -477,31 +477,42 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Quality audit scores */}
+          {/* Quality audit scores - linked to third-party verification */}
           <div className="fade-in-view mt-12 glass overflow-hidden rounded-2xl">
             <div className="border-b border-white/5 px-6 py-3">
               <p className="text-center font-mono text-xs tracking-widest text-muted">
-                INDEPENDENTLY AUDITED - MARCH 2026
+                INDEPENDENTLY VERIFIED - CLICK TO AUDIT LIVE
               </p>
             </div>
             <div className="grid grid-cols-2 gap-px md:grid-cols-4 lg:grid-cols-6">
               {[
-                { score: "100", label: "Accessibility", sub: "Lighthouse" },
-                { score: "98+", label: "Performance", sub: "Lighthouse" },
-                { score: "100", label: "SEO", sub: "Lighthouse" },
-                { score: "A", label: "SSL/TLS", sub: "Qualys" },
-                { score: "A", label: "Security", sub: "Observatory" },
-                { score: "0", label: "Vulnerabilities", sub: "npm audit" },
+                { score: "100", label: "Accessibility", sub: "Lighthouse", href: "https://pagespeed.web.dev/analysis/https-assay-software/lgjpfz4a8o?form_factor=mobile&hl=en&category=accessibility" },
+                { score: "98+", label: "Performance", sub: "Lighthouse", href: "https://pagespeed.web.dev/analysis/https-assay-software/lgjpfz4a8o?form_factor=mobile&hl=en&category=performance" },
+                { score: "100", label: "SEO", sub: "Lighthouse", href: "https://pagespeed.web.dev/analysis/https-assay-software/lgjpfz4a8o?form_factor=mobile&hl=en&category=seo" },
+                { score: "A", label: "SSL/TLS", sub: "Qualys SSL Labs", href: "https://www.ssllabs.com/ssltest/analyze.html?d=assay.software" },
+                { score: "A+", label: "Security", sub: "Mozilla Observatory", href: "https://developer.mozilla.org/en-US/observatory/analyze?host=assay.software" },
+                { score: "0", label: "Vulnerabilities", sub: "npm audit", href: "https://github.com/m4cd4r4/assay" },
               ].map((item) => (
-                <div key={item.label} className="px-4 py-4 text-center">
-                  <div className="font-mono text-2xl font-bold text-[#00d4ff]">
+                <a
+                  key={item.label}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group px-4 py-4 text-center transition-colors hover:bg-white/5"
+                >
+                  <div className="font-mono text-2xl font-bold text-[#00d4ff] transition-colors group-hover:text-[#33ddff]">
                     {item.score}
                   </div>
                   <div className="mt-0.5 text-xs font-medium text-white">
                     {item.label}
                   </div>
-                  <div className="text-[10px] text-muted">{item.sub}</div>
-                </div>
+                  <div className="flex items-center justify-center gap-1 text-[10px] text-muted">
+                    {item.sub}
+                    <svg className="h-2.5 w-2.5 opacity-0 transition-opacity group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </div>
+                </a>
               ))}
             </div>
           </div>
