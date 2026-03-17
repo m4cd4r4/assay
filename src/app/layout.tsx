@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono, Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { headers } from "next/headers";
 import Script from "next/script";
 import "./globals.css";
 
@@ -49,11 +50,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const nonce = (await headers()).get('x-nonce') ?? undefined;
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -84,15 +87,17 @@ export default function RootLayout({
         <Analytics />
         <script
           type="application/ld+json"
+          nonce={nonce}
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <Script
           src="https://donnacha.app/booking-widget.js"
           strategy="lazyOnload"
+          nonce={nonce}
           crossOrigin="anonymous"
           integrity="sha384-smH9/ePGp/NUu8u4+TrFVK1ry1oc8OU+WRYW+lHgmZaQXBSiwdArdLXi02KpeimG"
         />
-        <Script src="/booking-init.js" strategy="lazyOnload" />
+        <Script src="/booking-init.js" strategy="lazyOnload" nonce={nonce} />
       </body>
     </html>
   );

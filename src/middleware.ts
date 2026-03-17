@@ -6,12 +6,10 @@ export function middleware(request: NextRequest) {
     const origin = request.headers.get('origin');
     const host = request.headers.get('host');
 
-    // Reject mutating requests without an Origin header
     if (!origin) {
       return NextResponse.json({ error: 'Missing origin' }, { status: 403 });
     }
 
-    // Reject mutating requests without a Host header
     if (!host) {
       return NextResponse.json({ error: 'Missing host' }, { status: 400 });
     }
@@ -28,7 +26,32 @@ export function middleware(request: NextRequest) {
     }
   }
 
-  return NextResponse.next();
+  // Generate per-request nonce for CSP
+  const nonce = crypto.randomUUID();
+
+  const csp = [
+    "default-src 'self'",
+    `script-src 'self' 'nonce-${nonce}' https://donnacha.app`,
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data:",
+    "font-src 'self'",
+    "connect-src 'self' https://donnacha.app https://va.vercel-scripts.com",
+    "frame-ancestors 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+  ].join('; ');
+
+  // Pass nonce to Next.js via request header so it can inject it into inline scripts
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set('x-nonce', nonce);
+
+  const response = NextResponse.next({
+    request: { headers: requestHeaders },
+  });
+
+  response.headers.set('Content-Security-Policy', csp);
+
+  return response;
 }
 
 export const config = {
