@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono, Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import Script from "next/script";
 import "./globals.css";
 
 const jetbrainsMono = JetBrains_Mono({
@@ -18,7 +19,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Assay — COBOL Documentation Generator",
+  metadataBase: new URL("https://assay.software"),
+  title: "Assay - COBOL Documentation Generator",
   description:
     "Transform legacy COBOL codebases into comprehensive, plain-English documentation. Business rules, dependency maps, dead code detection, and data flow analysis powered by Claude Opus 4.6.",
   keywords: [
@@ -32,7 +34,7 @@ export const metadata: Metadata = {
     "mainframe",
   ],
   openGraph: {
-    title: "Assay — COBOL Documentation Generator",
+    title: "Assay - COBOL Documentation Generator",
     description:
       "Transform legacy COBOL codebases into comprehensive, plain-English documentation. Business rules, dependency maps, dead code detection, and data flow analysis.",
     type: "website",
@@ -41,7 +43,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Assay — COBOL Documentation Generator",
+    title: "Assay - COBOL Documentation Generator",
     description:
       "Transform legacy COBOL codebases into comprehensive, plain-English documentation. Business rules, dependency maps, dead code detection, and data flow analysis.",
   },
@@ -52,6 +54,27 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "Assay",
+    description:
+      "Automated COBOL documentation generator powered by Claude Opus 4.6. Business rules, dependency maps, dead code detection, and data flow analysis.",
+    applicationCategory: "DeveloperApplication",
+    operatingSystem: "Web",
+    offers: {
+      "@type": "AggregateOffer",
+      priceCurrency: "AUD",
+      lowPrice: "1250",
+      highPrice: "6000",
+    },
+    creator: {
+      "@type": "Organization",
+      name: "Solaisoft Pty Ltd",
+      url: "https://solaisoft.com",
+    },
+  };
+
   return (
     <html lang="en" className="dark">
       <body
@@ -60,12 +83,16 @@ export default function RootLayout({
         {children}
         <Analytics />
         <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <Script
           src="https://donnacha.app/booking-widget.js"
-          defer
+          strategy="lazyOnload"
           crossOrigin="anonymous"
           integrity="sha384-smH9/ePGp/NUu8u4+TrFVK1ry1oc8OU+WRYW+lHgmZaQXBSiwdArdLXi02KpeimG"
         />
-        <script src="/booking-init.js" defer />
+        <Script src="/booking-init.js" strategy="lazyOnload" />
       </body>
     </html>
   );

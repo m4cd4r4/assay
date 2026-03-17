@@ -1,4 +1,6 @@
+import Image from 'next/image';
 import ContactSection from './contact-section';
+import MobileNav from './mobile-nav';
 
 const FEATURES = [
   {
@@ -137,11 +139,19 @@ export default function Home() {
       {/* Background mesh gradient */}
       <div className="mesh-gradient fixed inset-0 -z-10" aria-hidden="true" />
 
+      {/* Skip navigation */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-[#00d4ff] focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-[#060b18]"
+      >
+        Skip to main content
+      </a>
+
       {/* Navigation */}
-      <nav className="fixed top-0 z-50 w-full">
+      <nav className="fixed top-0 z-50 w-full" aria-label="Main navigation">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <div className="flex items-center gap-2">
-            <img src="/logo.png" alt="Assay" className="h-8 w-8 rounded-md" />
+            <Image src="/logo.png" alt="" width={32} height={32} className="rounded-md" />
             <span className="text-lg font-semibold tracking-tight text-white">
               Assay
             </span>
@@ -149,25 +159,25 @@ export default function Home() {
           <div className="hidden items-center gap-8 md:flex">
             <a
               href="#features"
-              className="text-sm text-[#6b7a99] transition-colors hover:text-white"
+              className="text-sm text-muted transition-colors hover:text-white"
             >
               Features
             </a>
             <a
               href="#how-it-works"
-              className="text-sm text-[#6b7a99] transition-colors hover:text-white"
+              className="text-sm text-muted transition-colors hover:text-white"
             >
               How It Works
             </a>
             <a
               href="#pricing"
-              className="text-sm text-[#6b7a99] transition-colors hover:text-white"
+              className="text-sm text-muted transition-colors hover:text-white"
             >
               Pricing
             </a>
             <a
               href="#trust"
-              className="text-sm text-[#6b7a99] transition-colors hover:text-white"
+              className="text-sm text-muted transition-colors hover:text-white"
             >
               Trust
             </a>
@@ -179,21 +189,24 @@ export default function Home() {
             </a>
             <a
               href="/docs"
-              className="text-sm text-[#6b7a99] transition-colors hover:text-white"
+              className="text-sm text-muted transition-colors hover:text-white"
             >
               Docs
             </a>
           </div>
-          <a
-            href="#contact"
-            className="rounded-lg bg-[#00d4ff]/10 px-4 py-2 text-sm font-medium text-[#00d4ff] transition-all hover:bg-[#00d4ff]/20"
-          >
-            Request Demo
-          </a>
+          <div className="flex items-center gap-3">
+            <a
+              href="#contact"
+              className="rounded-lg bg-[#00d4ff]/10 px-4 py-2 text-sm font-medium text-[#00d4ff] transition-all hover:bg-[#00d4ff]/20"
+            >
+              Request Demo
+            </a>
+            <MobileNav />
+          </div>
         </div>
       </nav>
 
-      <main>
+      <main id="main-content">
       {/* Hero Section */}
       <section className="relative flex min-h-screen flex-col items-center justify-center px-6 pt-20 text-center">
         {/* Decorative grid lines */}
@@ -208,12 +221,6 @@ export default function Home() {
         />
 
         <div className="relative z-10 mx-auto max-w-4xl">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-amber-400/20 bg-amber-400/5 px-4 py-1.5">
-            <span className="font-mono text-xs tracking-wider text-amber-400">
-              PORTFOLIO PROJECT — TECHNOLOGY DEMONSTRATION
-            </span>
-          </div>
-
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#00d4ff]/20 bg-[#00d4ff]/5 px-4 py-1.5">
             <span className="h-1.5 w-1.5 rounded-full bg-[#00d4ff]" />
             <span className="font-mono text-xs tracking-wider text-[#00d4ff]">
@@ -233,19 +240,9 @@ export default function Home() {
           </h1>
 
           <p className="mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-[#8899bb] md:text-xl">
-            A full-stack demonstration of automated COBOL documentation.
-            Business rules, dependency maps, dead code analysis - built with
-            Next.js 16, Claude Opus 4.6, and TypeScript. This is a portfolio
-            project by{" "}
-            <a
-              href="https://solaisoft.com"
-              className="text-[#00d4ff] hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Solaisoft
-            </a>
-            {" "}demonstrating enterprise-grade AI application architecture.
+            Upload your COBOL source. Receive business rules, dependency maps,
+            dead code analysis, and data flow diagrams - all generated by
+            AI with 1M token context. No production access required.
           </p>
 
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
@@ -288,7 +285,7 @@ export default function Home() {
                 <div className="font-mono text-2xl font-bold text-white">
                   {stat.value}
                 </div>
-                <div className="mt-1 text-xs tracking-wider text-[#6b7a99]">
+                <div className="mt-1 text-xs tracking-wider text-muted">
                   {stat.label}
                 </div>
               </div>
@@ -341,48 +338,48 @@ export default function Home() {
             <div className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
             <div className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
             <div className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
-            <span className="ml-3 font-mono text-xs text-[#6b7a99]">
+            <span className="ml-3 font-mono text-xs text-muted">
               PAYROLL-CALC.cbl
             </span>
           </div>
           <pre className="overflow-x-auto p-5 font-mono text-xs leading-relaxed md:text-sm">
             <code>
-              <span className="text-[#6b7a99]">{"       "}</span>
+              <span className="text-muted">{"       "}</span>
               <span className="text-[#ff6b6b]">IDENTIFICATION DIVISION.</span>
               {"\n"}
-              <span className="text-[#6b7a99]">{"       "}</span>
+              <span className="text-muted">{"       "}</span>
               <span className="text-[#f0b429]">PROGRAM-ID.</span>
               <span className="text-white"> PAYROLL-CALC.</span>
               {"\n"}
-              <span className="text-[#6b7a99]">{"      *"}</span>
+              <span className="text-muted">{"      *"}</span>
               {"\n"}
-              <span className="text-[#6b7a99]">
+              <span className="text-muted">
                 {"      * "}PAYROLL CALCULATION PROGRAM
               </span>
               {"\n"}
-              <span className="text-[#6b7a99]">
+              <span className="text-muted">
                 {"      * "}Calculates gross pay, tax, and net pay
               </span>
               {"\n"}
-              <span className="text-[#6b7a99]">{"       "}</span>
+              <span className="text-muted">{"       "}</span>
               <span className="text-[#ff6b6b]">PROCEDURE DIVISION.</span>
               {"\n"}
-              <span className="text-[#6b7a99]">{"       "}</span>
+              <span className="text-muted">{"       "}</span>
               <span className="text-[#00d4ff]">0000-MAIN-CONTROL.</span>
               {"\n"}
-              <span className="text-[#6b7a99]">{"           "}</span>
+              <span className="text-muted">{"           "}</span>
               <span className="text-[#c084fc]">PERFORM</span>
               <span className="text-white"> 1000-INITIALIZE</span>
               {"\n"}
-              <span className="text-[#6b7a99]">{"           "}</span>
+              <span className="text-muted">{"           "}</span>
               <span className="text-[#c084fc]">PERFORM</span>
               <span className="text-white"> 2000-PROCESS-PAYROLL</span>
               {"\n"}
-              <span className="text-[#6b7a99]">{"               "}</span>
+              <span className="text-muted">{"               "}</span>
               <span className="text-[#c084fc]">UNTIL</span>
               <span className="text-white"> END-OF-TIME</span>
               {"\n"}
-              <span className="text-[#6b7a99]">{"           "}</span>
+              <span className="text-muted">{"           "}</span>
               <span className="text-[#c084fc]">STOP RUN</span>
               <span className="text-white">.</span>
             </code>
@@ -433,6 +430,75 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Trust & Compliance - before pricing to build confidence */}
+      <section id="trust" className="relative px-6 py-32">
+        <div className="mx-auto max-w-5xl">
+          <div className="fade-in-view mb-16 text-center">
+            <h2 className="mb-4 text-3xl font-bold tracking-tight text-white md:text-4xl">
+              Enterprise-Grade Security
+            </h2>
+            <p className="mx-auto max-w-xl text-muted">
+              Your source code is your most sensitive asset. Our architecture
+              ensures it stays protected at every step.
+            </p>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            {TRUST_ITEMS.map((item) => (
+              <div
+                key={item.title}
+                className="fade-in-view glass flex items-start gap-4 p-6"
+              >
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#00d4ff]/8">
+                  <svg
+                    className="h-5 w-5 text-[#00d4ff]"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={1.5}
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="mb-1 font-semibold text-white">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-muted">
+                    {item.description}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Technology credibility */}
+          <div className="fade-in-view mt-12 flex flex-wrap items-center justify-center gap-8 text-xs text-muted">
+            <span className="flex items-center gap-2">
+              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              Powered by Anthropic Claude
+            </span>
+            <span className="flex items-center gap-2">
+              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+              Deployed on Vercel
+            </span>
+            <span className="flex items-center gap-2">
+              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+              Professionally insured
+            </span>
+            <span className="flex items-center gap-2">
+              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+              TLS 1.3 encrypted
+            </span>
+          </div>
+        </div>
+      </section>
+
       {/* Pricing */}
       <section id="pricing" className="relative px-6 py-32">
         <div className="mx-auto max-w-6xl">
@@ -440,9 +506,9 @@ export default function Home() {
             <h2 className="mb-4 text-3xl font-bold tracking-tight text-white md:text-4xl">
               Project-Based Pricing
             </h2>
-            <p className="mx-auto max-w-xl text-[#8899bb]">
+            <p className="mx-auto max-w-xl text-muted">
               Fixed-price engagements sized to your codebase. No subscriptions.
-              No per-seat licensing. Free 5-program PoC to start.
+              No per-seat licensing. All prices in AUD.
             </p>
           </div>
 
@@ -453,7 +519,7 @@ export default function Home() {
                 className={`fade-in-view relative flex flex-col overflow-hidden rounded-2xl border p-6 transition-all ${
                   tier.popular
                     ? "border-[#00d4ff]/30 bg-[#00d4ff]/[0.04] shadow-[0_0_48px_rgba(0,212,255,0.08)]"
-                    : "border-white/8 bg-white/[0.02]"
+                    : "border-white/10 bg-white/[0.02]"
                 }`}
               >
                 {tier.popular && (
@@ -462,13 +528,13 @@ export default function Home() {
                   </div>
                 )}
                 <div className="mb-4">
-                  <span className="font-mono text-xs tracking-widest text-[#6b7a99]">
+                  <span className="font-mono text-xs tracking-widest text-muted">
                     {tier.size}
                   </span>
                   <h3 className="mt-1 text-xl font-bold text-white">
                     {tier.name}
                   </h3>
-                  <p className="mt-1 text-xs text-[#6b7a99]">
+                  <p className="mt-1 text-xs text-muted">
                     {tier.lines} lines
                   </p>
                 </div>
@@ -477,14 +543,14 @@ export default function Home() {
                     {tier.price}
                   </span>
                   {tier.price !== "Custom" && (
-                    <span className="ml-1 text-sm text-[#6b7a99]">AUD</span>
+                    <span className="ml-1 text-sm text-muted">AUD</span>
                   )}
                 </div>
                 <ul className="mb-6 flex-1 space-y-2.5">
                   {tier.features.map((f) => (
                     <li
                       key={f}
-                      className="flex items-start gap-2 text-sm text-[#8899bb]"
+                      className="flex items-start gap-2 text-sm text-muted"
                     >
                       <svg
                         className="mt-0.5 h-4 w-4 shrink-0 text-[#00d4ff]/60"
@@ -492,6 +558,7 @@ export default function Home() {
                         viewBox="0 0 24 24"
                         stroke="currentColor"
                         strokeWidth={2}
+                        aria-hidden="true"
                       >
                         <path
                           strokeLinecap="round"
@@ -516,54 +583,10 @@ export default function Home() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
 
-      {/* Trust & Compliance */}
-      <section id="trust" className="relative px-6 py-32">
-        <div className="mx-auto max-w-5xl">
-          <div className="fade-in-view mb-16 text-center">
-            <h2 className="mb-4 text-3xl font-bold tracking-tight text-white md:text-4xl">
-              Enterprise-Grade Security
-            </h2>
-            <p className="mx-auto max-w-xl text-[#8899bb]">
-              Your source code is your most sensitive asset. Our architecture
-              ensures it stays protected at every step.
-            </p>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            {TRUST_ITEMS.map((item) => (
-              <div
-                key={item.title}
-                className="fade-in-view glass flex items-start gap-4 p-6"
-              >
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#00d4ff]/8">
-                  <svg
-                    className="h-5 w-5 text-[#00d4ff]"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={1.5}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="mb-1 font-semibold text-white">
-                    {item.title}
-                  </h3>
-                  <p className="text-sm leading-relaxed text-[#8899bb]">
-                    {item.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <p className="mt-8 text-center text-sm text-muted">
+            Free 5-program Proof of Concept included with every engagement.
+          </p>
         </div>
       </section>
 
@@ -588,28 +611,28 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-white/5 px-6 py-12">
+      <footer className="border-t border-white/10 px-6 py-12">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 md:flex-row">
           <div className="flex items-center gap-2">
-            <img src="/logo.png" alt="Assay" className="h-6 w-6 rounded" />
+            <Image src="/logo.png" alt="" width={24} height={24} className="rounded" />
             <span className="text-sm font-medium text-white/60">
               Assay
             </span>
           </div>
-          <p className="text-xs text-[#6b7a99]">
+          <p className="text-xs text-muted">
             &copy; {new Date().getFullYear()} Solaisoft Pty Ltd. All rights
             reserved.
           </p>
           <div className="flex gap-6">
             <a
               href="/privacy"
-              className="text-xs text-[#6b7a99] transition-colors hover:text-white"
+              className="text-xs text-muted transition-colors hover:text-white"
             >
               Privacy
             </a>
             <a
               href="/terms"
-              className="text-xs text-[#6b7a99] transition-colors hover:text-white"
+              className="text-xs text-muted transition-colors hover:text-white"
             >
               Terms
             </a>

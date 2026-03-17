@@ -65,9 +65,11 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="mx-auto max-w-md space-y-4 text-left">
+      <fieldset>
+        <legend className="sr-only">Contact information (* required)</legend>
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="poc-name" className="mb-1 block text-xs font-medium text-[#6b7a99]">
+          <label htmlFor="poc-name" className="mb-1 block text-xs font-medium text-muted">
             Name *
           </label>
           <input
@@ -76,12 +78,12 @@ export default function ContactForm() {
             required
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
-            className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-[#6b7a99] outline-none transition-colors focus:border-[#00d4ff]/40 focus:bg-white/[0.07]"
+            className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-muted transition-colors focus:border-[#00d4ff]/40 focus:bg-white/[0.07]"
             placeholder="Jane Smith"
           />
         </div>
         <div>
-          <label htmlFor="poc-email" className="mb-1 block text-xs font-medium text-[#6b7a99]">
+          <label htmlFor="poc-email" className="mb-1 block text-xs font-medium text-muted">
             Work Email *
           </label>
           <input
@@ -90,7 +92,7 @@ export default function ContactForm() {
             required
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
-            className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-[#6b7a99] outline-none transition-colors focus:border-[#00d4ff]/40 focus:bg-white/[0.07]"
+            className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-muted transition-colors focus:border-[#00d4ff]/40 focus:bg-white/[0.07]"
             placeholder="jane@company.com"
           />
         </div>
@@ -98,7 +100,7 @@ export default function ContactForm() {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="poc-company" className="mb-1 block text-xs font-medium text-[#6b7a99]">
+          <label htmlFor="poc-company" className="mb-1 block text-xs font-medium text-muted">
             Company *
           </label>
           <input
@@ -107,19 +109,19 @@ export default function ContactForm() {
             required
             value={form.company}
             onChange={(e) => setForm({ ...form, company: e.target.value })}
-            className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-[#6b7a99] outline-none transition-colors focus:border-[#00d4ff]/40 focus:bg-white/[0.07]"
+            className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-muted transition-colors focus:border-[#00d4ff]/40 focus:bg-white/[0.07]"
             placeholder="Acme Corp"
           />
         </div>
         <div>
-          <label htmlFor="poc-size" className="mb-1 block text-xs font-medium text-[#6b7a99]">
+          <label htmlFor="poc-size" className="mb-1 block text-xs font-medium text-muted">
             Codebase Size
           </label>
           <select
             id="poc-size"
             value={form.codebaseSize}
             onChange={(e) => setForm({ ...form, codebaseSize: e.target.value })}
-            className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white outline-none transition-colors focus:border-[#00d4ff]/40 focus:bg-white/[0.07] [&>option]:bg-[#0a1628] [&>option]:text-white"
+            className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white transition-colors focus:border-[#00d4ff]/40 focus:bg-white/[0.07] [&>option]:bg-[#0a1628] [&>option]:text-white"
           >
             <option value="">Select...</option>
             {CODEBASE_SIZES.map((size) => (
@@ -130,7 +132,7 @@ export default function ContactForm() {
       </div>
 
       <div>
-        <label htmlFor="poc-message" className="mb-1 block text-xs font-medium text-[#6b7a99]">
+        <label htmlFor="poc-message" className="mb-1 block text-xs font-medium text-muted">
           Tell us about your project
         </label>
         <textarea
@@ -138,10 +140,12 @@ export default function ContactForm() {
           rows={3}
           value={form.message}
           onChange={(e) => setForm({ ...form, message: e.target.value })}
-          className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-[#6b7a99] outline-none transition-colors focus:border-[#00d4ff]/40 focus:bg-white/[0.07] resize-none"
+          className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-muted transition-colors focus:border-[#00d4ff]/40 focus:bg-white/[0.07] resize-none"
           placeholder="What systems does your COBOL run? Any specific documentation needs?"
         />
       </div>
+
+      </fieldset>
 
       {status === 'error' && (
         <p role="alert" className="text-center text-sm text-red-400">{errorMsg}</p>
@@ -166,7 +170,7 @@ export default function ContactForm() {
         )}
       </button>
 
-      <p className="text-center text-xs text-[#6b7a99]">
+      <p className="text-center text-xs text-muted">
         Free 5-program PoC. No obligations. We&apos;ll respond within 1-2 business days.
       </p>
     </form>

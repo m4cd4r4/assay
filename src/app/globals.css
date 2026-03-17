@@ -8,17 +8,13 @@
   --color-primary: #00d4ff;
   --color-primary-hover: #33ddff;
   --color-accent: #f0b429;
-  --color-muted: #6b7a99;
+  --color-muted: #8899bb;
   --color-border: rgba(255, 255, 255, 0.08);
   --color-navy-deep: #040810;
   --color-navy-mid: #0a1628;
   --color-navy-light: #112040;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-html {
-  scroll-behavior: smooth;
 }
 
 body {
@@ -83,19 +79,26 @@ body {
   z-index: 0;
 }
 
-/* Scroll-driven fade-in */
+/* Scroll-driven fade-in - only for browsers that support it */
 .fade-in-view {
-  opacity: 0;
-  transform: translateY(24px);
-  animation: scroll-reveal linear both;
-  animation-timeline: view();
-  animation-range: entry 0% entry 40%;
+  opacity: 1;
+  transform: none;
 }
 
-@keyframes scroll-reveal {
-  to {
-    opacity: 1;
-    transform: translateY(0);
+@supports (animation-timeline: view()) {
+  .fade-in-view {
+    opacity: 0;
+    transform: translateY(24px);
+    animation: scroll-reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 40%;
+  }
+
+  @keyframes scroll-reveal {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
 
