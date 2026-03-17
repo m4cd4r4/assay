@@ -80,6 +80,10 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className="dark">
+      <head>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+      </head>
       <body
         className={`${inter.variable} ${jetbrainsMono.variable} antialiased`}
       >
