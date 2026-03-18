@@ -36,7 +36,7 @@ export function middleware(request: NextRequest) {
 
   const csp = [
     "default-src 'self'",
-    "script-src 'self' https://va.vercel-scripts.com",
+    "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com",
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data:",
     "font-src 'self'",
