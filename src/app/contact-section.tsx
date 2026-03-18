@@ -27,8 +27,11 @@ export default function ContactSection() {
       if (window.BookingWidget) {
         window.BookingWidget.init({ project: 'assay', host: 'https://donnacha.app', buttonText: false });
         window.BookingWidget.open();
+      } else {
+        setShowForm(true);
       }
     };
+    script.onerror = () => setShowForm(true);
     document.head.appendChild(script);
   }
 
