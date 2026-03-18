@@ -3,46 +3,17 @@
 import { useState } from 'react';
 import ContactForm from './contact-form';
 
-declare global {
-  interface Window {
-    BookingWidget?: {
-      open: () => void;
-      init: (config: { project: string; host: string; buttonText?: string | false }) => void;
-    };
-  }
-}
-
 export default function ContactSection() {
   const [showForm, setShowForm] = useState(false);
-
-  function handleBook() {
-    if (window.BookingWidget) {
-      window.BookingWidget.open();
-      return;
-    }
-    // Load widget on first click to avoid console errors at page load
-    const script = document.createElement('script');
-    script.src = 'https://donnacha.app/booking-widget.js';
-    script.onload = () => {
-      if (window.BookingWidget) {
-        window.BookingWidget.init({ project: 'assay', host: 'https://donnacha.app', buttonText: false });
-        window.BookingWidget.open();
-      } else {
-        setShowForm(true);
-      }
-    };
-    script.onerror = () => setShowForm(true);
-    document.head.appendChild(script);
-  }
 
   return (
     <div className="space-y-6">
       {!showForm ? (
         <>
-          <div className="mx-auto grid max-w-md gap-4 sm:grid-cols-2">
+          <div className="mx-auto max-w-md">
             <button
-              onClick={handleBook}
-              className="group inline-flex items-center justify-center gap-2 rounded bg-primary px-8 py-3.5 font-medium text-white transition-colors hover:bg-primary-hover sm:col-span-2"
+              onClick={() => setShowForm(true)}
+              className="group inline-flex w-full items-center justify-center gap-2 rounded bg-primary px-8 py-3.5 font-medium text-white transition-colors hover:bg-primary-hover"
             >
               Book a Call
               <svg
@@ -72,15 +43,6 @@ export default function ContactSection() {
               Perth timezone
             </span>
           </div>
-
-          <p className="text-center">
-            <button
-              onClick={() => setShowForm(true)}
-              className="text-sm text-muted transition-colors hover:text-white"
-            >
-              Prefer email? Send us a message instead.
-            </button>
-          </p>
         </>
       ) : (
         <>
@@ -88,9 +50,9 @@ export default function ContactSection() {
           <p className="text-center">
             <button
               onClick={() => setShowForm(false)}
-              className="text-sm text-muted transition-colors hover:text-white"
+              className="text-sm text-muted transition-colors hover:text-foreground"
             >
-              Rather book a call?
+              Go back
             </button>
           </p>
         </>

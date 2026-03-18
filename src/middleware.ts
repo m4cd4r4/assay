@@ -31,16 +31,14 @@ export function middleware(request: NextRequest) {
 
   const csp = [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}' https://donnacha.app https://accounts.google.com`,
-    // accounts.google.com needed for booking widget OAuth flow (loaded on demand)
+    `script-src 'self' 'nonce-${nonce}'`,
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data:",
     "font-src 'self'",
-    "connect-src 'self' https://donnacha.app https://va.vercel-scripts.com https://accounts.google.com",
-    "frame-src 'self' https://accounts.google.com https://donnacha.app",
+    "connect-src 'self' https://va.vercel-scripts.com",
     "frame-ancestors 'none'",
     "base-uri 'self'",
-    "form-action 'self' https://accounts.google.com",
+    "form-action 'self'",
   ].join('; ');
 
   // Pass nonce to Next.js via request header so it can inject it into inline scripts
