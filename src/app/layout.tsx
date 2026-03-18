@@ -87,6 +87,9 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
+      <head>
+        {nonce && <meta property="csp-nonce" content={nonce} />}
+      </head>
       <body
         className={`${dmSans.variable} ${sourceSerif.variable} ${jetbrainsMono.variable} antialiased`}
       >

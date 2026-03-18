@@ -31,7 +31,7 @@ export function middleware(request: NextRequest) {
 
   const csp = [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}'`,
+    `script-src 'self' 'nonce-${nonce}' https://va.vercel-scripts.com`,
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data:",
     "font-src 'self'",
@@ -41,7 +41,7 @@ export function middleware(request: NextRequest) {
     "form-action 'self'",
   ].join('; ');
 
-  // Pass nonce to Next.js via request header so it can inject it into inline scripts
+  // Pass nonce to Next.js via request header so layout.tsx can inject it into script tags
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set('x-nonce', nonce);
 

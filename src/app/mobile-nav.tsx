@@ -35,7 +35,7 @@ export default function MobileNav() {
       {open && (
         <div
           id="mobile-menu"
-          className="absolute left-0 right-0 top-full border-b border-border bg-background"
+          className="absolute left-0 right-0 top-full z-50 border-b border-border bg-background"
         >
           <div className="mx-auto max-w-6xl space-y-1 px-6 py-4">
             {NAV_LINKS.map((link) => (

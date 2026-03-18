@@ -39,9 +39,10 @@ mermaid.initialize({
   sequence: { mirrorActors: false, bottomMarginAdj: 10 },
 });
 
-// Add expand buttons to diagrams after Mermaid renders
-window.addEventListener('load', function() {
+// Add expand buttons after Mermaid finishes rendering each diagram
+function addExpandButtons() {
   document.querySelectorAll('.diagram-wrap').forEach(function(wrap) {
+    if (wrap.querySelector('.expand-btn')) return; // already added
     var btn = document.createElement('button');
     btn.className = 'expand-btn';
     btn.title = 'Expand diagram';
@@ -49,6 +50,21 @@ window.addEventListener('load', function() {
     btn.onclick = function() { expandDiagram(wrap); };
     wrap.appendChild(btn);
   });
+}
+
+// Mermaid renders async — watch for SVGs appearing inside .mermaid elements
+window.addEventListener('load', function() {
+  // Try immediately (in case rendering is fast)
+  addExpandButtons();
+  // Watch for Mermaid to inject SVGs
+  var observer = new MutationObserver(function() {
+    addExpandButtons();
+  });
+  document.querySelectorAll('.mermaid').forEach(function(el) {
+    observer.observe(el, { childList: true, subtree: true });
+  });
+  // Fallback: stop observing after 5s
+  setTimeout(function() { observer.disconnect(); }, 5000);
 });
 
 // Expand diagram overlay
