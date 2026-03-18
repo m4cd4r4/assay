@@ -26,6 +26,14 @@ export function middleware(request: NextRequest) {
     }
   }
 
+  const pathname = request.nextUrl.pathname;
+
+  // /docs sets its own CSP (needs cdn.jsdelivr.net for Mermaid, Google Fonts).
+  // Skip middleware CSP for that route so the route handler's headers apply.
+  if (pathname === '/docs') {
+    return NextResponse.next();
+  }
+
   // Generate per-request nonce for CSP
   const nonce = crypto.randomUUID();
 
