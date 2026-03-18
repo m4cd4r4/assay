@@ -120,18 +120,12 @@ var observer = new IntersectionObserver(function(entries) {
 
 sections.forEach(function(section) { observer.observe(section); });
 
-// Mobile sidebar toggle
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('open');
-  document.querySelector('.sidebar-backdrop').classList.toggle('open');
-}
-
-// Close sidebar on nav click (mobile)
+// Close sidebar on nav link click (mobile) — uncheck the CSS toggle
 navLinks.forEach(function(link) {
   link.addEventListener('click', function() {
     if (window.innerWidth < 1024) {
-      document.getElementById('sidebar').classList.remove('open');
-      document.querySelector('.sidebar-backdrop').classList.remove('open');
+      var toggle = document.getElementById('sidebar-toggle');
+      if (toggle) toggle.checked = false;
     }
   });
 });
