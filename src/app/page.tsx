@@ -129,8 +129,8 @@ export default function Home() {
                 COBOL Documentation Generator
               </p>
               <h1 className="mb-8 font-serif text-4xl font-semibold leading-tight tracking-tight md:text-6xl md:leading-[1.1]">
-                Your COBOL codebase,{" "}
-                <span className="text-primary">finally understood.</span>
+                Five analysis passes.{" "}
+                <span className="text-primary">Complete COBOL documentation.</span>
               </h1>
               <p className="mb-10 max-w-xl text-lg leading-relaxed text-muted">
                 Upload your COBOL source. Receive business rules, dependency maps,
@@ -265,11 +265,11 @@ export default function Home() {
             <div className="fade-in-view mb-16 max-w-2xl">
               <hr className="rule-accent mb-6" />
               <h2 className="mb-4 font-serif text-3xl font-semibold tracking-tight md:text-4xl">
-                Three Steps to Clarity
+                How It Works
               </h2>
               <p className="text-muted">
-                No production access. No code changes. Just comprehensive
-                documentation delivered securely.
+                No production access. No code changes. Comprehensive
+                documentation delivered within 14 days.
               </p>
             </div>
 
@@ -461,12 +461,11 @@ export default function Home() {
         <section id="contact" className="px-6 py-20 md:py-28">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="mb-4 font-serif text-3xl font-semibold tracking-tight md:text-4xl">
-              Ready to understand your COBOL?
+              Start with a free Proof of Concept.
             </h2>
             <p className="mx-auto mb-10 max-w-lg text-muted">
-              Start with a free Proof of Concept. We&apos;ll document 5 of
-              your programs at no cost. See exactly what you&apos;ll get before
-              committing.
+              We&apos;ll document 5 of your programs at no cost. See exactly
+              what you&apos;ll get before committing.
             </p>
             <ContactSection />
           </div>
