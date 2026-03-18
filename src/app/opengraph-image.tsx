@@ -97,7 +97,7 @@ export default function OgImage() {
           }}
         >
           Your COBOL codebase,{' '}
-          <span style={{ color: '#00d4ff' }}>finally understood.</span>
+          <span style={{ color: '#00d4ff' }}>documented.</span>
         </h1>
 
         {/* Subtext */}
@@ -178,7 +178,7 @@ export default function OgImage() {
               letterSpacing: '0.08em',
             }}
           >
-            POWERED BY CLAUDE OPUS 4.6 · SOLAISOFT PTY LTD
+            POWERED BY CLAUDE OPUS 4.6 · SOLAISOFT
           </span>
         </div>
       </div>
