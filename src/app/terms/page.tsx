@@ -34,7 +34,7 @@ export default function TermsPage() {
           Terms of Service
         </h1>
         <p className="mb-12 text-muted">
-          Solaisoft Pty Ltd trading as Assay. Last updated: March 2026.
+          Solaisoft trading as Assay. Last updated: March 2026.
         </p>
 
         <div className="space-y-10 text-[#c0c8d8] [&_h2]:mb-3 [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-white [&_h3]:mb-2 [&_h3]:text-base [&_h3]:font-semibold [&_h3]:text-white [&_p]:mb-3 [&_p]:leading-relaxed [&_ul]:mb-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1">
@@ -129,7 +129,7 @@ export default function TermsPage() {
             <ul>
               <li>All source copies deleted within 30 days of delivery, with written confirmation</li>
               <li>Confidentiality survives 3 years post-engagement</li>
-              <li>Access limited to the Director of Solaisoft Pty Ltd only</li>
+              <li>Access limited to the Director of Solaisoft only</li>
               <li>Source code processed via Anthropic API under commercial terms (not used for training)</li>
               <li>No reverse engineering of business logic</li>
             </ul>
@@ -259,7 +259,7 @@ export default function TermsPage() {
             <p>For enquiries about these terms:</p>
             <ul>
               <li>Email: legal@assay.software</li>
-              <li>Mail: Solaisoft Pty Ltd, Perth, Western Australia</li>
+              <li>Mail: Solaisoft, Perth, Western Australia</li>
             </ul>
           </section>
         </div>

@@ -67,7 +67,7 @@ const TRUST_ITEMS = [
   { title: "Read-Only", description: "We never modify your source code. Zero production access." },
   { title: "NDA Protected", description: "Mutual NDA with 3-year confidentiality. Source deleted within 30 days." },
   { title: "API-Only Processing", description: "TLS 1.3 encrypted. Anthropic commercial terms - inputs not used for training." },
-  { title: "Australian Owned", description: "Solaisoft Pty Ltd. Australian Privacy Act compliant. Professionally insured." },
+  { title: "Australian Owned", description: "Solaisoft. Australian Privacy Act compliant. Professionally insured." },
 ] as const;
 
 export default function Home() {
@@ -480,7 +480,7 @@ export default function Home() {
             <span className="text-sm font-medium text-muted">Assay</span>
           </div>
           <p className="text-xs text-muted">
-            &copy; {new Date().getFullYear()} Solaisoft Pty Ltd. All rights reserved.
+            &copy; {new Date().getFullYear()} Solaisoft. All rights reserved.
           </p>
           <div className="flex gap-6">
             {[

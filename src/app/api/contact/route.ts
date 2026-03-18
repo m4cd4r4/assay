@@ -104,7 +104,7 @@ export async function POST(request: NextRequest) {
       </p>
       <p style="color:#666;font-size:14px;margin-top:24px;">
         - The Assay Team<br/>
-        <span style="color:#999;">Solaisoft Pty Ltd</span>
+        <span style="color:#999;">Solaisoft</span>
       </p>
     </div>
   `;

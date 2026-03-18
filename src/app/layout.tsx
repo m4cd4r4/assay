@@ -80,7 +80,7 @@ export default async function RootLayout({
     },
     creator: {
       "@type": "Organization",
-      name: "Solaisoft Pty Ltd",
+      name: "Solaisoft",
       url: "https://solaisoft.com",
     },
   };

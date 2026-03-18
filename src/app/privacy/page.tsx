@@ -34,7 +34,7 @@ export default function PrivacyPage() {
           Privacy Policy
         </h1>
         <p className="mb-12 text-muted">
-          Solaisoft Pty Ltd trading as Assay. Last updated: March 2026.
+          Solaisoft trading as Assay. Last updated: March 2026.
         </p>
 
         <div className="space-y-10 text-[#c0c8d8] [&_h2]:mb-3 [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-white [&_h3]:mb-2 [&_h3]:text-base [&_h3]:font-semibold [&_h3]:text-white [&_p]:mb-3 [&_p]:leading-relaxed [&_ul]:mb-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1">
@@ -42,7 +42,7 @@ export default function PrivacyPage() {
             <h2>1. Who We Are</h2>
             <p>
               Assay is a read-only COBOL documentation generation service
-              operated by Solaisoft Pty Ltd, an Australian proprietary company.
+              operated by Solaisoft, an Australian proprietary company.
               We generate comprehensive documentation from COBOL source code
               using AI analysis. We never modify, execute, or deploy source
               code.
@@ -109,7 +109,7 @@ export default function PrivacyPage() {
             </p>
             <ul>
               <li>
-                <strong>Macdara (Director, Solaisoft Pty Ltd)</strong> — sole
+                <strong>Macdara (Director, Solaisoft)</strong> — sole
                 operator with access to source files during processing
               </li>
               <li>
@@ -224,7 +224,7 @@ export default function PrivacyPage() {
             </p>
             <ul>
               <li>Email: privacy@assay.software</li>
-              <li>Mail: Solaisoft Pty Ltd, Perth, Western Australia</li>
+              <li>Mail: Solaisoft, Perth, Western Australia</li>
             </ul>
           </section>
         </div>
