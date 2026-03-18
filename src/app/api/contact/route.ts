@@ -123,7 +123,7 @@ export async function POST(request: NextRequest) {
     await Promise.all([
       resend.emails.send({
         from: 'Assay <noreply@assay.software>',
-        to: 'hello@assay.software',
+        to: 'macdara.work@gmail.com',
         replyTo: sanitizedEmail,
         subject: `PoC Request: ${sanitizedCompany}`,
         html: notificationHtml,
