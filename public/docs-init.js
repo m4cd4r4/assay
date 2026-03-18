@@ -5,12 +5,20 @@ mermaid.initialize({
   themeVariables: {
     darkMode: false,
     background: '#ffffff',
+    mainBkg: '#c8dede',
+    nodeBorder: '#1a4d4d',
+    nodeTextColor: '#0d2626',
     primaryColor: '#c8dede',
     primaryTextColor: '#0d2626',
     primaryBorderColor: '#1a4d4d',
-    lineColor: '#1a4d4d',
     secondaryColor: '#e8e4de',
+    secondaryTextColor: '#1c1b1a',
+    secondaryBorderColor: '#b5a89a',
     tertiaryColor: '#f3f1ed',
+    tertiaryTextColor: '#1c1b1a',
+    tertiaryBorderColor: '#b5a89a',
+    lineColor: '#1a4d4d',
+    textColor: '#1c1b1a',
     fontFamily: "'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
     fontSize: '15px',
     noteBkgColor: '#e8e4de',
@@ -35,8 +43,8 @@ mermaid.initialize({
     titleColor: '#1c1b1a',
     classText: '#0d2626',
   },
-  flowchart: { curve: 'basis', padding: 20 },
-  sequence: { mirrorActors: false, bottomMarginAdj: 10 },
+  flowchart: { curve: 'basis', padding: 20, useMaxWidth: false },
+  sequence: { mirrorActors: false, bottomMarginAdj: 10, useMaxWidth: false },
 });
 
 // Add expand buttons after Mermaid finishes rendering each diagram

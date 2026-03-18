@@ -34,12 +34,9 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Generate per-request nonce for CSP
-  const nonce = crypto.randomUUID();
-
   const csp = [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}' https://va.vercel-scripts.com`,
+    "script-src 'self' https://va.vercel-scripts.com",
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data:",
     "font-src 'self'",
@@ -49,14 +46,7 @@ export function middleware(request: NextRequest) {
     "form-action 'self'",
   ].join('; ');
 
-  // Pass nonce to Next.js via request header so layout.tsx can inject it into script tags
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set('x-nonce', nonce);
-
-  const response = NextResponse.next({
-    request: { headers: requestHeaders },
-  });
-
+  const response = NextResponse.next();
   response.headers.set('Content-Security-Policy', csp);
 
   return response;

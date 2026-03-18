@@ -103,8 +103,8 @@ section p{margin:10px 0;color:var(--text);font-size:18px;line-height:1.7}
   padding:32px;margin:24px 0;overflow-x:auto;position:relative;
 }
 .diagram-wrap .caption{font-family:var(--mono);font-size:13px;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:20px}
-.mermaid{display:flex;justify-content:center}
-.mermaid svg{max-width:100%}
+.mermaid{display:flex;justify-content:center;overflow-x:auto}
+.mermaid svg{max-width:none;height:auto}
 .expand-btn{
   position:absolute;top:12px;right:12px;width:36px;height:36px;
   border-radius:8px;border:1px solid var(--border);background:var(--surface);
@@ -342,12 +342,12 @@ graph TB
     BK -.->|"iframe / API"| DONNACHA
     DP -.->|"Static JSON<br/>Zero API cost"| DP
 
-    style Client fill:#0d1530,stroke:#1e3a5f,color:#e0e4ef
-    style Edge fill:#0d1530,stroke:#1e3a5f,color:#e0e4ef
-    style API fill:#0d1530,stroke:#1e3a5f,color:#e0e4ef
-    style Core fill:#0d1530,stroke:#1e3a5f,color:#e0e4ef
-    style Storage fill:#0d1530,stroke:#1e3a5f,color:#e0e4ef
-    style External fill:#0d1530,stroke:#1e3a5f,color:#e0e4ef
+    style Client fill:#e8f0f0,stroke:#1a4d4d,color:#0d2626
+    style Edge fill:#e8f0f0,stroke:#1a4d4d,color:#0d2626
+    style API fill:#e8f0f0,stroke:#1a4d4d,color:#0d2626
+    style Core fill:#e8f0f0,stroke:#1a4d4d,color:#0d2626
+    style Storage fill:#e8f0f0,stroke:#1a4d4d,color:#0d2626
+    style External fill:#e8f0f0,stroke:#1a4d4d,color:#0d2626
       </pre>
     </div>
   </section>
@@ -495,12 +495,12 @@ flowchart LR
     TIER --> P1 --> P2 --> P3 --> P4 --> P5
     P5 --> ASSEMBLE --> BUNDLE
 
-    style Upload fill:#0a1628,stroke:#1e3a5f,color:#e0e4ef
-    style Parse fill:#0a1628,stroke:#1e3a5f,color:#e0e4ef
-    style Group fill:#0a1628,stroke:#1e3a5f,color:#e0e4ef
-    style Estimate fill:#0a1628,stroke:#1e3a5f,color:#e0e4ef
-    style Process fill:#0a1628,stroke:#1e3a5f,color:#e0e4ef
-    style Output fill:#0a1628,stroke:#1e3a5f,color:#e0e4ef
+    style Upload fill:#e8f0f0,stroke:#1a4d4d,color:#0d2626
+    style Parse fill:#e8f0f0,stroke:#1a4d4d,color:#0d2626
+    style Group fill:#e8f0f0,stroke:#1a4d4d,color:#0d2626
+    style Estimate fill:#e8f0f0,stroke:#1a4d4d,color:#0d2626
+    style Process fill:#e8f0f0,stroke:#1a4d4d,color:#0d2626
+    style Output fill:#e8f0f0,stroke:#1a4d4d,color:#0d2626
       </pre>
     </div>
   </section>
@@ -535,9 +535,9 @@ flowchart TB
     POST_PROCESS --- RL3
     BW --> BA
 
-    style Routes fill:#0a1628,stroke:#34d399,color:#e0e4ef
-    style RateLimits fill:#0a1628,stroke:#ef4444,color:#e0e4ef
-    style Booking fill:#0a1628,stroke:#00d4ff,color:#e0e4ef
+    style Routes fill:#e8f5ee,stroke:#2d7a4f,color:#0d2626
+    style RateLimits fill:#fdecea,stroke:#b91c1c,color:#0d2626
+    style Booking fill:#e0f5fa,stroke:#0e7490,color:#0d2626
       </pre>
     </div>
 
@@ -567,9 +567,9 @@ flowchart TD
     STATIC -->|No| HEADERS["Apply Security Headers<br/>HSTS, X-Frame-Options,<br/>Content-Type-Options"]
     HEADERS --> PASS
 
-    style REQ fill:#0a1628,stroke:#00d4ff,color:#e0e4ef
-    style PASS fill:#0a2618,stroke:#34d399,color:#e0e4ef
-    style HEADERS fill:#0a1628,stroke:#f0b429,color:#e0e4ef
+    style REQ fill:#e0f5fa,stroke:#0e7490,color:#0d2626
+    style PASS fill:#e8f5ee,stroke:#2d7a4f,color:#0d2626
+    style HEADERS fill:#fef3e0,stroke:#92600a,color:#0d2626
       </pre>
     </div>
 
@@ -606,8 +606,8 @@ flowchart LR
     REFS --> METRICS["Compute Metrics<br/>Lines, code, comments,<br/>max nesting depth"]
     METRICS --> STRUCT["CobolStructure"]
 
-    style RAW fill:#0a1628,stroke:#1e3a5f,color:#e0e4ef
-    style STRUCT fill:#0a1628,stroke:#00d4ff,color:#00d4ff
+    style RAW fill:#e8f0f0,stroke:#1a4d4d,color:#0d2626
+    style STRUCT fill:#e0f5fa,stroke:#0e7490,color:#0e7490
       </pre>
     </div>
 
@@ -746,8 +746,8 @@ flowchart TB
     PARSE_JSON --> TABS
     TABS --> DL
 
-    style OneTime fill:#1a1628,stroke:#a78bfa,color:#e0e4ef
-    style Runtime fill:#0a1628,stroke:#34d399,color:#e0e4ef
+    style OneTime fill:#f0ecfd,stroke:#6d28d9,color:#0d2626
+    style Runtime fill:#e8f5ee,stroke:#2d7a4f,color:#0d2626
       </pre>
     </div>
 
@@ -807,11 +807,11 @@ flowchart TB
 
     Layer1 --> Layer2 --> Layer3 --> Layer4 --> Layer5
 
-    style Layer1 fill:#0a1628,stroke:#00d4ff,color:#e0e4ef
-    style Layer2 fill:#0a1628,stroke:#f0b429,color:#e0e4ef
-    style Layer3 fill:#0a1628,stroke:#ef4444,color:#e0e4ef
-    style Layer4 fill:#0a1628,stroke:#a78bfa,color:#e0e4ef
-    style Layer5 fill:#0a1628,stroke:#34d399,color:#e0e4ef
+    style Layer1 fill:#e0f5fa,stroke:#0e7490,color:#0d2626
+    style Layer2 fill:#fef3e0,stroke:#92600a,color:#0d2626
+    style Layer3 fill:#fdecea,stroke:#b91c1c,color:#0d2626
+    style Layer4 fill:#f0ecfd,stroke:#6d28d9,color:#0d2626
+    style Layer5 fill:#e8f5ee,stroke:#2d7a4f,color:#0d2626
       </pre>
     </div>
   </section>
@@ -842,8 +842,8 @@ flowchart TB
     AUTH_SETUP -->|"storageState"| API_TEST
     AUTH_SPEC -.->|"No storageState<br/>Tests login gate"| AUTH_SPEC
 
-    style Setup fill:#0a1628,stroke:#f0b429,color:#e0e4ef
-    style Tests fill:#0a1628,stroke:#34d399,color:#e0e4ef
+    style Setup fill:#fef3e0,stroke:#92600a,color:#0d2626
+    style Tests fill:#e8f5ee,stroke:#2d7a4f,color:#0d2626
       </pre>
     </div>
 

@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono, DM_Sans, Source_Serif_4 } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
-import { headers } from "next/headers";
-import Script from "next/script";
 import "./globals.css";
 
 const jetbrainsMono = JetBrains_Mono({
@@ -57,13 +55,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const nonce = (await headers()).get('x-nonce') ?? undefined;
-
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -87,9 +83,6 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <head>
-        {nonce && <meta property="csp-nonce" content={nonce} />}
-      </head>
       <body
         className={`${dmSans.variable} ${sourceSerif.variable} ${jetbrainsMono.variable} antialiased`}
       >
