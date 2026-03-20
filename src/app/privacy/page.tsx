@@ -12,7 +12,7 @@ export default function PrivacyPage() {
       <article className="mx-auto max-w-3xl">
         <a
           href="/"
-          className="mb-8 inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-white"
+          className="mb-8 inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-foreground"
         >
           <svg
             className="h-4 w-4"
@@ -30,14 +30,14 @@ export default function PrivacyPage() {
           Back to Assay
         </a>
 
-        <h1 className="mb-2 text-4xl font-bold tracking-tight text-white">
+        <h1 className="mb-2 text-4xl font-bold tracking-tight text-foreground">
           Privacy Policy
         </h1>
         <p className="mb-12 text-muted">
           Solaisoft trading as Assay. Last updated: March 2026.
         </p>
 
-        <div className="space-y-10 text-[#c0c8d8] [&_h2]:mb-3 [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-white [&_h3]:mb-2 [&_h3]:text-base [&_h3]:font-semibold [&_h3]:text-white [&_p]:mb-3 [&_p]:leading-relaxed [&_ul]:mb-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1">
+        <div className="space-y-10 text-muted [&_h2]:mb-3 [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-foreground [&_h3]:mb-2 [&_h3]:text-base [&_h3]:font-semibold [&_h3]:text-foreground [&_p]:mb-3 [&_p]:leading-relaxed [&_ul]:mb-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1">
           <section>
             <h2>1. Who We Are</h2>
             <p>
@@ -133,7 +133,7 @@ export default function PrivacyPage() {
                   <th className="pb-2">Data</th>
                 </tr>
               </thead>
-              <tbody className="text-[#c0c8d8]">
+              <tbody className="text-muted">
                 <tr className="border-b border-white/5">
                   <td className="py-2 pr-4">Anthropic</td>
                   <td className="py-2 pr-4">AI analysis</td>
@@ -162,7 +162,7 @@ export default function PrivacyPage() {
                   <th className="pb-2">Retention Period</th>
                 </tr>
               </thead>
-              <tbody className="text-[#c0c8d8]">
+              <tbody className="text-muted">
                 <tr className="border-b border-white/5">
                   <td className="py-2 pr-4">Source code</td>
                   <td className="py-2">Deleted within 30 days of delivery</td>

@@ -177,9 +177,9 @@ export default function Home() {
           <div className="fade-in-view mx-auto max-w-3xl">
             <div className="overflow-hidden rounded border border-border">
               <div className="flex items-center gap-2 border-b border-border bg-surface px-4 py-2.5">
-                <span className="h-2.5 w-2.5 rounded-full bg-red-400/60" />
-                <span className="h-2.5 w-2.5 rounded-full bg-amber-400/60" />
-                <span className="h-2.5 w-2.5 rounded-full bg-green-400/60" />
+                <span className="h-2.5 w-2.5 rounded-full bg-red-400/60" aria-hidden="true" />
+                <span className="h-2.5 w-2.5 rounded-full bg-amber-400/60" aria-hidden="true" />
+                <span className="h-2.5 w-2.5 rounded-full bg-green-400/60" aria-hidden="true" />
                 <span className="ml-3 font-mono text-xs text-muted">PAYROLL-CALC.cbl</span>
               </div>
               <pre className="overflow-x-auto bg-code-bg p-5 font-mono text-xs leading-relaxed text-code-fg md:text-sm">
@@ -276,7 +276,7 @@ export default function Home() {
             <div className="grid gap-12 md:grid-cols-3 md:gap-8">
               {STEPS.map((item) => (
                 <div key={item.num} className="fade-in-view">
-                  <span className="mb-4 inline-block font-serif text-5xl font-semibold text-primary/20">
+                  <span className="mb-4 inline-block font-serif text-5xl font-semibold text-primary/40" aria-hidden="true">
                     {item.num}
                   </span>
                   <h3 className="mb-3 text-base font-semibold">
@@ -339,7 +339,8 @@ export default function Home() {
                       {item.score}
                     </div>
                     <div className="mt-0.5 text-xs font-medium">{item.label}</div>
-                    <div className="text-[10px] text-muted">{item.sub}</div>
+                    <div className="text-xs text-muted">{item.sub}</div>
+                    <span className="sr-only"> (opens in new tab)</span>
                   </a>
                 ))}
               </div>
@@ -415,7 +416,7 @@ export default function Home() {
                     <th className="px-6 py-3 font-medium text-muted">Codebase</th>
                     <th className="px-6 py-3 font-medium text-muted">Price</th>
                     <th className="px-6 py-3 font-medium text-muted">Includes</th>
-                    <th className="px-6 py-3"></th>
+                    <th className="px-6 py-3"><span className="sr-only">Action</span></th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -424,7 +425,7 @@ export default function Home() {
                       <td className="px-6 py-4 font-semibold">
                         {tier.name}
                         {tier.popular && (
-                          <span className="ml-2 text-[10px] font-medium uppercase tracking-wider text-primary">
+                          <span className="ml-2 text-xs font-medium uppercase tracking-wider text-primary">
                             Popular
                           </span>
                         )}

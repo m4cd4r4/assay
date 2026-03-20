@@ -105,11 +105,11 @@ export default function CobolDocumentationGuidePage() {
             <span aria-hidden="true">-</span>
             <span>{READING_TIME}</span>
           </div>
-          <h1 className="mb-6 text-3xl font-bold leading-tight tracking-tight text-white md:text-5xl">
+          <h1 className="mb-6 text-3xl font-bold leading-tight tracking-tight text-foreground md:text-5xl">
             The Complete Guide to COBOL Documentation: Why It Matters and How AI
             Changes Everything
           </h1>
-          <p className="text-lg leading-relaxed text-[#8899bb]">
+          <p className="text-lg leading-relaxed text-muted">
             800 billion lines of COBOL still run the world&apos;s banks,
             insurers, and government agencies. Most of it is undocumented. The
             people who wrote it are retiring. Here is what you need to know about
@@ -119,10 +119,10 @@ export default function CobolDocumentationGuidePage() {
         </header>
 
         {/* Article body */}
-        <div className="prose-article space-y-8 text-[#c0c8d8]">
+        <div className="prose-article space-y-8 text-muted">
           {/* Section 1 */}
           <section>
-            <h2 className="mb-4 text-2xl font-bold text-white">
+            <h2 className="mb-4 text-2xl font-bold text-foreground">
               The COBOL Documentation Crisis
             </h2>
             <p>
@@ -143,7 +143,7 @@ export default function CobolDocumentationGuidePage() {
               Notes databases, and the memories of people who no longer work at
               the organization. What remains in the source code is terse comments
               like{" "}
-              <code className="rounded bg-white/5 px-2 py-0.5 font-mono text-sm text-[#00d4ff]">
+              <code className="rounded bg-surface px-2 py-0.5 font-mono text-sm text-primary">
                 * CALCULATE TAX
               </code>{" "}
               above 500 lines of dense procedural logic.
@@ -159,11 +159,11 @@ export default function CobolDocumentationGuidePage() {
 
           {/* Section 2 */}
           <section>
-            <h2 className="mb-4 text-2xl font-bold text-white">
+            <h2 className="mb-4 text-2xl font-bold text-foreground">
               Why COBOL Documentation Matters
             </h2>
 
-            <h3 className="mb-3 mt-6 text-xl font-semibold text-white">
+            <h3 className="mb-3 mt-6 text-xl font-semibold text-foreground">
               1. Knowledge Loss Is Accelerating
             </h3>
             <p>
@@ -182,7 +182,7 @@ export default function CobolDocumentationGuidePage() {
               logic that nobody remembers writing.
             </p>
 
-            <h3 className="mb-3 mt-6 text-xl font-semibold text-white">
+            <h3 className="mb-3 mt-6 text-xl font-semibold text-foreground">
               2. Compliance and Audit Requirements
             </h3>
             <p>
@@ -201,7 +201,7 @@ export default function CobolDocumentationGuidePage() {
               trigger specific outcomes.
             </p>
 
-            <h3 className="mb-3 mt-6 text-xl font-semibold text-white">
+            <h3 className="mb-3 mt-6 text-xl font-semibold text-foreground">
               3. Modernization Planning
             </h3>
             <p>
@@ -222,7 +222,7 @@ export default function CobolDocumentationGuidePage() {
 
           {/* Section 3 */}
           <section>
-            <h2 className="mb-4 text-2xl font-bold text-white">
+            <h2 className="mb-4 text-2xl font-bold text-foreground">
               Traditional Approaches and Their Limitations
             </h2>
             <p>
@@ -230,7 +230,7 @@ export default function CobolDocumentationGuidePage() {
               results have been mixed at best.
             </p>
 
-            <h3 className="mb-3 mt-6 text-xl font-semibold text-white">
+            <h3 className="mb-3 mt-6 text-xl font-semibold text-foreground">
               Manual Code Review
             </h3>
             <p>
@@ -242,7 +242,7 @@ export default function CobolDocumentationGuidePage() {
               hundreds of thousands of dollars.
             </p>
 
-            <h3 className="mb-3 mt-6 text-xl font-semibold text-white">
+            <h3 className="mb-3 mt-6 text-xl font-semibold text-foreground">
               Static Analysis Tools
             </h3>
             <p>
@@ -256,7 +256,7 @@ export default function CobolDocumentationGuidePage() {
               exemption for employees in Western Australia.
             </p>
 
-            <h3 className="mb-3 mt-6 text-xl font-semibold text-white">
+            <h3 className="mb-3 mt-6 text-xl font-semibold text-foreground">
               Tribal Knowledge Sessions
             </h3>
             <p>
@@ -271,7 +271,7 @@ export default function CobolDocumentationGuidePage() {
 
           {/* Section 4 */}
           <section>
-            <h2 className="mb-4 text-2xl font-bold text-white">
+            <h2 className="mb-4 text-2xl font-bold text-foreground">
               How AI-Powered Documentation Works
             </h2>
             <p>
@@ -289,7 +289,7 @@ export default function CobolDocumentationGuidePage() {
               shot. The model sees the full picture, not fragments.
             </p>
 
-            <h3 className="mb-3 mt-6 text-xl font-semibold text-white">
+            <h3 className="mb-3 mt-6 text-xl font-semibold text-foreground">
               Multi-Pass Analysis
             </h3>
             <p>
@@ -298,7 +298,7 @@ export default function CobolDocumentationGuidePage() {
               understanding. This is the approach{" "}
               <a
                 href="/"
-                className="text-[#00d4ff] underline decoration-[#00d4ff]/30 transition-colors hover:text-[#33ddff]"
+                className="text-primary underline decoration-primary/30 transition-colors hover:text-primary-hover"
               >
                 Assay
               </a>{" "}
@@ -327,7 +327,7 @@ export default function CobolDocumentationGuidePage() {
 
           {/* Section 5 */}
           <section>
-            <h2 className="mb-4 text-2xl font-bold text-white">
+            <h2 className="mb-4 text-2xl font-bold text-foreground">
               What Good COBOL Documentation Looks Like
             </h2>
             <p>
@@ -335,7 +335,7 @@ export default function CobolDocumentationGuidePage() {
               documentation should include these five components.
             </p>
 
-            <h3 className="mb-3 mt-6 text-xl font-semibold text-white">
+            <h3 className="mb-3 mt-6 text-xl font-semibold text-foreground">
               Business Rules Catalogue
             </h3>
             <p>
@@ -349,7 +349,7 @@ export default function CobolDocumentationGuidePage() {
               analyst, or modernization team can review without reading code.
             </p>
 
-            <h3 className="mb-3 mt-6 text-xl font-semibold text-white">
+            <h3 className="mb-3 mt-6 text-xl font-semibold text-foreground">
               Dependency Maps
             </h3>
             <p>
@@ -362,7 +362,7 @@ export default function CobolDocumentationGuidePage() {
               need to test after modifying this copybook?&quot;
             </p>
 
-            <h3 className="mb-3 mt-6 text-xl font-semibold text-white">
+            <h3 className="mb-3 mt-6 text-xl font-semibold text-foreground">
               Dead Code Identification
             </h3>
             <p>
@@ -375,7 +375,7 @@ export default function CobolDocumentationGuidePage() {
               modernization teams a clear target for code reduction.
             </p>
 
-            <h3 className="mb-3 mt-6 text-xl font-semibold text-white">
+            <h3 className="mb-3 mt-6 text-xl font-semibold text-foreground">
               Data Flow Analysis
             </h3>
             <p>
@@ -388,7 +388,7 @@ export default function CobolDocumentationGuidePage() {
               to know the provenance of data used in regulatory calculations.
             </p>
 
-            <h3 className="mb-3 mt-6 text-xl font-semibold text-white">
+            <h3 className="mb-3 mt-6 text-xl font-semibold text-foreground">
               Executive Summary and Modernization Notes
             </h3>
             <p>
@@ -403,7 +403,7 @@ export default function CobolDocumentationGuidePage() {
 
           {/* Section 6 */}
           <section>
-            <h2 className="mb-4 text-2xl font-bold text-white">
+            <h2 className="mb-4 text-2xl font-bold text-foreground">
               Getting Started: Practical Steps
             </h2>
             <p>
@@ -411,7 +411,7 @@ export default function CobolDocumentationGuidePage() {
               its documentation, here is a practical path forward.
             </p>
 
-            <h3 className="mb-3 mt-6 text-xl font-semibold text-white">
+            <h3 className="mb-3 mt-6 text-xl font-semibold text-foreground">
               Step 1: Inventory Your Codebase
             </h3>
             <p>
@@ -422,7 +422,7 @@ export default function CobolDocumentationGuidePage() {
               and timeline.
             </p>
 
-            <h3 className="mb-3 mt-6 text-xl font-semibold text-white">
+            <h3 className="mb-3 mt-6 text-xl font-semibold text-foreground">
               Step 2: Identify Critical Programs First
             </h3>
             <p>
@@ -433,7 +433,7 @@ export default function CobolDocumentationGuidePage() {
               processing.
             </p>
 
-            <h3 className="mb-3 mt-6 text-xl font-semibold text-white">
+            <h3 className="mb-3 mt-6 text-xl font-semibold text-foreground">
               Step 3: Run a Proof of Concept
             </h3>
             <p>
@@ -444,14 +444,14 @@ export default function CobolDocumentationGuidePage() {
               services, including{" "}
               <a
                 href="/"
-                className="text-[#00d4ff] underline decoration-[#00d4ff]/30 transition-colors hover:text-[#33ddff]"
+                className="text-primary underline decoration-primary/30 transition-colors hover:text-primary-hover"
               >
                 Assay
               </a>
               , offer a free proof of concept for exactly this reason.
             </p>
 
-            <h3 className="mb-3 mt-6 text-xl font-semibold text-white">
+            <h3 className="mb-3 mt-6 text-xl font-semibold text-foreground">
               Step 4: Scale to Full Codebase
             </h3>
             <p>
@@ -463,7 +463,7 @@ export default function CobolDocumentationGuidePage() {
               names.
             </p>
 
-            <h3 className="mb-3 mt-6 text-xl font-semibold text-white">
+            <h3 className="mb-3 mt-6 text-xl font-semibold text-foreground">
               Step 5: Maintain the Knowledge Base
             </h3>
             <p>
@@ -476,7 +476,7 @@ export default function CobolDocumentationGuidePage() {
 
           {/* Section 7 */}
           <section>
-            <h2 className="mb-4 text-2xl font-bold text-white">
+            <h2 className="mb-4 text-2xl font-bold text-foreground">
               The Cost of Doing Nothing
             </h2>
             <p>
@@ -499,11 +499,11 @@ export default function CobolDocumentationGuidePage() {
           </section>
 
           {/* CTA */}
-          <section className="mt-12 rounded-2xl border border-[#00d4ff]/20 bg-[#00d4ff]/[0.04] p-8">
-            <h2 className="mb-3 text-xl font-bold text-white">
+          <section className="mt-12 rounded-2xl border border-primary/20 bg-[#00d4ff]/[0.04] p-8">
+            <h2 className="mb-3 text-xl font-bold text-foreground">
               Ready to Document Your COBOL?
             </h2>
-            <p className="mb-6 text-[#8899bb]">
+            <p className="mb-6 text-muted">
               Assay generates comprehensive documentation from your COBOL source
               code using AI with 1M token context. Business rules, dependency
               maps, dead code detection, and data flow analysis - delivered as a
@@ -519,7 +519,7 @@ export default function CobolDocumentationGuidePage() {
               </a>
               <a
                 href="/demo"
-                className="inline-flex items-center gap-2 rounded-xl border border-[#00d4ff]/20 px-6 py-3 font-medium text-[#00d4ff] transition-all hover:border-[#00d4ff]/40 hover:bg-[#00d4ff]/5"
+                className="inline-flex items-center gap-2 rounded-xl border border-primary/20 px-6 py-3 font-medium text-primary transition-all hover:border-primary/40 hover:bg-primary/5"
               >
                 Try Live Demo
               </a>
@@ -533,26 +533,26 @@ export default function CobolDocumentationGuidePage() {
         <div className="mx-auto flex max-w-3xl items-center justify-between text-xs text-muted">
           <a
             href="/"
-            className="transition-colors hover:text-white"
+            className="transition-colors hover:text-foreground"
           >
             Assay - COBOL Documentation Generator
           </a>
           <div className="flex gap-6">
             <a
               href="/blog"
-              className="transition-colors hover:text-white"
+              className="transition-colors hover:text-foreground"
             >
               Blog
             </a>
             <a
               href="/privacy"
-              className="transition-colors hover:text-white"
+              className="transition-colors hover:text-foreground"
             >
               Privacy
             </a>
             <a
               href="/terms"
-              className="transition-colors hover:text-white"
+              className="transition-colors hover:text-foreground"
             >
               Terms
             </a>

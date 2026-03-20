@@ -17,15 +17,15 @@ export default function Error({
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center px-6 text-center">
-      <div className="glass max-w-md p-12">
-        <p className="mb-2 font-mono text-xs tracking-widest text-[#00d4ff]">ERROR</p>
-        <h2 className="mb-4 text-2xl font-bold text-white">Something went wrong</h2>
-        <p className="mb-8 text-sm text-[#8899bb]">
+      <div className="max-w-md rounded border border-border bg-surface p-12">
+        <p className="mb-2 font-mono text-xs tracking-widest text-primary">ERROR</p>
+        <h2 className="mb-4 text-2xl font-bold text-foreground">Something went wrong</h2>
+        <p className="mb-8 text-sm text-muted">
           An unexpected error occurred. Please try again.
         </p>
         <button
           onClick={reset}
-          className="rounded-lg bg-[#00d4ff]/10 px-6 py-2.5 text-sm font-medium text-[#00d4ff] transition-all hover:bg-[#00d4ff]/20"
+          className="rounded-lg bg-primary/10 px-6 py-2.5 text-sm font-medium text-primary transition-all hover:bg-primary/20"
         >
           Try again
         </button>

@@ -54,10 +54,10 @@ export default function BlogPage() {
           Back to Assay
         </a>
 
-        <h1 className="mb-4 text-3xl font-bold tracking-tight text-white md:text-4xl">
+        <h1 className="mb-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
           Blog
         </h1>
-        <p className="mb-12 text-[#8899bb]">
+        <p className="mb-12 text-muted">
           Articles on COBOL documentation, legacy modernization, and AI-powered
           code analysis.
         </p>
@@ -80,10 +80,10 @@ export default function BlogPage() {
                 <span aria-hidden="true">-</span>
                 <span>{article.readingTime}</span>
               </div>
-              <h2 className="mb-2 text-xl font-semibold text-white transition-colors group-hover:text-[#00d4ff]">
+              <h2 className="mb-2 text-xl font-semibold text-foreground transition-colors group-hover:text-primary">
                 {article.title}
               </h2>
-              <p className="text-sm leading-relaxed text-[#8899bb]">
+              <p className="text-sm leading-relaxed text-muted">
                 {article.description}
               </p>
             </a>

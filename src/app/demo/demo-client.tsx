@@ -80,6 +80,7 @@ function DemoEmailCapture() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Work email"
+        aria-label="Work email"
         className="flex-1 rounded border border-border bg-white px-4 py-3 text-sm text-foreground placeholder-muted/60 transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
       />
       <button
