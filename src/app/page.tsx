@@ -184,38 +184,38 @@ export default function Home() {
               </div>
               <pre className="overflow-x-auto bg-code-bg p-5 font-mono text-xs leading-relaxed text-code-fg md:text-sm">
                 <code>
-                  <span className="text-[#6b7a99]">{"       "}</span>
+                  <span className="text-[#8090aa]">{"       "}</span>
                   <span className="text-[#e06c75]">IDENTIFICATION DIVISION.</span>
                   {"\n"}
-                  <span className="text-[#6b7a99]">{"       "}</span>
+                  <span className="text-[#8090aa]">{"       "}</span>
                   <span className="text-[#d19a66]">PROGRAM-ID.</span>
                   <span className="text-code-fg"> PAYROLL-CALC.</span>
                   {"\n"}
-                  <span className="text-[#6b7a99]">{"      *"}</span>
+                  <span className="text-[#8090aa]">{"      *"}</span>
                   {"\n"}
-                  <span className="text-[#6b7a99]">{"      * "}PAYROLL CALCULATION PROGRAM</span>
+                  <span className="text-[#8090aa]">{"      * "}PAYROLL CALCULATION PROGRAM</span>
                   {"\n"}
-                  <span className="text-[#6b7a99]">{"      * "}Calculates gross pay, tax, and net pay</span>
+                  <span className="text-[#8090aa]">{"      * "}Calculates gross pay, tax, and net pay</span>
                   {"\n"}
-                  <span className="text-[#6b7a99]">{"       "}</span>
+                  <span className="text-[#8090aa]">{"       "}</span>
                   <span className="text-[#e06c75]">PROCEDURE DIVISION.</span>
                   {"\n"}
-                  <span className="text-[#6b7a99]">{"       "}</span>
+                  <span className="text-[#8090aa]">{"       "}</span>
                   <span className="text-[#61afef]">0000-MAIN-CONTROL.</span>
                   {"\n"}
-                  <span className="text-[#6b7a99]">{"           "}</span>
+                  <span className="text-[#8090aa]">{"           "}</span>
                   <span className="text-[#c678dd]">PERFORM</span>
                   <span className="text-code-fg"> 1000-INITIALIZE</span>
                   {"\n"}
-                  <span className="text-[#6b7a99]">{"           "}</span>
+                  <span className="text-[#8090aa]">{"           "}</span>
                   <span className="text-[#c678dd]">PERFORM</span>
                   <span className="text-code-fg"> 2000-PROCESS-PAYROLL</span>
                   {"\n"}
-                  <span className="text-[#6b7a99]">{"               "}</span>
+                  <span className="text-[#8090aa]">{"               "}</span>
                   <span className="text-[#c678dd]">UNTIL</span>
                   <span className="text-code-fg"> END-OF-TIME</span>
                   {"\n"}
-                  <span className="text-[#6b7a99]">{"           "}</span>
+                  <span className="text-[#8090aa]">{"           "}</span>
                   <span className="text-[#c678dd]">STOP RUN</span>
                   <span className="text-code-fg">.</span>
                 </code>

@@ -34,9 +34,14 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Generate a per-request nonce for CSP. Next.js reads this from the
+  // Content-Security-Policy header and applies it to all inline scripts
+  // it injects (bootstrap, chunks, etc.).
+  const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
+
   const csp = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com",
+    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://va.vercel-scripts.com`,
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data:",
     "font-src 'self'",
@@ -46,7 +51,13 @@ export function middleware(request: NextRequest) {
     "form-action 'self'",
   ].join('; ');
 
-  const response = NextResponse.next();
+  // Pass the nonce to Next.js via request headers so the SSR render
+  // can read it and stamp every inline <script> tag with the same nonce.
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set('x-nonce', nonce);
+  requestHeaders.set('Content-Security-Policy', csp);
+
+  const response = NextResponse.next({ request: { headers: requestHeaders } });
   response.headers.set('Content-Security-Policy', csp);
 
   return response;

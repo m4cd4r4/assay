@@ -80,7 +80,7 @@ export default function CobolDocumentationGuidePage() {
         {/* Back link */}
         <a
           href="/"
-          className="mb-8 inline-flex items-center gap-2 text-sm text-[#6b7a99] transition-colors hover:text-white"
+          className="mb-8 inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-foreground"
         >
           <svg
             className="h-4 w-4"
