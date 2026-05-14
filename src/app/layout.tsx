@@ -27,9 +27,9 @@ const sourceSerif = Source_Serif_4({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://assay.software"),
-  title: "Assay - COBOL Documentation Generator",
+  title: "Assay - COBOL Documentation Generator (Portfolio Project)",
   description:
-    "Transform legacy COBOL codebases into comprehensive, plain-English documentation. Business rules, dependency maps, dead code detection, and data flow analysis powered by Claude Opus.",
+    "Portfolio project by Macdara. A production-ready Next.js application that turns COBOL source into business rules, dependency maps, dead code reports, and data flow diagrams using Claude. Open source. Available on request.",
   keywords: [
     "COBOL",
     "documentation",
@@ -41,18 +41,18 @@ export const metadata: Metadata = {
     "mainframe",
   ],
   openGraph: {
-    title: "Assay - COBOL Documentation Generator",
+    title: "Assay - COBOL Documentation Generator (Portfolio Project)",
     description:
-      "Transform legacy COBOL codebases into comprehensive, plain-English documentation. Business rules, dependency maps, dead code detection, and data flow analysis.",
+      "Portfolio project. Five-pass AI analysis of legacy COBOL: business rules, dependency maps, dead code, data flow. Open source, available on request.",
     type: "website",
     url: "https://assay.software",
     siteName: "Assay",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Assay - COBOL Documentation Generator",
+    title: "Assay - COBOL Documentation Generator (Portfolio Project)",
     description:
-      "Transform legacy COBOL codebases into comprehensive, plain-English documentation. Business rules, dependency maps, dead code detection, and data flow analysis.",
+      "Portfolio project. Five-pass AI analysis of legacy COBOL: business rules, dependency maps, dead code, data flow. Open source, available on request.",
   },
 };
 
@@ -68,19 +68,14 @@ export default async function RootLayout({
     "@type": "SoftwareApplication",
     name: "Assay",
     description:
-      "Automated COBOL documentation generator powered by Claude Opus. Business rules, dependency maps, dead code detection, and data flow analysis.",
+      "Portfolio project. Automated COBOL documentation generator powered by Claude. Business rules, dependency maps, dead code detection, and data flow analysis. Open source, available on request.",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Web",
-    offers: {
-      "@type": "AggregateOffer",
-      priceCurrency: "AUD",
-      lowPrice: "1250",
-      highPrice: "6000",
-    },
+    codeRepository: "https://github.com/m4cd4r4/assay",
     creator: {
-      "@type": "Organization",
-      name: "Solaisoft",
-      url: "https://solaisoft.com",
+      "@type": "Person",
+      name: "Macdara",
+      url: "https://m4cd4r4.github.io/",
     },
   };
 

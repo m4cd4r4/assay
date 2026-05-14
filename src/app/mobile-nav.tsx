@@ -5,7 +5,6 @@ import { useState } from 'react';
 const NAV_LINKS = [
   { href: '#features', label: 'Features' },
   { href: '#process', label: 'Process' },
-  { href: '#pricing', label: 'Pricing' },
   { href: '#trust', label: 'Trust' },
   { href: '/demo', label: 'Demo' },
   { href: '/docs', label: 'Docs' },
@@ -49,11 +48,13 @@ export default function MobileNav() {
               </a>
             ))}
             <a
-              href="#contact"
+              href="https://github.com/m4cd4r4/assay"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => setOpen(false)}
               className="mt-2 block rounded bg-primary px-4 py-3 text-center text-sm font-medium text-white"
             >
-              Get in touch
+              GitHub
             </a>
           </div>
         </div>

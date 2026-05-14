@@ -449,17 +449,19 @@ export default function DemoClient() {
               executive summary.
             </p>
             <div className="flex justify-center gap-4">
-              <Link
-                href="/#contact"
+              <a
+                href="https://github.com/m4cd4r4/assay"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="rounded bg-primary px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-primary-hover"
               >
-                Request Free PoC
-              </Link>
+                View source on GitHub
+              </a>
               <Link
-                href="/#pricing"
+                href="/"
                 className="rounded border border-border px-6 py-3 text-sm text-muted transition-colors hover:bg-surface hover:text-foreground"
               >
-                View Pricing
+                Back to overview
               </Link>
             </div>
           </>
