@@ -100,4 +100,4 @@ npm run dev
 
 ## License
 
-Proprietary. Copyright 2026 Solaisoft
+MIT License. Copyright (c) 2026 m4cd4r4. See [LICENSE](LICENSE) for details.
