@@ -247,7 +247,7 @@ export default function DemoClient() {
             See Assay in Action
           </h2>
           <p className="mb-2 text-muted">
-            Watch how Claude Opus 4.6 analyses a 301-line Australian payroll
+            Watch how Claude Opus analyses a 301-line Australian payroll
             program with 2 copybooks and produces comprehensive documentation
             in 4 passes.
           </p>

@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://assay.software"),
   title: "Assay - COBOL Documentation Generator",
   description:
-    "Transform legacy COBOL codebases into comprehensive, plain-English documentation. Business rules, dependency maps, dead code detection, and data flow analysis powered by Claude Opus 4.6.",
+    "Transform legacy COBOL codebases into comprehensive, plain-English documentation. Business rules, dependency maps, dead code detection, and data flow analysis powered by Claude Opus.",
   keywords: [
     "COBOL",
     "documentation",
@@ -68,7 +68,7 @@ export default async function RootLayout({
     "@type": "SoftwareApplication",
     name: "Assay",
     description:
-      "Automated COBOL documentation generator powered by Claude Opus 4.6. Business rules, dependency maps, dead code detection, and data flow analysis.",
+      "Automated COBOL documentation generator powered by Claude Opus. Business rules, dependency maps, dead code detection, and data flow analysis.",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Web",
     offers: {

@@ -6,7 +6,7 @@ import DemoClient from './demo-client';
 export const metadata: Metadata = {
   title: 'Live Demo - Assay',
   description:
-    'See Assay in action. Watch Claude Opus 4.6 analyse a 301-line COBOL payroll program and produce comprehensive documentation in 4 passes.',
+    'See Assay in action. Watch Claude Opus analyse a 301-line COBOL payroll program and produce comprehensive documentation in 4 passes.',
 };
 
 export default function DemoPage() {

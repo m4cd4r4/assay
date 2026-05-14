@@ -259,7 +259,7 @@ code{font-family:var(--mono);font-size:14px;background:var(--surface);border:1px
   <div class="header">
     <div class="header-mono">System Architecture</div>
     <h1>Assay</h1>
-    <p>COBOL documentation generator. 5-pass analysis pipeline using Claude Opus 4.6 with 1M token context window.</p>
+    <p>COBOL documentation generator. 5-pass analysis pipeline using Claude Opus.</p>
     <div class="header-meta">
       <span><span class="dot dot-green"></span> Portfolio Demo</span>
       <span><span class="dot dot-cyan"></span> Full Playwright E2E Suite</span>
@@ -294,7 +294,7 @@ code{font-family:var(--mono);font-size:14px;background:var(--surface);border:1px
         <tr><td>Runtime</td><td><code>React 19</code></td><td>UI components, client interactivity</td></tr>
         <tr><td>Language</td><td><code>TypeScript 5</code> (strict)</td><td>Type safety across all modules</td></tr>
         <tr><td>Styling</td><td><code>Tailwind CSS v4</code></td><td>Utility-first with glassmorphism design tokens</td></tr>
-        <tr><td>AI Engine</td><td><code>Claude Opus 4.6</code> (Anthropic SDK)</td><td>1M token context, 5-pass analysis</td></tr>
+        <tr><td>AI Engine</td><td><code>Claude Opus</code> (Anthropic SDK)</td><td>5-pass analysis</td></tr>
         <tr><td>Email</td><td><code>Resend</code></td><td>Transactional email for PoC requests</td></tr>
         <tr><td>State</td><td><code>Zustand 5</code></td><td>Client-side state management</td></tr>
         <tr><td>Testing</td><td><code>Playwright 1.58</code></td><td>Cross-browser E2E testing</td></tr>
@@ -336,7 +336,7 @@ graph TB
         PARSER["COBOL Parser<br/>Regex-based structural analysis"]
         GROUPER["Program Grouper<br/>Resolve COPY/CALL references"]
         CHAIN["Call Chain Analyzer<br/>Dependency graph builder"]
-        PIPELINE["5-Pass AI Pipeline<br/>Claude Opus 4.6"]
+        PIPELINE["5-Pass AI Pipeline<br/>Claude Opus"]
         MARKDOWN["Markdown Assembler<br/>Knowledge base builder"]
         MERMAID_GEN["Mermaid Generator<br/>Fallback diagram builder"]
     end
@@ -346,7 +346,7 @@ graph TB
     end
 
     subgraph External["External Services"]
-        ANTHROPIC["Anthropic API<br/>Claude Opus 4.6"]
+        ANTHROPIC["Anthropic API<br/>Claude Opus"]
         DONNACHA["Booking API"]
         RESEND["Resend API<br/>Email delivery"]
     end
@@ -401,7 +401,7 @@ sequenceDiagram
     participant C as Client
     participant P as /api/process
     participant S as Job Store
-    participant AI as Claude Opus 4.6
+    participant AI as Claude Opus
     participant M as Markdown Assembler
 
     C->>P: POST {jobId}
@@ -745,7 +745,7 @@ classDiagram
     <div style="background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.2);border-radius:8px;padding:16px 20px;margin-bottom:20px;">
       <strong style="color:#00d4ff;">This is a sample of what you get.</strong> The demo page at <a href="https://assay.software/demo" style="color:#00d4ff;">/demo</a> shows real output from our 5-pass AI pipeline run against a sample COBOL payroll program. Every customer engagement produces the same structured deliverable - business rules, dependency maps, dead code detection, and data flow analysis - tailored to your codebase.
     </div>
-    <p>The demo replays pre-generated Claude Opus 4.6 output with zero API cost. The analysis was captured once and stored as static JSON.</p>
+    <p>The demo replays pre-generated Claude Opus output with zero API cost. The analysis was captured once and stored as static JSON.</p>
 
     <div class="diagram-wrap">
       <div class="caption">Demo Architecture</div>
@@ -753,7 +753,7 @@ classDiagram
 flowchart TB
     subgraph OneTime["One-Time Generation (Offline)"]
         SAMPLE["Sample COBOL<br/>PAYROLL-CALC.cbl<br/>301 lines, 2 copybooks"]
-        RUN["Run 5-Pass Pipeline<br/>Claude Opus 4.6"]
+        RUN["Run 5-Pass Pipeline<br/>Claude Opus"]
         JSON["payroll-calc.json<br/>4 pass outputs, stats,<br/>business rules, diagrams"]
     end
 

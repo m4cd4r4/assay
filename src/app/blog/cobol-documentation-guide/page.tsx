@@ -505,10 +505,9 @@ export default function CobolDocumentationGuidePage() {
             </h2>
             <p className="mb-6 text-muted">
               Assay generates comprehensive documentation from your COBOL source
-              code using AI with 1M token context. Business rules, dependency
-              maps, dead code detection, and data flow analysis - delivered as a
-              searchable knowledge base. Start with a free 5-program Proof of
-              Concept.
+              code using AI. Business rules, dependency maps, dead code
+              detection, and data flow analysis - delivered as a searchable
+              knowledge base. Start with a free 5-program Proof of Concept.
             </p>
             <div className="flex flex-wrap gap-4">
               <a
