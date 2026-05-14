@@ -25,12 +25,14 @@ export default function DemoPage() {
             <span className="rounded border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-medium text-primary">
               Live Demo
             </span>
-            <Link
-              href="/#contact"
-              className="rounded bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-hover"
+            <a
+              href="https://github.com/m4cd4r4/assay"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-surface"
             >
-              Get Started
-            </Link>
+              GitHub
+            </a>
           </div>
         </div>
       </header>

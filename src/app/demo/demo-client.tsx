@@ -37,62 +37,6 @@ const PASS_LABELS = [
 const TYPING_SPEED = 8;
 const LINE_PAUSE = 40;
 
-function DemoEmailCapture() {
-  const [email, setEmail] = useState('');
-  const [submitted, setSubmitted] = useState(false);
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!email) return;
-    try {
-      await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: 'Demo visitor',
-          email,
-          company: '',
-          codebaseSize: '',
-          message: 'Completed full demo - requested free PoC via demo page.',
-        }),
-      });
-    } catch {
-      // Best-effort
-    }
-    setSubmitted(true);
-  }
-
-  if (submitted) {
-    return (
-      <div className="rounded border border-primary/20 bg-primary/5 px-6 py-4">
-        <p className="text-sm text-primary">
-          Got it. We will be in touch within 1-2 business days with your free PoC details.
-        </p>
-      </div>
-    );
-  }
-
-  return (
-    <form onSubmit={handleSubmit} className="mx-auto flex max-w-sm gap-3">
-      <input
-        type="email"
-        required
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Work email"
-        aria-label="Work email"
-        className="flex-1 rounded border border-border bg-white px-4 py-3 text-sm text-foreground placeholder-muted/60 transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
-      />
-      <button
-        type="submit"
-        className="shrink-0 rounded bg-primary px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-primary-hover"
-      >
-        Get Free PoC
-      </button>
-    </form>
-  );
-}
-
 export default function DemoClient() {
   const [demoData, setDemoData] = useState<DemoOutput | null>(null);
   const [activePass, setActivePass] = useState(0);
@@ -247,13 +191,12 @@ export default function DemoClient() {
             See Assay in Action
           </h2>
           <p className="mb-2 text-muted">
-            Watch how Claude Opus analyses a 301-line Australian payroll
-            program with 2 copybooks and produces comprehensive documentation
-            in 4 passes.
+            A 301-line Australian payroll program with 2 copybooks, analysed
+            in 4 passes by Claude.
           </p>
           <p className="mb-8 text-sm text-muted">
-            This is real AI-generated output from the sample program below. No
-            API calls are made during this demo.
+            This page replays a pre-generated analysis. No API calls are made,
+            no input is collected.
           </p>
 
           {/* Stats bar */}
@@ -426,46 +369,32 @@ export default function DemoClient() {
 
       {/* Bottom CTA */}
       <div className="mx-auto mt-16 max-w-xl border-t border-border pt-12 text-center">
-        {completedPasses.size === 4 ? (
-          <>
-            <h2 className="mb-2 font-serif text-xl font-semibold">
-              Imagine this for your entire codebase.
-            </h2>
-            <p className="mb-6 text-sm text-muted">
-              You just saw 1 program documented in 4 passes. A typical engagement
-              covers 50-500+ programs with cross-reference indexing, dependency
-              maps, and an executive summary.
-            </p>
-            <DemoEmailCapture />
-          </>
-        ) : (
-          <>
-            <h2 className="mb-2 font-serif text-xl font-semibold">
-              Ready for your codebase?
-            </h2>
-            <p className="mb-6 text-sm text-muted">
-              This demo shows 1 program. A typical engagement covers 50-500+
-              programs with full cross-reference indexing, dependency maps, and
-              executive summary.
-            </p>
-            <div className="flex justify-center gap-4">
-              <a
-                href="https://github.com/m4cd4r4/assay"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded bg-primary px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-primary-hover"
-              >
-                View source on GitHub
-              </a>
-              <Link
-                href="/"
-                className="rounded border border-border px-6 py-3 text-sm text-muted transition-colors hover:bg-surface hover:text-foreground"
-              >
-                Back to overview
-              </Link>
-            </div>
-          </>
-        )}
+        <h2 className="mb-2 font-serif text-xl font-semibold">
+          {completedPasses.size === 4
+            ? "That's the full pipeline."
+            : "Want to see how it's built?"}
+        </h2>
+        <p className="mb-6 text-sm text-muted">
+          You just watched four AI passes turn raw COBOL into business rules,
+          dead code reports, and a data-flow diagram. The full source is open
+          under MIT.
+        </p>
+        <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <a
+            href="https://github.com/m4cd4r4/assay"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded bg-primary px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-primary-hover"
+          >
+            View source on GitHub
+          </a>
+          <Link
+            href="/"
+            className="rounded border border-border px-6 py-3 text-sm text-muted transition-colors hover:bg-surface hover:text-foreground"
+          >
+            Back to overview
+          </Link>
+        </div>
       </div>
     </>
   );

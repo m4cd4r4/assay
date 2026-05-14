@@ -5,8 +5,8 @@
 <h1 align="center">Assay</h1>
 
 <p align="center">
-  <strong>Your COBOL codebase, finally understood.</strong><br/>
-  COBOL documentation generator. 5-pass analysis pipeline.
+  <strong>COBOL documentation generator. 5-pass AI analysis pipeline.</strong><br/>
+  Portfolio project. Open source, available on request.
 </p>
 
 <p align="center">
@@ -21,7 +21,7 @@
 
 1. **Upload** COBOL source files (.cbl, .cob, .cpy)
 2. **Parse** structural elements (divisions, sections, paragraphs, data items, COPY/CALL references)
-3. **Analyze** through a 5-pass AI pipeline using Claude Opus 4.6 with 1M token context
+3. **Analyze** through a 5-pass AI pipeline using Claude
 4. **Download** a complete knowledge base as structured markdown
 
 ### 5-Pass Pipeline
@@ -37,9 +37,9 @@
 ## Stack
 
 - **Framework:** Next.js 16, React 19, TypeScript 5 (strict)
-- **AI Engine:** Anthropic Claude Opus 4.6 (1M token context, 5-pass analysis)
+- **AI Engine:** Anthropic Claude (5-pass analysis)
 - **Styling:** Tailwind CSS v4
-- **Email:** Resend (transactional PoC requests)
+- **Email:** Resend (transactional, unused on the portfolio site)
 - **Testing:** Playwright (full E2E suite)
 - **Hosting:** Vercel (edge middleware, serverless functions)
 
@@ -54,7 +54,7 @@ Key modules:
 ```
 src/
   app/
-    page.tsx              Landing page (hero, features, pricing, trust)
+    page.tsx              Landing page (hero, features, process, trust)
     demo/page.tsx         Pre-computed demo (zero API cost, typewriter animation)
     api/
       upload/route.ts     Multipart COBOL file upload + parse + cost estimate
