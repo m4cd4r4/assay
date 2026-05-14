@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     url: "https://assay.software/blog/cobol-documentation-guide",
     siteName: "Assay",
     publishedTime: "2026-03-17T00:00:00Z",
-    authors: ["Solaisoft"],
+    authors: ["Macdara"],
   },
   twitter: {
     card: "summary_large_image",
@@ -54,9 +54,9 @@ export default function CobolDocumentationGuidePage() {
     datePublished: "2026-03-17T00:00:00Z",
     dateModified: "2026-03-17T00:00:00Z",
     author: {
-      "@type": "Organization",
-      name: "Solaisoft",
-      url: "https://solaisoft.com",
+      "@type": "Person",
+      name: "Macdara",
+      url: "https://m4cd4r4.github.io/",
     },
     publisher: {
       "@type": "Organization",

@@ -103,8 +103,8 @@ export async function POST(request: NextRequest) {
         giving you a clear picture of what the full engagement delivers.
       </p>
       <p style="color:#666;font-size:14px;margin-top:24px;">
-        - The Assay Team<br/>
-        <span style="color:#999;">Solaisoft</span>
+        - Macdara<br/>
+        <span style="color:#999;">m4cd4r4.github.io</span>
       </p>
     </div>
   `;
