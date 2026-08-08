@@ -75,7 +75,7 @@ export default async function RootLayout({
     creator: {
       "@type": "Person",
       name: "Macdara",
-      url: "https://m4cd4r4.github.io/",
+      url: "https://github.com/m4cd4r4",
     },
   };
 
