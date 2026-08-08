@@ -42,7 +42,7 @@ export default function PrivacyPage() {
             <h2>What this site is</h2>
             <p>
               assay.software is a portfolio project by Macdara
-              (<a href="https://m4cd4r4.github.io/" target="_blank" rel="noopener noreferrer">m4cd4r4.github.io</a>).
+              (<a href="https://github.com/m4cd4r4" target="_blank" rel="noopener noreferrer">github.com/m4cd4r4</a>).
               The source is open under MIT at
               {" "}
               <a href="https://github.com/m4cd4r4/assay" target="_blank" rel="noopener noreferrer">github.com/m4cd4r4/assay</a>.
