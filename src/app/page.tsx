@@ -364,12 +364,12 @@ export default function Home() {
                 View source on GitHub
               </a>
               <a
-                href="https://m4cd4r4.github.io/"
+                href="https://github.com/m4cd4r4"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rounded border border-border px-6 py-3 text-sm font-medium text-foreground transition-colors hover:bg-surface"
               >
-                More work at m4cd4r4.github.io
+                More work at github.com/m4cd4r4
               </a>
             </div>
           </div>
